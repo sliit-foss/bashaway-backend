@@ -1,0 +1,1 @@
+const makeResponse = ({ status = 200 , data, message}) => res.status(status).json({ data, message })
