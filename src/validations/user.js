@@ -4,6 +4,6 @@ export const registerSchema = Joi.object({
     name: Joi.string().required(),
     email: Joi.string().email().required(),
     password: Joi.string().required(),
-    photo_url: Joi.string().optional(),
+    university: Joi.string().optional(),
 });
 
