@@ -7,3 +7,7 @@ export const registerSchema = Joi.object({
     university: Joi.string().optional(),
 });
 
+export const loginSchema = Joi.object({
+    email: Joi.string().email().required(),
+    password: Joi.string().required(),
+});
