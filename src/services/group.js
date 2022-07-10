@@ -1,7 +1,7 @@
-import groupRepository from '../repository/group';
+import * as groupRepository from '../repository/group';
 
 export const create = async (data, user) => {
-    const groupExists = groupRepository.findOne({ admin: user._id });
+    const groupExists = await groupRepository.findOne({ admin: user._id });
     if (groupExists) return { status: 400, message: 'You are already registered in a group' }
     const group = await groupRepository.create({ ...data, admin: user._id });
     return { data: { ...(JSON.parse(JSON.stringify(group))), admin: user } };
