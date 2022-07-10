@@ -1,8 +1,8 @@
 import express from 'express';
 import { create } from '../controllers/submission';
 
-const authRouter = express.Router();
+const submissionRouter = express.Router();
 
-authRouter.post('/create', create);
+submissionRouter.post('/create', create);
 
-export default authRouter;
+export default submissionRouter;
