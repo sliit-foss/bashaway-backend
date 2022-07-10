@@ -18,8 +18,33 @@ const UserSchema = new mongoose.Schema(
         required: true,
         minlength: 8,
     },
+    verification_code: {
+        type: String,
+        required: true,
+    },
+    is_verified: {
+        type: Boolean,
+        required: true,
+        default: false,
+    },
+    is_active: {
+        type: Boolean,
+        required: true,
+        default: true,
+    },
     photo_url: {
         type: String,
+        required: false,
+    },
+    university: {
+      type: String,
+      required: false,
+    },
+    role: {
+        type: String,
+        enum: ['ADMIN', 'CONTESTANT'],
+        default: 'CONTESTANT',
+        required: true,
     }
   },
   {
