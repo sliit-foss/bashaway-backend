@@ -1,1 +1,1 @@
-const makeResponse = ({ status = 200 , data, message}) => res.status(status).json({ data, message })
+export const makeResponse = ({res, status = 200 , data, message}) => res.status(status).json({ data, message })
