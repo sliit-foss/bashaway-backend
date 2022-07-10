@@ -1,7 +1,7 @@
 import bcrypt from 'bcrypt';
 import {createUser} from "../repository/user"
-
-const authRegister = async (name, email, password, photo_url) => {
+import { v4 as uuidv4 } from 'uuid';
+const authRegister = async (name, email, password, university) => {
     const encryptedPassword = await new Promise((resolve, reject) => {
         bcrypt.hash(password, parseInt(process.env.BCRYPT_SALT_ROUNDS), function (err, hash) {
             if (err) reject(err);
@@ -13,7 +13,8 @@ const authRegister = async (name, email, password, photo_url) => {
         name,
         email,
         password: encryptedPassword,
-        photo_url,
+        verification_code: uuidv4(),
+        university,
     });
 }
 
