@@ -5,14 +5,9 @@ import cors from 'cors';
 import dotenv from 'dotenv';
 import connectDB from './database';
 import routes from './routes/index.routes';
-<<<<<<< HEAD
-import {isCelebrateError} from 'celebrate';
-import {makeResponse} from "./utils/response";
-=======
 import { isCelebrateError } from 'celebrate';
 import { makeResponse } from "./utils/response";
 import logger from "./utils/logger";
->>>>>>> 223fec9b1e517d1dd324a9087e66cd1fa5ddfc05
 
 dotenv.config();
 
