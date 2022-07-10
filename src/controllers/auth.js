@@ -11,7 +11,10 @@ export const register = asyncHandler(async(req, res, next) => {
     }
 );
 
-export const login = asyncHandler(async(req, res, next) => {})
+export const login = asyncHandler(async(req, res, next) => {
+    const {email, password} = req.body;
+    
+})
 
 export const logout = asyncHandler(async(req, res, next) => {})
 
