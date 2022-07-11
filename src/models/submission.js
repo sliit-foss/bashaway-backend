@@ -3,9 +3,9 @@ import mongoosePaginate from 'mongoose-paginate-v2';
 
 const SubmissionSchema = mongoose.Schema(
     {
-        group: {
+        user: {
             type: mongoose.Schema.Types.ObjectId,
-            ref: 'Group',
+            ref: 'User',
             required: true
         },
         question: {

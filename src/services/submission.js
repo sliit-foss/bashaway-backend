@@ -1,11 +1,11 @@
 import { insertSubmission } from "../repository/submission"
 
-export const createSubmission = async (req) => {
-    const { question, link } = req.body;
+export const createSubmission = async (reqBody) => {
+    const { question, link } = reqBody;
 
-    // TODO: getting user's group
-    const group = "123456789012345678901234";
+    // TODO: getting user's id
+    const user = "123456789012345678901234";
     // dummy value added
 
-    await insertSubmission(group, question, link);
+    await insertSubmission(user, question, link);
 }
