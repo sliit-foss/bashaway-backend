@@ -17,6 +17,8 @@ export const generateInvite = asyncHandler(async (req, res, next) => { })
 
 export const joinGroup = asyncHandler(async (req, res, next) => { })
 
-export const leaveGroup = asyncHandler(async (req, res, next) => { })
+export const leaveGroup = asyncHandler(async (req, res, next) => { 
+    const result = await groupService.leaveGroup(req.params.id, req.params.remove_user);
+})
 
 export const removeUser = asyncHandler(async (req, res, next) => { })

@@ -12,4 +12,7 @@ export const getById = async () => { }
 export const update = async () => { }
 export const generateInvite = async () => { }
 export const joinGroup = async () => { }
-export const leaveGroup = async () => { }
+export const leaveGroup = async (user) => { 
+
+    groupRepository.removeUser(user);
+}
