@@ -8,11 +8,11 @@ Bashaway is a competitive coding event where the participants must automate a gi
 
 ## Features
 - Participant
-    -- Registration
-    -- Answer submission
+    - Registration
+    - Answer submission
 - Admin
-    -- User management
-    -- View submissions
+    - User management
+    - View submissions
 
 ## API
 The following endpoints are available.
