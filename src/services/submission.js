@@ -1,4 +1,4 @@
-import { insertSubmission } from "../repository/submission"
+import { insertSubmission, getAllSubmissions } from "../repository/submission"
 
 export const createSubmission = async (reqBody) => {
     const { question, link } = reqBody;
@@ -8,4 +8,12 @@ export const createSubmission = async (reqBody) => {
     // dummy value added
 
     await insertSubmission(user, question, link);
+}
+
+export const viewAllSubmissions = async (req) => {
+    const filters = req.query.filter;
+    const pageNum = 1;
+    const pageSize = 1;
+
+    return await getAllSubmissions(filters, pageNum, pageSize)
 }
