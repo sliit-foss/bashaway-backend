@@ -3,7 +3,7 @@ import {createUser, getOneUser} from "../repository/user"
 import { v4 as uuidv4 } from 'uuid';
 import {makeResponse} from "../utils/response"
 
-export const authRegister = async (name, email, password, university) => {
+export const authRegister = async (name, email, password, university, members) => {
     const encryptedPassword = await new Promise((resolve, reject) => {
         bcrypt.hash(password, parseInt(process.env.BCRYPT_SALT_ROUNDS), function (err, hash) {
             if (err) reject(err);
@@ -17,6 +17,7 @@ export const authRegister = async (name, email, password, university) => {
         password: encryptedPassword,
         verification_code: uuidv4(),
         university,
+        members,
     });
 }
 
