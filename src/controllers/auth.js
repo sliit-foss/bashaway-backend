@@ -4,8 +4,8 @@ import {makeResponse} from "../utils/response"
 import {sendTokenResponse} from "../utils/jwt";
 
 export const register = asyncHandler(async(req, res, next) => {
-        const {name, email, password, university} = req.body;
-        const user = await authRegister(name, email, password, university);
+        const {name, email, password, university, members} = req.body;
+        const user = await authRegister(name, email, password, university, members);
         if (user) return makeResponse({res, message:"User created successfully"});
         return makeResponse({res, status: 500, message:"Failed to register user"});
     }
