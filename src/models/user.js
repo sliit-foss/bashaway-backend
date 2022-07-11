@@ -42,9 +42,34 @@ const UserSchema = new mongoose.Schema(
     },
     role: {
         type: String,
-        enum: ['ADMIN', 'CONTESTANT'],
-        default: 'CONTESTANT',
+        enum: ['ADMIN', 'GROUP'],
+        default: 'GROUP',
         required: true,
+    },
+    score: {
+      type: Number,
+      required: false,
+    },
+    members: {
+      type: [{
+        name : {
+          type: String,
+          required: true,
+        },
+        email : {
+          type: String,
+          required: true,
+        },
+        phone: {
+          type: String,
+          required: true,
+        },
+        academic_year: {
+          type: String,
+          required: true,
+        }
+      }],
+      required: false,
     }
   },
   {
