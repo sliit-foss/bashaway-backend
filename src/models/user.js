@@ -66,7 +66,7 @@ const UserSchema = new mongoose.Schema(
           required: true,
         },
         academic_year: {
-          type: String,
+          type: Number,
           required: true,
         }
       }],
