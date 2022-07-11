@@ -39,4 +39,5 @@ The following endpoints are available.
 - Contributors
     
 _Brought to you by SLIIT FOSS_
+
 ![alt text](https://avatars.githubusercontent.com/u/36430259?s=190)
