@@ -1,8 +1,9 @@
-import express from 'express';
-import { create } from '../controllers/submission';
+import express from 'express'
+import { create, viewAll } from '../controllers/submission'
 
-const submissionRouter = express.Router();
+const submissionRouter = express.Router()
 
-submissionRouter.post('/create', create);
+submissionRouter.post('/create', create)
+submissionRouter.get('/viewAll', viewAll)
 
-export default submissionRouter;
+export default submissionRouter
