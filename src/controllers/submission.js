@@ -5,7 +5,7 @@ import { makeResponse } from '../utils/response'
 export const create = asyncHandler(async (req, res, next) => {
   await createSubmission(req.body)
 
-  makeResponse({ res, status: 201, data: {}, message: 'submission created' })
+  makeResponse({ res, status: 201, message: 'submission created' })
 })
 
 export const view = asyncHandler(async (req, res, next) => {
@@ -17,5 +17,5 @@ export const view = asyncHandler(async (req, res, next) => {
 export const grade = asyncHandler(async (req, res, next) => {
   await gradeSubmission(req.body)
 
-  makeResponse({ res, status: 201, data: {}, message: 'submission graded' })
+  makeResponse({ res, status: 201, message: 'submission graded' })
 })
