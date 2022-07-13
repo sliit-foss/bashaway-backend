@@ -2,11 +2,11 @@ import logger from '../utils/logger'
 import Submission from '../models/submission'
 
 export const insertSubmission = async (user, question, link) => {
-  const newSubmission = new Submission({ user, question, link })
+  const newSubmission = new Submission({ user, question, link, score: 0, gradedBy: null })
   await newSubmission.save()
 }
 
-export const getAllSubmissions = async ({ sort={}, filters={}, pageNum=1, pageSize=10 }) => {
+export const getSubmissions = async ({ sort = {}, filters = {}, pageNum = 1, pageSize = 10 }) => {
   const options = {
     sort,
     page: pageNum,
@@ -24,4 +24,11 @@ export const getAllSubmissions = async ({ sort={}, filters={}, pageNum=1, pageSi
       throw 'An error occurred when retrieving submissions'
     }
   })
+}
+
+export const insertGrade = async (submission, score, admin) => {
+  const query = { _id: submission }
+  const newData = { score, gradedBy: admin }
+
+  await Submission.findOneAndUpdate(query, newData , { upsert: true })
 }
