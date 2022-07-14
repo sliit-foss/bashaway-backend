@@ -1,15 +1,14 @@
+require("dotenv").config();
 import express from 'express'
 import compression from 'compression'
 import helmet from 'helmet'
 import cors from 'cors'
-import dotenv from 'dotenv'
 import connectDB from './database'
 import routes from './routes/index.routes'
 import { isCelebrateError } from 'celebrate'
 import { makeResponse } from './utils/response'
 import logger from './utils/logger'
 
-dotenv.config()
 
 const app = express()
 
@@ -43,8 +42,11 @@ app.use((err, req, res, next) => {
 
 connectDB()
 
+global.__basedir = __dirname;
+
 const port = process.env.PORT || 3000
 
 app.listen(port, () => {
   console.log(`Bashaway server successfully started on port ${port}`)
-})
+});
+
