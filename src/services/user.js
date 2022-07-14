@@ -15,5 +15,5 @@ export const updateScoreService = async (user) => {
     return current + acc
   }, 0)
 
-  insertScore(user, scoreSum)
+  return await insertScore(user, scoreSum)
 }
