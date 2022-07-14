@@ -30,5 +30,36 @@ export const insertGrade = async (submission, score, admin) => {
   const query = { _id: submission }
   const newData = { score, gradedBy: admin }
 
-  await Submission.findOneAndUpdate(query, newData , { upsert: true })
+  await Submission.findOneAndUpdate(query, newData, { upsert: true })
+}
+
+export const getLatestScore = async ({ user, question }) => {
+  const filters = {
+    user,
+    question,
+    score: { $ne: null },
+  }
+
+  const options = {
+    sort: {
+      created_at: 'desc',
+    },
+    page: 1,
+    limit: 1,
+    collation: {
+      locale: 'en',
+    },
+  }
+
+  const result = await Submission.paginate(filters, options, (error, result) => {
+    if (!error) {
+      return result
+    } else {
+      logger.error(error)
+      throw 'An error occurred when retrieving submissions'
+    }
+  })
+
+  if (result.docs.length == 0) return 0
+  else return result.docs[0].score || 0
 }

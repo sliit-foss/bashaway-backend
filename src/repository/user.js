@@ -1,9 +1,13 @@
-import User from "../models/user";
+import User from '../models/user'
 
 export const createUser = async (user) => {
-    return await new User(user).save();
+  return await new User(user).save()
 }
 
 export const getOneUser = async (email) => {
-    return await User.findOne({email:email});
+  return await User.findOne({ email: email })
+}
+
+export const insertScore = async (user, score) => {
+  await User.findByIdAndUpdate(user, { score }, { upsert: true })
 }
