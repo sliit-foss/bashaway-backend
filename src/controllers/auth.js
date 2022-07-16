@@ -24,6 +24,4 @@ export const verifyUser = asyncHandler(async (req, res) => {
     return makeResponse({ res, status: 400, message: "Invalid verification code" });
 })
 
-export const logout = asyncHandler(async (req, res, next) => { })
-
 export const current = asyncHandler(async (req, res, next) => { })

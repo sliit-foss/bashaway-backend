@@ -2,7 +2,7 @@ import jwt from "jsonwebtoken";
 import { v4 as uuidv4 } from 'uuid';
 import { findOneAndUpdateUser } from "../repository/user";
 
-export const sendTokenResponse = (res, user, message) => {
+export const sendTokenResponse = async (res, user, message) => {
     const accessToken = generateToken(user)
     const refreshToken = generateToken(uuidv4())
 
