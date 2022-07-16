@@ -14,6 +14,5 @@ export const remove = asyncHandler(async (req, res, next) => {})
 
 export const updateScore = asyncHandler(async (req, res, next) => {
   await updateScoreService(req.body.user)
-
   makeResponse({ res, status: 200, message: 'User score updated' })
 })

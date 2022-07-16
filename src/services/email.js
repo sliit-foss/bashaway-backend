@@ -2,7 +2,7 @@ import { MAIL_CREDENTIALS } from "../utils/config";
 import nodemailer from "nodemailer";
 import handlebars from "handlebars";
 
-let transport = nodemailer.createTransport({
+const transport = nodemailer.createTransport({
     service: "gmail",
     host: MAIL_CREDENTIALS.HOST,
     auth: {
@@ -11,11 +11,10 @@ let transport = nodemailer.createTransport({
     },
 });
 
-export const sendVerificationMail = async (email, html, replacements, subject) => {
-
-    let template = handlebars.compile(html);
-    let htmlToSend = template(replacements);
-
+export const sendMail = async (email, templateName, replacements, subject) => {
+    const html = fs.readFileSync(__basedir + `/html/${templateName}.html`, "utf8")
+    const template = handlebars.compile(html);
+    const htmlToSend = template(replacements);
     const mailOptions = {
         from: MAIL_CREDENTIALS.USER,
         to: email,

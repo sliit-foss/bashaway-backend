@@ -3,11 +3,11 @@ import { create, getAll, getById, remove, update, updateScore } from '../control
 
 const userRouter = express.Router();
 
-userRouter.post('/create', create);
-userRouter.get('/getAll', getAll);
-userRouter.get('/getById/:id', getById);
-userRouter.put('/update/:id', update);
-userRouter.delete('/remove/:id', remove);
-userRouter.put('/updateScore', updateScore);
+userRouter.post('/', create);
+userRouter.get('/', getAll);
+userRouter.get('/:id', getById);
+userRouter.put('/:id', update);
+userRouter.put('/:id/score', updateScore);
+userRouter.delete('/:id', remove);
 
 export default userRouter;

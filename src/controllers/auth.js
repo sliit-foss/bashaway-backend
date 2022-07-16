@@ -1,7 +1,7 @@
 import asyncHandler from "../middleware/async"
-import {authRegister, authLogin, updateVerify} from "../services/auth"
-import {makeResponse} from "../utils/response"
-import {sendTokenResponse} from "../utils/jwt";
+import { authRegister, authLogin, updateVerificationStatus } from "../services/auth"
+import { makeResponse } from "../utils/response"
+import { sendTokenResponse } from "../utils/jwt";
 
 export const register = asyncHandler(async (req, res) => {
     const result = await authRegister(req.body);
@@ -18,14 +18,11 @@ export const login = asyncHandler(async (req, res) => {
     return sendTokenResponse(res, user, "User logged in successfully")
 });
 
-export const verifySuccess = asyncHandler(async(req, res, next) => {
-    const verification_code = req.params.id;
-    const user = await updateVerify(verification_code);
-    if (user) return makeResponse({res, user, message:"User verified successfully"});
-    return makeResponse({res, status: 401, message:"Invalid verification code"});
+export const verifyUser = asyncHandler(async (req, res) => {
+    const user = await updateVerificationStatus(req.params.verification_code);
+    if (user) return makeResponse({ res, data: user, message: "User verified successfully" });
+    return makeResponse({ res, status: 400, message: "Invalid verification code" });
 })
-
-export const logout = asyncHandler(async(req, res, next) => {})
 
 export const logout = asyncHandler(async (req, res, next) => { })
 

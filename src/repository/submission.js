@@ -15,20 +15,15 @@ export const getAllSubmissions = async ({ sort = {}, filters = {}, pageNum = 1, 
       locale: 'en',
     },
   }
-  return await Submission.paginate(filters, options, (error, result) => {
-    if (!error) {
-      return result
-    } else {
-      logger.error(error)
-      throw 'An error occurred when retrieving submissions'
-    }
+  return await Submission.paginate(filters, options).catch(err => {
+    logger.error(`An error occurred when retrieving submissions - err: ${err.message}`)
+    throw err
   })
 }
 
 export const insertGrade = async (submission, score, admin) => {
   const query = { _id: submission }
   const newData = { score, gradedBy: admin }
-
   await Submission.findOneAndUpdate(query, newData, { upsert: true })
 }
 
@@ -38,27 +33,10 @@ export const getLatestScore = async ({ user, question }) => {
     question,
     score: { $ne: null },
   }
-
-  const options = {
-    sort: {
-      created_at: 'desc',
-    },
-    page: 1,
-    limit: 1,
-    collation: {
-      locale: 'en',
-    },
+  const sort = {
+    created_at: 'desc',
   }
-
-  const result = await Submission.paginate(filters, options, (error, result) => {
-    if (!error) {
-      return result
-    } else {
-      logger.error(error)
-      throw 'An error occurred when retrieving submissions'
-    }
-  })
-
-  if (result.docs.length == 0) return 0
-  else return result.docs[0].score || 0
+  const result = await getAllSubmissions({ sort, filters, pageSize: 1 })
+  if (result.docs.length === 0) return 0
+  return result.docs[0].score || 0
 }

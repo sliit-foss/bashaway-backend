@@ -1,8 +1,8 @@
 import bcrypt from 'bcrypt';
 const fs = require('fs');
 import { v4 as uuidv4 } from 'uuid';
-import {createUser, getOneUser, updateVerifiedUser, getUserByCode} from "../repository/user"
-import {sendVerificationMail} from "./email";
+import { createUser, getOneUser, findOneAndUpdateUser } from "../repository/user"
+import { sendMail } from "./email";
 
 export const authRegister = async (name, email, password, university, members) => {
     const user = await getOneUser({ email });
@@ -13,9 +13,8 @@ export const authRegister = async (name, email, password, university, members) =
             resolve(hash);
         });
     });
-
     const verification_code = uuidv4();
-    const registeredUser =  await createUser({
+    const registeredUser = await createUser({
         name,
         email,
         password: encryptedPassword,
@@ -24,7 +23,6 @@ export const authRegister = async (name, email, password, university, members) =
         members,
     });
     await verifyMailTemplate(email, verification_code);
-
     return registeredUser;
 }
 
@@ -42,28 +40,16 @@ export const authLogin = async ({ email, password }) => {
 }
 
 export const verifyMailTemplate = async (email, verification_code) => {
-
-    const html = fs.readFileSync(__basedir + "/html/emailTemplate.html", "utf8");
-    let replacements = {
-        verify_URL: `http://localhost:3001/api/auth/verify/${verification_code}`,
+    const replacements = {
+        verify_URL: `${process.env.APP_DOMAIN}/api/auth/verify/${verification_code}`,
     }
-    let subject = "Welcome to the Bashaway"
-
-    await sendVerificationMail(email, html, replacements, subject);
+    const subject = "Welcome to the Bashaway"
+    await sendMail(email, 'verifyRegistration', replacements, subject);
     return true;
 }
 
-export const updateVerify = async (id) => {
-
-    const user = await getUserByCode(id);
+export const updateVerificationStatus = async (verificationCode) => {
+    const user = await getOneUser({ verification_code: verificationCode });
     if (!user) return false;
-    return await updateVerifiedUser({
-        name: user.name,
-        email: user.email,
-        password: user.password,
-        verification_code: user.verification_code,
-        is_verified: true,
-        university: user.university,
-        members: user.members,
-    });
+    return await findOneAndUpdateUser({ email: user.email }, { is_verified: true });
 }
