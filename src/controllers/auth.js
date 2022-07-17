@@ -25,5 +25,5 @@ export const verifyUser = asyncHandler(async (req, res) => {
 })
 
 export const current = asyncHandler(async (req, res, next) => { 
-    return makeResponse({ res, data: req.user, message: "User returned" });
+    return makeResponse({ res, data: req.user, message: "Auth group details fetched successfully" });
 })
