@@ -10,6 +10,6 @@ const authRouter = express.Router();
 authRouter.post('/login', celebrate({ [Segments.BODY]: loginSchema }), login);
 authRouter.post('/register', celebrate({ [Segments.BODY]: registerSchema }), register);
 authRouter.get('/current', protect, current);
-authRouter.get("/verify/:verification_code", protect, celebrate({ [Segments.QUERY]: verifySchema }), verifyUser);
+authRouter.get("/verify/:verification_code", celebrate({ [Segments.PARAMS]: verifySchema }), verifyUser);
 
 export default authRouter;
