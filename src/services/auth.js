@@ -1,6 +1,4 @@
 import bcrypt from 'bcrypt'
-import {log} from 'console'
-const fs = require('fs')
 import { v4 as uuidv4 } from 'uuid'
 import { createUser, getOneUser, findOneAndUpdateUser } from '../repository/user'
 import { sendMail } from './email'
@@ -28,7 +26,8 @@ export const authRegister = async ({ name, email, password, university, members 
 }
 
 export const authLogin = async ({ email, password }) => {
-  const user = await getOneUser({ email })
+  const user = await getOneUser({ email }, true)
+  console.log(user)
   if (!user) return false
   const isPasswordMatch = await new Promise((resolve, reject) => {
     bcrypt.compare(password, user.password, (err, hash) => {
