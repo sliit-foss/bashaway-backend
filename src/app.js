@@ -8,7 +8,6 @@ import routes from './routes/index.routes'
 import { isCelebrateError } from 'celebrate'
 import { makeResponse } from './utils/response'
 import logger from './utils/logger'
-import cookieParser from 'cookie-parser'
 
 const app = express()
 
@@ -21,8 +20,6 @@ app.use(cors({ origin: true, credentials: true }))
 app.use(express.json({ limit: '1mb' }))
 
 app.use(express.urlencoded({ extended: true }))
-
-app.use(cookieParser())
 
 app.get('/', (req, res) => res.status(200).json({ message: 'Bashaway Server Up and Running' }))
 
@@ -51,4 +48,3 @@ const port = process.env.PORT || 3000
 app.listen(port, () => {
   console.log(`Bashaway server successfully started on port ${port}`)
 });
-

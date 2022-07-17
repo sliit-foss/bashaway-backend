@@ -5,9 +5,9 @@ import { sendTokenResponse } from "../utils/jwt";
 
 export const register = asyncHandler(async (req, res) => {
     const result = await authRegister(req.body);
-    if (!result) return makeResponse({ res, status: 500, message: "Failed to register user" });
+    if (!result) return makeResponse({ res, status: 500, message: "Registration failed." });
     if (result.status) return makeResponse({ res, ...result });
-    return makeResponse({ res, message: "User created successfully" });
+    return makeResponse({ res, message: "Registration Successfull. Please check your email to verify your account." });
 });
 
 export const login = asyncHandler(async (req, res) => {
