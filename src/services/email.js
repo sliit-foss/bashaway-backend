@@ -1,6 +1,7 @@
 import { MAIL_CREDENTIALS } from "../utils/config";
 import nodemailer from "nodemailer";
 import handlebars from "handlebars";
+import fs from "fs";
 
 const transport = nodemailer.createTransport({
     service: "gmail",

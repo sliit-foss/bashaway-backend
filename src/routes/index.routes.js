@@ -7,7 +7,7 @@ import { protect, adminProtect } from '../middleware/auth';
 const router = express.Router();
 
 router.use('/auth', authRouter);
-router.use('/submission', protect, submissionRouter);
+router.use('/submissions', protect, submissionRouter);
 router.use('/users', protect, adminProtect, userRouter);
 
 export default router;

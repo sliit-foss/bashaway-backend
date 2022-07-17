@@ -6,7 +6,7 @@ export const insertSubmission = async (user, question, link) => {
   await newSubmission.save()
 }
 
-export const getAllSubmissions = async ({ sort = {}, filters = {}, pageNum = 1, pageSize = 10 }) => {
+export const getSubmissions = async ({ sort = {}, filters = {}, pageNum = 1, pageSize = 10 }) => {
   const options = {
     sort,
     page: pageNum,
