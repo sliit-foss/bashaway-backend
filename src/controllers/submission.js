@@ -13,6 +13,6 @@ export const view = asyncHandler(async (req, res) => {
 })
 
 export const grade = asyncHandler(async (req, res) => {
-  await gradeSubmission(req.params.id, req.body)
+  await gradeSubmission(req.params.id, req.body, req.user)
   makeResponse({ res, status: 200, message: 'Submission graded successfully' })
 })
