@@ -18,15 +18,15 @@ const QuestionSchema = new mongoose.Schema(
             required: true
         },
         bash_only: {
-            type: boolean,
+            type: Boolean,
             required: true
         },
         max_score: {
-            type: number,
+            type: Number,
             required: true
         },
         enabled: {
-            type: boolean,
+            type: Boolean,
             required: true
         },
         creator: {
@@ -35,7 +35,7 @@ const QuestionSchema = new mongoose.Schema(
             required: true
         },
         creator_lock: {
-            type: boolean,
+            type: Boolean,
             required: true
         }
     },
@@ -49,7 +49,7 @@ QuestionSchema.plugin(mongoosePaginate)
 
 QuestionSchema.index({ createdAt: 1 })
 
-const Question = mongoose.model('Submission', QuestionSchema)
+const Question = mongoose.model('Question', QuestionSchema)
 
 Question.syncIndexes()
 
