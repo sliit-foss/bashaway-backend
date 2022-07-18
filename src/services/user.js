@@ -15,6 +15,6 @@ export const updateScoreService = async (user) => {
   return await findOneAndUpdateUser({ _id: user }, { score: scoreSum })
 }
 
-export const getUpdate = async (user , reqBody) => {
-    await findByIdAndUpdateUser({ _id: user }, reqBody)
+export const updateUserdetails = async (user , userDetails) => {
+    await findByIdAndUpdateUser({ _id: user }, userDetails)
 }
