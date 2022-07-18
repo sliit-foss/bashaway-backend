@@ -10,7 +10,6 @@ export const getById = asyncHandler(async (req, res, next) => {})
 
 export const update = asyncHandler(async(req, res, next) => {
     await updateUserdetails(req.user , req.body)
-
     return makeResponse({ res, status: 200, message: "User details updated" })
 })
 
