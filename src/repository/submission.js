@@ -1,8 +1,8 @@
 import logger from '../utils/logger'
 import Submission from '../models/submission'
 
-export const insertSubmission = async (user, question, link) => {
-  const newSubmission = new Submission({ user, question, link, score: null, gradedBy: null })
+export const insertSubmission = async (userId, question, link) => {
+  const newSubmission = new Submission({ user: userId, question, link, score: null, gradedBy: null })
   await newSubmission.save()
 }
 
