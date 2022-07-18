@@ -6,7 +6,7 @@ export const createUser = async (user) => {
 }
 
 
-export const insertUpdate = async (user, data ) => {
+export const findByIdAndUpdateUser = async (user, data ) => {
 
     return await User.findByIdAndUpdate(user, data );
 }

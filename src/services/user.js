@@ -1,11 +1,6 @@
-import { insertUpdate } from "../repository/user"
+import { findByIdAndUpdateUser } from "../repository/user"
 
-export const getupdate = async (reqBody) => {
+export const getUpdate = async (user , reqBody) => {
 
-    // TODO: getting user's id
-    const user = "62caa39ce74035797815abf7";
-
-    // dummy value added
-
-    await insertUpdate(user, reqBody);
+    await findByIdAndUpdateUser(user._id, reqBody);
 }
