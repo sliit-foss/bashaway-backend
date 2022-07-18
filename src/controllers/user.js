@@ -8,7 +8,6 @@ export const getAll = asyncHandler(async (req, res, next) => {})
 
 export const getById = asyncHandler(async (req, res, next) => {})
 
-
 export const update = asyncHandler(async(req, res, next) => {
     await getupdate(req.user , req.body)
 
