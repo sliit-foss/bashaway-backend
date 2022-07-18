@@ -1,35 +1,44 @@
-import mongoose from "mongoose";
-import mongoosePaginate from 'mongoose-paginate-v2';
+import mongoose from 'mongoose'
+import mongoosePaginate from 'mongoose-paginate-v2'
 
 const SubmissionSchema = mongoose.Schema(
-    {
-        user: {
-            type: mongoose.Schema.Types.ObjectId,
-            ref: 'User',
-            required: true
-        },
-        question: {
-            type: mongoose.Schema.Types.ObjectId,
-            ref: 'Question',
-            required: true
-        },
-        link: {
-            type: String,
-            required: true
-        }
+  {
+    user: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'User',
+      required: true,
     },
-    {
-        versionKey: false,
-        timestamps: { createdAt: 'created_at', updatedAt: 'updated_at' },
-    }
+    question: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'Question',
+      required: true,
+    },
+    link: {
+      type: String,
+      required: true,
+    },
+    score: {
+      type: Number,
+      required: false
+    },
+    gradedBy: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'User',
+      required: false
+    },
+  },
+  {
+    versionKey: false,
+    timestamps: { createdAt: 'created_at', updatedAt: 'updated_at' },
+  },
 )
 
-SubmissionSchema.plugin(mongoosePaginate);
+SubmissionSchema.plugin(mongoosePaginate)
 
-SubmissionSchema.index({ createdAt: 1 });
+SubmissionSchema.index({ createdAt: 1 })
 
-const Submission = mongoose.model('Submission', SubmissionSchema);
+const Submission = mongoose.model('Submission', SubmissionSchema)
 
-Submission.syncIndexes();
+Submission.syncIndexes()
 
-export default Submission;
+export default Submission
