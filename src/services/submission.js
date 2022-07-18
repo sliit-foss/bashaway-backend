@@ -1,10 +1,7 @@
 import { insertSubmission, getSubmissions, insertGrade } from '../repository/submission'
 
-export const createSubmission = async ({ question, link }) => {
-  // TODO: getting user's id
-  const user = '123456789012345678901234'
-  // dummy value added
-  await insertSubmission(user, question, link)
+export const createSubmission = async (reqBody, user) => {
+  await insertSubmission(user._id, reqBody.question, reqBody.link)
 }
 
 export const viewSubmissions = async (query) => {

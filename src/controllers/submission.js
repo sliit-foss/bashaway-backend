@@ -3,7 +3,7 @@ import { createSubmission, viewSubmissions, gradeSubmission } from '../services/
 import { makeResponse } from '../utils/response'
 
 export const create = asyncHandler(async (req, res) => {
-  await createSubmission(req.body)
+  await createSubmission(req.body, req.user)
   makeResponse({ res, status: 201, message: 'Submission added successfully ' })
 })
 
