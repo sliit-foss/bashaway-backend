@@ -14,3 +14,11 @@ export const insertQuestion = async (setName, setDescription, setDifficulty, set
     const newCreation = new Question(data)
     await newCreation.save()
 }
+
+export const checkQuestion = async (name) => {
+    const questionCount = await Question.find({"name": name}).count();
+    if(questionCount === 1){
+        return true
+    }
+    return false
+}
