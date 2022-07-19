@@ -1,5 +1,6 @@
 import asyncHandler from '../middleware/async'
 import { updateScoreService } from '../services/user'
+import { addnewUser } from '../services/user'
 import { makeResponse } from '../utils/response'
 
 export const create = asyncHandler(async (req, res, next) => {})
@@ -15,4 +16,9 @@ export const remove = asyncHandler(async (req, res, next) => {})
 export const updateScore = asyncHandler(async (req, res, next) => {
   await updateScoreService(req.body.user)
   makeResponse({ res, status: 200, message: 'User score updated' })
+})
+
+export const addUser = asyncHandler(async (req, res, next) => {
+  await addnewUser(req.body)
+  return makeResponse({ res, status: 200, message: 'User Added' })
 })
