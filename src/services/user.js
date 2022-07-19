@@ -1,6 +1,6 @@
 import { getLatestScore } from '../repository/submission'
 import { findOneAndUpdateUser } from '../repository/user'
-import { getAllUsers } from '../repository/user'
+import { getAllUsers, getUserById } from '../repository/user'
 
 export const updateScoreService = async (user) => {
   // TODO: call the getAllquestionIds() in question services
@@ -19,4 +19,8 @@ export const updateScoreService = async (user) => {
 
 export const getUsers = async () => {
   return await getAllUsers()
+}
+
+export const getUserByID = async (id) => {
+  return await getUserById(id)
 }

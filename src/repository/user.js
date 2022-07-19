@@ -17,7 +17,9 @@ export const findOneAndUpdateUser = async (filters, data) => {
 }
 
 export const getAllUsers = async (req, res) => {
-  return await User.find({})
+  return  User.find()
 }
 
-export const getUserByID = async () => {}
+export const getUserById = async (id) => {
+  return  User.findOne({ _id: id })
+}

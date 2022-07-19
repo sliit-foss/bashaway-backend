@@ -1,25 +1,20 @@
 import asyncHandler from '../middleware/async'
 import { updateScoreService } from '../services/user'
 import { makeResponse } from '../utils/response'
-import { getUsers } from '../services/user'
-// import User from '../models/user'
+import { getUsers, getUserByID } from '../services/user'
 
 export const create = asyncHandler(async (req, res, next) => {})
 
 export const getAll = asyncHandler(async (req, res, next) => {
   const users = await getUsers()
 
-  makeResponse({ res, status: 200, data: users, message: 'Users retrived succesfully' })
+  makeResponse({ res, status: 200, data: users, message: 'Users retrieved succesfully' })
 })
 
 export const getById = asyncHandler(async (req, res, next) => {
-  try {
-    const { id } = req.params
-    const user = await User.findOne({ _id: id })
-    res.status(201).json({ user })
-  } catch (error) {
-    res.status(404).json(error)
-  }
+  const { id } = req.params
+  const user = await getUserByID(id)
+  makeResponse({ res, status: 200, data: user, message: 'User retrieved succesfully' })
 })
 
 export const update = asyncHandler(async (req, res, next) => {})
