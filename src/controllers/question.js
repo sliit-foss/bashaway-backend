@@ -1,8 +1,8 @@
 import asyncHandler from '../middleware/async'
-import Question from '../models/question';
+import { createQuestion } from '../services/question'
+import { makeResponse } from '../utils/response'
 
-export const createQuestion = asyncHandler(async (req, res) => {
-    const data = req.body;
-    const questions = await Question.create(data);
-    res.json(questions);
+export const createNewQuestion = asyncHandler(async (req, res) => {
+    await createQuestion(req.body, req.user)
+    makeResponse({ res, status: 200, message: 'Question added successfully'})
 })
