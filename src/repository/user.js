@@ -15,3 +15,9 @@ export const findOneAndUpdateUser = async (filters, data) => {
   delete user.password
   return user
 }
+
+export const getAllUsers = async (req, res) => {
+  return await User.find({})
+}
+
+export const getUserByID = async () => {}
