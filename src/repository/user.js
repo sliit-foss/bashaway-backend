@@ -21,3 +21,4 @@ export const findOneAndUpdateUser = async (filters, data) => {
   delete user.password
   return user
 }
+
