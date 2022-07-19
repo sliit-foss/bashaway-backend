@@ -21,7 +21,7 @@ export const updateUserdetails = async (user, userDetails) => {
 
   if (userDetails.email) {
     userData = await getOneUser({ email: userDetails.email }, false)
-    if (userData && userData?.id.toString() !== user._id) return { status: 400, message: "email is already taken" }
+    if (userData && userData?.id.toString() !== user._id) return { status: 400, message: "Email is already taken" }
   }
 
   if (userDetails.name) {
