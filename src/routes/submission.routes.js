@@ -1,11 +1,11 @@
 import express from 'express'
 import { create, view, grade } from '../controllers/submission'
-import { adminProtect } from '../middleware/auth';
+import { protect, adminProtect } from '../middleware/auth';
 
 const submissionRouter = express.Router()
 
-submissionRouter.post('/', create)
+submissionRouter.post('/', protect, create)
 submissionRouter.get('/', view)
-submissionRouter.put('/:id', adminProtect, grade)
+submissionRouter.put('/:id', protect, adminProtect, grade)
 
 export default submissionRouter
