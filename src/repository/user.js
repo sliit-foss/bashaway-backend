@@ -22,6 +22,3 @@ export const findOneAndUpdateUser = async (filters, data) => {
   return user
 }
 
-export const findByIdAndUpdateUser = async (user, data ) => {
-    return await User.findByIdAndUpdate(user, data)
-}

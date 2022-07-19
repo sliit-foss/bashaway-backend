@@ -1,6 +1,6 @@
 import { getLatestScore } from '../repository/submission'
 import { findOneAndUpdateUser } from '../repository/user'
-import { findByIdAndUpdateUser } from "../repository/user"
+import { getOneUser } from '../repository/user'
 
 export const updateScoreService = async (user) => {
   // TODO: call the getAllquestionIds() in question services
@@ -15,6 +15,20 @@ export const updateScoreService = async (user) => {
   return await findOneAndUpdateUser({ _id: user }, { score: scoreSum })
 }
 
-export const updateUserdetails = async (user , userDetails) => {
-    await findByIdAndUpdateUser({ _id: user }, userDetails)
+export const updateUserdetails = async (user, userDetails) => {
+
+  let userData;
+
+  if (userDetails.email) {
+    userData = await getOneUser({ email: userDetails.email }, false)
+    if (userData && userData?.id.toString() !== user._id) return { status: 400, message: "email is already taken" }
+  }
+
+  if (userDetails.name) {
+    userData = await getOneUser({ name: userDetails.name }, false)
+    if (userData && userData?.id.toString() !== user._id) return { status: 400, message: "Name is already taken" }
+  }
+
+  return await findOneAndUpdateUser({ _id: user._id }, userDetails)
+
 }
