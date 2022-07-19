@@ -6,7 +6,8 @@ import { getUsers, getUserByID } from '../services/user'
 export const create = asyncHandler(async (req, res, next) => {})
 
 export const getAll = asyncHandler(async (req, res, next) => {
-  const users = await getUsers()
+  console.log(req.query)
+  const users = await getUsers(req.query)
 
   makeResponse({ res, status: 200, data: users, message: 'Users retrieved succesfully' })
 })

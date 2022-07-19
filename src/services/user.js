@@ -17,8 +17,8 @@ export const updateScoreService = async (user) => {
   return await findOneAndUpdateUser({ _id: user }, { score: scoreSum })
 }
 
-export const getUsers = async () => {
-  return await getAllUsers()
+export const getUsers = async (query) => {
+  return await getAllUsers(query)
 }
 
 export const getUserByID = async (id) => {
