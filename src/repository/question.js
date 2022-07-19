@@ -15,6 +15,7 @@ export const insertQuestion = async (setName, setDescription, setDifficulty, set
     await newCreation.save()
 }
 
+<<<<<<< Updated upstream
 export const checkQuestion = async (name) => {
     const questionCount = await Question.find({"name": name}).count();
     if(questionCount === 1){
@@ -22,3 +23,11 @@ export const checkQuestion = async (name) => {
     }
     return false
 }
+=======
+
+export const getQuestion = async (id) => {
+    const question = await Question.findById(id)
+    return question
+  }
+
+>>>>>>> Stashed changes

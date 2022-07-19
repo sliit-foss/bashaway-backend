@@ -10,6 +10,6 @@ const router = express.Router();
 router.use('/auth', authRouter);
 router.use('/submissions', protect, submissionRouter);
 router.use('/users', protect, adminProtect, userRouter);
-router.use('/questions', questionRouter);
+router.use('/questions', protect, questionRouter);
 
 export default router;

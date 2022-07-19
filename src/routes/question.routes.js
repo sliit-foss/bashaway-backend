@@ -1,9 +1,9 @@
 import express from 'express'
-import { createNewQuestion } from '../controllers/question'
+import { createNewQuestion , getQuestionById } from '../controllers/question'
 import { protect, adminProtect } from '../middleware/auth';
 
 const questionRouter = express.Router()
 
-questionRouter.post('/', protect, adminProtect, createNewQuestion)
-
+questionRouter.post('/', adminProtect, createNewQuestion)
+questionRouter.get('/:question_id', getQuestionById )
 export default questionRouter

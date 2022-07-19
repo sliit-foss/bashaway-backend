@@ -1,5 +1,9 @@
 import asyncHandler from '../middleware/async'
+<<<<<<< Updated upstream
 import { createQuestion, isNameTaken } from '../services/question'
+=======
+import { createQuestion , retrieveQuestion} from '../services/question'
+>>>>>>> Stashed changes
 import { makeResponse } from '../utils/response'
 
 export const createNewQuestion = asyncHandler(async (req, res) => {
@@ -11,3 +15,11 @@ export const createNewQuestion = asyncHandler(async (req, res) => {
         makeResponse({ res, status: 400, message: 'Question name already taken'})
     }
 })
+
+export const getQuestionById = asyncHandler(async (req, res) => {
+    const data = await retrieveQuestion(req.params)
+    makeResponse({ res, status: 200, data, message: 'Question retrieved successfully'})
+})
+
+
+
