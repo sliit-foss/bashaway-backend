@@ -1,14 +1,11 @@
-import { insertQuestion, checkQuestion , getQuestion} from '../repository/question'
+import { insertQuestion, findQuestion, getQuestionById } from '../repository/question'
 
-export const createQuestion = async ({name, description, difficulty, bash_only, max_score, enabled, creator_lock}, {_id}) => {
-    await insertQuestion(name, description, difficulty, bash_only, max_score, enabled, _id, creator_lock)
+export const createQuestion = async (data, user) => {
+    const question = await findQuestion({ name: data.name })
+    if (question) return { status: 400, message: 'Question name already taken' }
+    return await insertQuestion({ ...data, creator: user._id })
 }
 
-export const isNameTaken = async ({name}) => {
-    const exist = await checkQuestion(name)
-    return exist
-}
-
-export const retrieveQuestion = async ({question_id}) => {
-    return await getQuestion(question_id);
+export const retrieveQuestion = async (question_id) => {
+    return await getQuestionById(question_id);
 }

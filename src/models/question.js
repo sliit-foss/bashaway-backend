@@ -14,7 +14,7 @@ const QuestionSchema = new mongoose.Schema(
         },
         difficulty: {   
             type: String,
-            enum: [],
+            enum: ['EASY', 'MEDIUM', 'HARD'],
             required: true
         },
         bash_only: {
