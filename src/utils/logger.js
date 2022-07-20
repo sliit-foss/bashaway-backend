@@ -33,5 +33,4 @@ logger.add(
     ),
   }),
 )
-
 export default logger
