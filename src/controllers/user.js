@@ -22,6 +22,8 @@ export const update = asyncHandler(async (req, res, next) => {
 export const remove = asyncHandler(async (req, res, next) => { })
 
 export const updateScore = asyncHandler(async (req, res, next) => {
-  await updateScoreService(req.body.user)
-  makeResponse({ res, status: 200, message: 'User score updated' })
+  if(await updateScoreService(req.params.id))
+    return makeResponse({ res, status: 200, message: 'User score updated' })
+  else
+    return makeResponse({ res, status: 404, message: 'Invalid user ID' })
 })

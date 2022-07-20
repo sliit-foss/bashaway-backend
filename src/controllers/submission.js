@@ -9,10 +9,10 @@ export const create = asyncHandler(async (req, res) => {
 
 export const view = asyncHandler(async (req, res) => {
   const data = await viewSubmissions(req.query)
-  makeResponse({ res, status: 200, data, message: 'Submissions retrieved successfully' })
+  return makeResponse({ res, status: 200, data, message: 'Submissions retrieved successfully' })
 })
 
 export const grade = asyncHandler(async (req, res) => {
   await gradeSubmission(req.params.id, req.body, req.user)
-  makeResponse({ res, status: 200, message: 'Submission graded successfully' })
+  return makeResponse({ res, status: 200, message: 'Submission graded successfully' })
 })
