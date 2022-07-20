@@ -6,29 +6,34 @@ export const updateScoreService = async (user) => {
   // TODO: call the getAllquestionIds() in question services
   const questions = ['12345678901234567890aaa1', '12345678901234567890aaa2']
   // dummy question id's added
-  const result = await Promise.all(questions.map((question) => {
-    return getLatestScore({ user, question })
-  }))
+
+  const result = await Promise.all(
+    questions.map(async (question) => {
+      return await getLatestScore({ user, question })
+    }),
+  )
+
   const scoreSum = result.reduce((current, acc) => {
     return current + acc
   }, 0)
+
   return await findOneAndUpdateUser({ _id: user }, { score: scoreSum })
 }
 
 export const updateUserdetails = async (user, userDetails) => {
-
-  let userData;
+  let userData
 
   if (userDetails.email) {
     userData = await getOneUser({ email: userDetails.email }, false)
-    if (userData && userData?.id.toString() !== user._id) return { status: 400, message: "Email is already taken" }
+    if (userData && userData?.id.toString() !== user._id)
+      return { status: 400, message: 'Email is already taken' }
   }
 
   if (userDetails.name) {
     userData = await getOneUser({ name: userDetails.name }, false)
-    if (userData && userData?.id.toString() !== user._id) return { status: 400, message: "Name is already taken" }
+    if (userData && userData?.id.toString() !== user._id)
+      return { status: 400, message: 'Name is already taken' }
   }
 
   return await findOneAndUpdateUser({ _id: user._id }, userDetails)
-
 }
