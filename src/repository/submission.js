@@ -36,7 +36,7 @@ export const getLatestScore = async ({ user, question }) => {
   const sort = {
     created_at: 'desc',
   }
-  const result = await getAllSubmissions({ sort, filters, pageSize: 1 })
+  const result = await getSubmissions({ sort, filters, pageSize: 1 })
   if (result.docs.length === 0) return 0
   return result.docs[0].score || 0
 }
