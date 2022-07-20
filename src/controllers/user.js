@@ -1,5 +1,5 @@
 import asyncHandler from '../middleware/async'
-import { updateScoreService } from '../services/user'
+import { updateScoreService, updateAllScoresService } from '../services/user'
 import { makeResponse } from '../utils/response'
 import { updateUserdetails } from '../services/user'
 
@@ -26,4 +26,9 @@ export const updateScore = asyncHandler(async (req, res, next) => {
     makeResponse({ res, status: 200, message: 'User score updated' })
   else
     makeResponse({ res, status: 404, message: 'Invalid user ID' })
+})
+
+export const updateAllScores = asyncHandler(async (req, res, next) => {
+  await updateAllScoresService()
+  makeResponse({ res, status: 200, message: 'All User\'s scores updated' })
 })
