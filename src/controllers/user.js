@@ -1,5 +1,5 @@
 import asyncHandler from '../middleware/async'
-import { updateScoreService } from '../services/user'
+import { updateScoreService, changePasswordService } from '../services/user'
 import { makeResponse } from '../utils/response'
 import { updateUserdetails } from '../services/user'
 
@@ -26,4 +26,11 @@ export const updateScore = asyncHandler(async (req, res, next) => {
     return makeResponse({ res, status: 200, message: 'User score updated' })
   else
     return makeResponse({ res, status: 404, message: 'Invalid user ID' })
+})
+
+export const changePassword = asyncHandler(async (req, res, next) => {
+  const result = await changePasswordService(req.user, req.body.old_password, req.body.new_password)
+  if (!result) return makeResponse({ res, status: 500, message: 'Failed to change password' })
+  if (result.status) return makeResponse({ res, ...result })
+  return makeResponse({ res, message: 'Password changed successfully' })
 })
