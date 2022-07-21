@@ -14,8 +14,10 @@ export const updateScoreService = async (user) => {
   const scoreSum = result.reduce((current, acc) => {
     return current + acc
   }, 0)
+
   return await findOneAndUpdateUser({ _id: user }, { score: scoreSum })
 }
+
 export const changePasswordService = async (user, oldPassword, newPassword) => {
   const isPasswordMatch = await new Promise((resolve, reject) => {
     bcrypt.compare(oldPassword, user.password, (err, hash) => {
@@ -32,4 +34,21 @@ export const changePasswordService = async (user, oldPassword, newPassword) => {
     })
   })
   return await findOneAndUpdateUser({ email: user.email }, { password: encryptedPassword })
+
+export const updateUserdetails = async (user, userDetails) => {
+  let userData
+
+  if (userDetails.email) {
+    userData = await getOneUser({ email: userDetails.email }, false)
+    if (userData && userData?.id.toString() !== user._id)
+      return { status: 400, message: 'Email is already taken' }
+  }
+
+  if (userDetails.name) {
+    userData = await getOneUser({ name: userDetails.name }, false)
+    if (userData && userData?.id.toString() !== user._id)
+      return { status: 400, message: 'Name is already taken' }
+  }
+
+  return await findOneAndUpdateUser({ _id: user._id }, userDetails)
 }

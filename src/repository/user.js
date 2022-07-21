@@ -5,18 +5,17 @@ export const createUser = async (user) => {
 }
 
 export const getOneUser = async (filters, returnPassword) => {
-  const userModel = await User.findOne(filters)
-  if (!userModel) return null
-  const user = JSON.parse(JSON.stringify(userModel))
+  const user = await User.findOne(filters).lean()
+  if (!user) return null
+
   if (!returnPassword) delete user.password
   return user
 }
 
 export const findOneAndUpdateUser = async (filters, data) => {
-  const userModel = await User.findOneAndUpdate(filters, data, { new: true })
-  if (!userModel) return null
+  const user = await User.findOneAndUpdate(filters, data, { new: true }).lean()
+  if (!user) return null
 
-  const user = JSON.parse(JSON.stringify(userModel))
   delete user.password
   return user
 }
