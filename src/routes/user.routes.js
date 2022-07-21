@@ -1,14 +1,17 @@
 import express from 'express';
-import { create, getAll, getById, remove, update, updateScore, updateScoreAll, updateAllScores } from '../controllers/user';
+import { create, getAll, getById, remove, update, updateScore, updateAllScores, changePassword } from '../controllers/user';
+import { adminProtect } from '../middleware/auth';
+import { celebrate, Segments } from "celebrate"
+import { changePasswordSchema } from '../validations/user';
 
 const userRouter = express.Router();
 
-userRouter.post('/', create);
-userRouter.get('/', getAll);
+userRouter.post('/', adminProtect, create);
+userRouter.get('/', adminProtect, getAll);
+userRouter.get('/:id', adminProtect, getById);
 userRouter.put('/', updateAllScores);
-userRouter.get('/:id', getById);
-userRouter.put('/:id', update);
-userRouter.put('/:id/score', updateScore);
-userRouter.delete('/:id', remove);
+userRouter.put('/change_password', celebrate({ [Segments.BODY]: changePasswordSchema }), changePassword);
+userRouter.put('/:id', adminProtect, update);
+userRouter.put('/:id/score', adminProtect, updateScore);
 
 export default userRouter;
