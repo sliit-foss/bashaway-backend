@@ -7,7 +7,6 @@ export const createUser = async (user) => {
 export const getOneUser = async (filters, returnPassword) => {
   const userModel = await User.findOne(filters)
   if (!userModel) return null
-
   const user = JSON.parse(JSON.stringify(userModel))
   if (!returnPassword) delete user.password
   return user
