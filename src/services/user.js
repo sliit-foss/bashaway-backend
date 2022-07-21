@@ -73,8 +73,15 @@ export const addnewUser = async (userDetails) => {
 
   const sendemail = SendAdminpassword(userDetails.email , genaratedPassword)  
   
+  const encryptedPassword = await new Promise((resolve, reject) => {
+    bcrypt.hash(genaratedPassword, parseInt(process.env.BCRYPT_SALT_ROUNDS), (err, hash) => {
+      if (err) reject(err)
+      resolve(hash)
+    })
+  })
+
   if(sendemail)
-    newUser = await createUser ({...userDetails , password:genaratedPassword , is_verified:true , role:"ADMIN" })
+    newUser = await createUser ({...userDetails , password:encryptedPassword , is_verified:true , role:"ADMIN" })
 
   return newUser
 }
