@@ -19,3 +19,15 @@ export const findOneAndUpdateUser = async (filters, data) => {
   delete user.password
   return user
 }
+
+export const getAllUserIds = async (filters) => {
+  if (!filters) filters = {}
+
+  const users = await User.find(filters).select('_id').lean()
+
+  const ids = []
+  for (var user of users) {
+    ids.push(user._id.toString())
+  }
+  return ids
+}

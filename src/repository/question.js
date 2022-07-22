@@ -14,3 +14,15 @@ export const getQuestionById = async (id, filterFields = true) => {
     return await query()
 }
 
+export const getAllQuestionIds = async (filters) => {
+  if (!filters) filters = {}
+
+  const users = await Question.find(filters).select('_id').lean()
+
+  const ids = []
+  for (var user of users) {
+    ids.push(user._id.toString())
+  }
+  return ids
+}
+
