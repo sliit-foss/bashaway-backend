@@ -80,8 +80,11 @@ export const addnewUser = async (userDetails) => {
     sendEmail = sendAdminPassword(userDetails.email , genaratedPassword)
   
   if(!sendEmail){
-    findOneAndRemoveUser({...userDetails , password:encryptedPassword , is_verified:true , role:"ADMIN" })
-    return { status: 400, message: "Sending email failed" }
+    const removeUser = findOneAndRemoveUser({...userDetails , password:encryptedPassword , is_verified:true , role:"ADMIN" })
+    if(removeUser)
+      return { status: 400, message: "Sending email failed" }
+    
+    return { status: 400, message: "Sending email failed/ Removing user failed" }
   }
     
   return newUser
