@@ -1,6 +1,8 @@
 import bcrypt from 'bcrypt'
 import { getLatestScore } from '../repository/submission'
-import { changePassword, findOneAndUpdateUser, getOneUser } from '../repository/user'
+import { changePassword, findOneAndUpdateUser, findOneAndRemoveUser , getOneUser , createUser} from '../repository/user'
+import { sendMail } from './email'
+
 
 export const updateScoreService = async (user) => {
   // TODO: call the getAllquestionIds() in question services
@@ -34,6 +36,7 @@ export const changePasswordService = async (user, oldPassword, newPassword) => {
     })
   })
   return await findOneAndUpdateUser({ email: user.email }, { password: encryptedPassword })
+}
 
 export const updateUserdetails = async (user, userDetails) => {
   let userData
@@ -51,4 +54,47 @@ export const updateUserdetails = async (user, userDetails) => {
   }
 
   return await findOneAndUpdateUser({ _id: user._id }, userDetails)
+}
+
+export const addnewUser = async (userDetails) => {
+
+  const genaratedPassword = Math.random().toString(36).slice(-8)
+  let user;
+  let newUser;
+  let sendEmail;
+
+  if (userDetails.email) {
+    user = await getOneUser({ email: userDetails.email }, false)
+    if (user && user?._id.toString() !== userDetails._id) return { status: 400, message: "Email is already taken" }}
+
+  const encryptedPassword = await new Promise((resolve, reject) => {
+    bcrypt.hash(genaratedPassword, parseInt(process.env.BCRYPT_SALT_ROUNDS), (err, hash) => {
+      if (err) reject(err)
+      resolve(hash)
+    })
+  })
+
+  newUser = await createUser ({...userDetails , password:encryptedPassword , is_verified:true , role:"ADMIN" })
+  
+  if(newUser)
+    sendEmail = sendAdminPassword(userDetails.email , genaratedPassword)
+  
+  if(!sendEmail){
+    const removeUser = findOneAndRemoveUser({...userDetails , password:encryptedPassword , is_verified:true , role:"ADMIN" })
+    if(removeUser)
+      return { status: 400, message: "Sending email failed" }
+    
+    return { status: 400, message: "Sending email failed/ Removing user failed" }
+  }
+    
+  return newUser
+}
+
+const sendAdminPassword = async (email , password) => {
+  const replacements = {
+    genaratedPassword: password,
+  }
+  const subject = 'Welcome to the Bashaway'
+  await sendMail(email, 'sendAdminPassword', replacements, subject)
+  return true
 }

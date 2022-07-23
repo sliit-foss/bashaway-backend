@@ -1,9 +1,18 @@
 import asyncHandler from '../middleware/async'
-import { updateScoreService, changePasswordService } from '../services/user'
+import { addnewUser, updateScoreService, changePasswordService } from '../services/user'
 import { makeResponse } from '../utils/response'
 import { updateUserdetails } from '../services/user'
 
-export const create = asyncHandler(async (req, res, next) => { })
+export const create = asyncHandler(async (req, res, next) => { 
+
+  const result = await addnewUser(req.body)
+
+  if(!result) return makeResponse({ res, status: 400, message: "User add failed" })
+  if (result.status)
+    return makeResponse({ res, ...result })
+  return makeResponse({ res, status: 200, data:result,  message: 'User added' })
+  
+})
 
 export const getAll = asyncHandler(async (req, res, next) => { })
 
