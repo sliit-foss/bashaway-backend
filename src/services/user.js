@@ -11,9 +11,7 @@ export const updateScoreService = async (user) => {
       return getLatestScore({ user, question })
     }),
   )
-  const scoreSum = result.reduce((current, acc) => {
-    return current + acc
-  }, 0)
+  const scoreSum = result.reduce((acc, current) => current + acc, 0)
 
   return await findOneAndUpdateUser({ _id: user }, { score: scoreSum })
 }
@@ -24,25 +22,18 @@ export const updateAllScoresService = async () => {
 
   const promises = []
 
-  for (let i = 0; i < users.length; i++) {
-    promises.push(
-      ...questions.map((question) => {
-        return getLatestScore({ user: users[i], question })
+  for (let user of users) {
+    let userScores = await Promise.all(
+      questions.map((question) => {
+        return getLatestScore({ user, question })
       }),
     )
+    let userSum = userScores.reduce((acc, current) => acc + current, 0)
+    promises.push(findOneAndUpdateUser({ _id: user }, { score: userSum }))
   }
 
-  const results = await Promise.all(promises)
-
-  for (var i = 0; i < users.length; i++) {
-    var scoreSum = 0
-
-    for (var j = 0; j < questions.length; j++) {
-      scoreSum += results[i * questions.length + j]
-    }
-
-    await findOneAndUpdateUser({ _id: users[i] }, { score: scoreSum })
-  }
+  Promise.all(promises)
+  return
 }
 
 export const changePasswordService = async (user, oldPassword, newPassword) => {

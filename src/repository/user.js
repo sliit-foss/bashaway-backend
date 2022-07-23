@@ -25,9 +25,6 @@ export const getAllUserIds = async (filters) => {
 
   const users = await User.find(filters).select('_id').lean()
 
-  const ids = []
-  for (var user of users) {
-    ids.push(user._id.toString())
-  }
+  const ids = users.map(user => user._id)
   return ids
 }

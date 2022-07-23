@@ -9,7 +9,7 @@ const userRouter = express.Router();
 userRouter.post('/', adminProtect, create);
 userRouter.get('/', adminProtect, getAll);
 userRouter.get('/:id', adminProtect, getById);
-userRouter.put('/', updateAllScores);
+userRouter.put('/score', updateAllScores);
 userRouter.put('/change_password', celebrate({ [Segments.BODY]: changePasswordSchema }), changePassword);
 userRouter.put('/:id', adminProtect, update);
 userRouter.put('/:id/score', adminProtect, updateScore);

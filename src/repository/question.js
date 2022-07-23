@@ -17,12 +17,9 @@ export const getQuestionById = async (id, filterFields = true) => {
 export const getAllQuestionIds = async (filters) => {
   if (!filters) filters = {}
 
-  const users = await Question.find(filters).select('_id').lean()
+  const questions = await Question.find(filters).select('_id').lean()
 
-  const ids = []
-  for (var user of users) {
-    ids.push(user._id.toString())
-  }
+  const ids = questions.map(question => question._id)
   return ids
 }
 
