@@ -1,6 +1,6 @@
 import bcrypt from 'bcrypt'
 import { getLatestScore } from '../repository/submission'
-import { changePassword, findOneAndUpdateUser, getOneUser , createUser} from '../repository/user'
+import { changePassword, findOneAndUpdateUser, findOneAndRemoveUser , getOneUser , createUser} from '../repository/user'
 import { sendMail } from './email'
 
 
@@ -62,6 +62,7 @@ export const addnewUser = async (userDetails) => {
   const genaratedPassword = Math.random().toString(36).slice(-8)
   let user;
   let newUser;
+  let sendEmail;
 
   if (userDetails.email) {
     user = await getOneUser({ email: userDetails.email }, false)
@@ -70,8 +71,7 @@ export const addnewUser = async (userDetails) => {
   if (userDetails.name) {
     user = await getOneUser({ name: userDetails.name }, false)
     if (user && user?._id.toString() !== userDetails._id) return { status: 400, message: "Name is already taken" }}
-
-  const sendemail = SendAdminpassword(userDetails.email , genaratedPassword)  
+  
   
   const encryptedPassword = await new Promise((resolve, reject) => {
     bcrypt.hash(genaratedPassword, parseInt(process.env.BCRYPT_SALT_ROUNDS), (err, hash) => {
@@ -80,17 +80,25 @@ export const addnewUser = async (userDetails) => {
     })
   })
 
-  if(sendemail)
-    newUser = await createUser ({...userDetails , password:encryptedPassword , is_verified:true , role:"ADMIN" })
+  newUser = await createUser ({...userDetails , password:encryptedPassword , is_verified:true , role:"ADMIN" })
+  
+  if(newUser)
+    sendEmail = sendAdminPassword(userDetails.email , genaratedPassword)
+  
+  if(!sendEmail){
+    findOneAndRemoveUser({...userDetails , password:encryptedPassword , is_verified:true , role:"ADMIN" })
+    return { status: 400, message: "Sending email failed" }
+  }
+    
 
   return newUser
 }
 
-const SendAdminpassword = async (email , password) => {
+const sendAdminPassword = async (email , password) => {
   const replacements = {
-    GenaratedPassword: password,
+    genaratedPassword: password,
   }
   const subject = 'Welcome to the Bashaway'
-  await sendMail(email, 'SendAdminPassword', replacements, subject)
+  await sendMail(email, 'sendAdminPassword', replacements, subject)
   return true
 }
