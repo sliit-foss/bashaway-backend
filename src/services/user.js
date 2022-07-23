@@ -34,6 +34,7 @@ export const changePasswordService = async (user, oldPassword, newPassword) => {
     })
   })
   return await findOneAndUpdateUser({ email: user.email }, { password: encryptedPassword })
+}
 
 export const updateUserdetails = async (user, userDetails) => {
   let userData
