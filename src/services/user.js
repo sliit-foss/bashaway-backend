@@ -54,7 +54,6 @@ export const updateUserdetails = async (user, userDetails) => {
   }
 
   return await findOneAndUpdateUser({ _id: user._id }, userDetails)
-
 }
 
 export const addnewUser = async (userDetails) => {
@@ -68,11 +67,6 @@ export const addnewUser = async (userDetails) => {
     user = await getOneUser({ email: userDetails.email }, false)
     if (user && user?._id.toString() !== userDetails._id) return { status: 400, message: "Email is already taken" }}
 
-  if (userDetails.name) {
-    user = await getOneUser({ name: userDetails.name }, false)
-    if (user && user?._id.toString() !== userDetails._id) return { status: 400, message: "Name is already taken" }}
-  
-  
   const encryptedPassword = await new Promise((resolve, reject) => {
     bcrypt.hash(genaratedPassword, parseInt(process.env.BCRYPT_SALT_ROUNDS), (err, hash) => {
       if (err) reject(err)
@@ -90,7 +84,6 @@ export const addnewUser = async (userDetails) => {
     return { status: 400, message: "Sending email failed" }
   }
     
-
   return newUser
 }
 
