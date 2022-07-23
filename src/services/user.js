@@ -1,6 +1,12 @@
 import bcrypt from 'bcrypt'
 import { getLatestScore } from '../repository/submission'
-import { findOneAndUpdateUser, findOneAndRemoveUser, getOneUser, createUser, getAllUserIds } from '../repository/user'
+import {
+  findOneAndUpdateUser,
+  findOneAndRemoveUser,
+  getOneUser,
+  createUser,
+  getAllUserIds,
+} from '../repository/user'
 import { getAllQuestionIds } from '../repository/question'
 import { sendMail } from './email'
 
@@ -21,20 +27,19 @@ export const updateAllScoresService = async () => {
   const users = await getAllUserIds({ role: 'GROUP' })
   const questions = await getAllQuestionIds()
 
-  const promises = []
-
-  for (let user of users) {
-    let userScores = await Promise.all(
-      questions.map((question) => {
-        return getLatestScore({ user, question })
-      }),
-    )
-    let userSum = userScores.reduce((acc, current) => acc + current, 0)
-    promises.push(findOneAndUpdateUser({ _id: user }, { score: userSum }))
-  }
-
-  Promise.all(promises)
-  return
+  return await Promise.all(
+    users.map(async (user) => {
+      let userSum = 0
+      await Promise.all(
+        questions.map(async (question) => {
+          return getLatestScore({ user, question }).then((score) => {
+            userSum += score
+          })
+        }),
+      )
+      return findOneAndUpdateUser({ _id: user }, { score: userSum })
+    }),
+  )
 }
 
 export const changePasswordService = async (user, oldPassword, newPassword) => {
@@ -74,11 +79,11 @@ export const updateUserdetails = async (user, userDetails) => {
 }
 
 export const addNewUser = async (userDetails) => {
-
   const genaratedPassword = Math.random().toString(36).slice(-8)
 
   const user = await getOneUser({ email: userDetails.email }, false)
-  if (user && user?._id.toString() !== userDetails._id) return { status: 400, message: "Email is already taken" }
+  if (user && user?._id.toString() !== userDetails._id)
+    return { status: 400, message: 'Email is already taken' }
 
   const encryptedPassword = await new Promise((resolve, reject) => {
     bcrypt.hash(genaratedPassword, parseInt(process.env.BCRYPT_SALT_ROUNDS), (err, hash) => {
@@ -87,12 +92,16 @@ export const addNewUser = async (userDetails) => {
     })
   })
 
-  const newUser = await createUser({ ...userDetails, password: encryptedPassword, is_verified: true, role: "ADMIN" })
+  const newUser = await createUser({
+    ...userDetails,
+    password: encryptedPassword,
+    is_verified: true,
+    role: 'ADMIN',
+  })
 
-  let sendEmail;
+  let sendEmail
 
-  if (newUser)
-    sendEmail = await sendAdminPassword(userDetails.email, genaratedPassword)
+  if (newUser) sendEmail = await sendAdminPassword(userDetails.email, genaratedPassword)
 
   if (!sendEmail) {
     await findOneAndRemoveUser({ email: userDetails.email })
