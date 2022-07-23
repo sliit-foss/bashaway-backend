@@ -21,6 +21,6 @@ export const findOneAndUpdateUser = async (filters, data) => {
   return user
 }
 
-export const findOneAndRemoveUser = async (userData) => {
-  return await User.findOneAndRemove(userData)
+export const findOneAndRemoveUser = async (filters) => {
+  return await User.findOneAndRemove(filters)
 }

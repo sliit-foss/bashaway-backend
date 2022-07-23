@@ -1,6 +1,6 @@
 import bcrypt from 'bcrypt'
 import { getLatestScore } from '../repository/submission'
-import { changePassword, findOneAndUpdateUser, findOneAndRemoveUser , getOneUser , createUser} from '../repository/user'
+import { findOneAndUpdateUser, findOneAndRemoveUser, getOneUser, createUser } from '../repository/user'
 import { sendMail } from './email'
 
 
@@ -56,16 +56,12 @@ export const updateUserdetails = async (user, userDetails) => {
   return await findOneAndUpdateUser({ _id: user._id }, userDetails)
 }
 
-export const addnewUser = async (userDetails) => {
+export const addNewUser = async (userDetails) => {
 
   const genaratedPassword = Math.random().toString(36).slice(-8)
-  let user;
-  let newUser;
-  let sendEmail;
 
-  if (userDetails.email) {
-    user = await getOneUser({ email: userDetails.email }, false)
-    if (user && user?._id.toString() !== userDetails._id) return { status: 400, message: "Email is already taken" }}
+  const user = await getOneUser({ email: userDetails.email }, false)
+  if (user && user?._id.toString() !== userDetails._id) return { status: 400, message: "Email is already taken" }
 
   const encryptedPassword = await new Promise((resolve, reject) => {
     bcrypt.hash(genaratedPassword, parseInt(process.env.BCRYPT_SALT_ROUNDS), (err, hash) => {
@@ -74,27 +70,25 @@ export const addnewUser = async (userDetails) => {
     })
   })
 
-  newUser = await createUser ({...userDetails , password:encryptedPassword , is_verified:true , role:"ADMIN" })
-  
-  if(newUser)
-    sendEmail = sendAdminPassword(userDetails.email , genaratedPassword)
-  
-  if(!sendEmail){
-    const removeUser = findOneAndRemoveUser({...userDetails , password:encryptedPassword , is_verified:true , role:"ADMIN" })
-    if(removeUser)
-      return { status: 400, message: "Sending email failed" }
-    
-    return { status: 400, message: "Sending email failed/ Removing user failed" }
+  const newUser = await createUser({ ...userDetails, password: encryptedPassword, is_verified: true, role: "ADMIN" })
+
+  let sendEmail;
+
+  if (newUser)
+    sendEmail = await sendAdminPassword(userDetails.email, genaratedPassword)
+
+  if (!sendEmail) {
+    await findOneAndRemoveUser({ email: userDetails.email })
+    return
   }
-    
+
   return newUser
 }
 
-const sendAdminPassword = async (email , password) => {
+const sendAdminPassword = async (email, password) => {
   const replacements = {
     genaratedPassword: password,
   }
   const subject = 'Welcome to the Bashaway'
-  await sendMail(email, 'sendAdminPassword', replacements, subject)
-  return true
+  return await sendMail(email, 'sendAdminPassword', replacements, subject)
 }
