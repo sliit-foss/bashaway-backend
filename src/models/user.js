@@ -20,7 +20,7 @@ const UserSchema = new mongoose.Schema(
     },
     verification_code: {
         type: String,
-        required: true,
+        required: false,
     },
     is_verified: {
         type: Boolean,

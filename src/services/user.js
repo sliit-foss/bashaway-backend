@@ -1,7 +1,8 @@
 import bcrypt from 'bcrypt'
 import { getLatestScore } from '../repository/submission'
-import { findOneAndUpdateUser, getOneUser, getAllUserIds } from '../repository/user'
+import { findOneAndUpdateUser, findOneAndRemoveUser, getOneUser, createUser, getAllUserIds } from '../repository/user'
 import { getAllQuestionIds } from '../repository/question'
+import { sendMail } from './email'
 
 export const updateScoreService = async (user) => {
   const questions = getAllQuestionIds()
@@ -70,4 +71,41 @@ export const updateUserdetails = async (user, userDetails) => {
   }
 
   return await findOneAndUpdateUser({ _id: user._id }, userDetails)
+}
+
+export const addNewUser = async (userDetails) => {
+
+  const genaratedPassword = Math.random().toString(36).slice(-8)
+
+  const user = await getOneUser({ email: userDetails.email }, false)
+  if (user && user?._id.toString() !== userDetails._id) return { status: 400, message: "Email is already taken" }
+
+  const encryptedPassword = await new Promise((resolve, reject) => {
+    bcrypt.hash(genaratedPassword, parseInt(process.env.BCRYPT_SALT_ROUNDS), (err, hash) => {
+      if (err) reject(err)
+      resolve(hash)
+    })
+  })
+
+  const newUser = await createUser({ ...userDetails, password: encryptedPassword, is_verified: true, role: "ADMIN" })
+
+  let sendEmail;
+
+  if (newUser)
+    sendEmail = await sendAdminPassword(userDetails.email, genaratedPassword)
+
+  if (!sendEmail) {
+    await findOneAndRemoveUser({ email: userDetails.email })
+    return
+  }
+
+  return newUser
+}
+
+const sendAdminPassword = async (email, password) => {
+  const replacements = {
+    genaratedPassword: password,
+  }
+  const subject = 'Welcome to the Bashaway'
+  return await sendMail(email, 'sendAdminPassword', replacements, subject)
 }

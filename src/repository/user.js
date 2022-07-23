@@ -1,5 +1,6 @@
 import User from '../models/user'
 
+
 export const createUser = async (user) => {
   return await new User(user).save()
 }
@@ -27,4 +28,8 @@ export const getAllUserIds = async (filters) => {
 
   const ids = users.map(user => user._id)
   return ids
+}
+
+export const findOneAndRemoveUser = async (filters) => {
+  return await User.findOneAndRemove(filters)
 }

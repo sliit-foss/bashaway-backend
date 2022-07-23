@@ -29,12 +29,3 @@ export const sendMail = async (email, templateName, replacements, subject) => {
         });
     });
 }
-
-export const checkAvailability = async () => {
-    return new Promise((resolve, reject) => {
-        transport.verify(async (error) => {
-            if (error) reject(error);
-            resolve(true);
-        });
-    })
-}
