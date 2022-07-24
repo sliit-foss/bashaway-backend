@@ -2,7 +2,13 @@ import logger from '../utils/logger'
 import Submission from '../models/submission'
 
 export const insertSubmission = async (userId, question, link) => {
-  const newSubmission = new Submission({ user: userId, question, link, score: null, gradedBy: null })
+  const newSubmission = new Submission({
+    user: userId,
+    question,
+    link,
+    score: null,
+    gradedBy: null,
+  })
   await newSubmission.save()
 }
 
@@ -15,7 +21,7 @@ export const getSubmissions = async ({ sort = {}, filters = {}, pageNum = 1, pag
       locale: 'en',
     },
   }
-  return await Submission.paginate(filters, options).catch(err => {
+  return await Submission.paginate(filters, options).catch((err) => {
     logger.error(`An error occurred when retrieving submissions - err: ${err.message}`)
     throw err
   })
@@ -36,7 +42,7 @@ export const getLatestScore = async ({ user, question }) => {
   const sort = {
     created_at: 'desc',
   }
-  const result = await getSubmissions({ sort, filters, pageSize: 1 })
-  if (result.docs.length === 0) return 0
-  return result.docs[0].score || 0
+  const result = await Submission.findOne(filters).setOptions(sort).lean()
+  if (result) return result.score
+  else return 0
 }
