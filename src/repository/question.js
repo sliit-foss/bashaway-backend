@@ -14,3 +14,6 @@ export const getQuestionById = async (id, filterFields = true) => {
     return await query()
 }
 
+export const deleteAQuestion = async (filters) => {
+    return await Question.deleteOne(filters)
+}
