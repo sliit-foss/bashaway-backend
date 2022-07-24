@@ -1,7 +1,7 @@
 import express from 'express';
+import { celebrate, Segments } from "celebrate"
 import { create, getAll, getById, update, updateScore, updateAllScores, changePassword } from '../controllers/user';
 import { adminProtect } from '../middleware/auth';
-import { celebrate, Segments } from "celebrate"
 import { addUserSchema, changePasswordSchema } from '../validations/user';
 
 const userRouter = express.Router();

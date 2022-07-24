@@ -1,7 +1,7 @@
 import express from 'express';
+import { celebrate, Segments } from "celebrate"
 import { login, register, current } from '../controllers/auth';
 import { registerSchema, loginSchema, verifySchema } from "../validations/user"
-import { celebrate, Segments } from "celebrate"
 import { verifyUser } from "../controllers/auth"
 import { protect } from '../middleware/auth';
 

@@ -27,7 +27,8 @@ const QuestionSchema = new mongoose.Schema(
         },
         enabled: {
             type: Boolean,
-            required: true
+            required: true,
+            default: true
         },
         creator: {
             type: mongoose.Schema.Types.ObjectId,
@@ -36,7 +37,8 @@ const QuestionSchema = new mongoose.Schema(
         },
         creator_lock: {
             type: Boolean,
-            required: true
+            required: true,
+            default: false
         }
     },
     {

@@ -9,9 +9,9 @@ export const findQuestion = async (filters) => {
 }
 
 export const getQuestionById = async (id, filterFields = true) => {
-    const query = Question.findById(id)
+    let query = Question.findById(id)
     if (filterFields) query = query.select('-creator -creator_lock')
-    return await query()
+    return await query.exec()
 }
 
 export const getAllQuestionIds = async (filters) => {

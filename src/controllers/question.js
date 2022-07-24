@@ -15,7 +15,7 @@ export const getQuestionById = asyncHandler(async (req, res) => {
 })
 
 export const deleteOldQuestion = asyncHandler(async (req, res) => {
-    const result = await deleteQuestion(req.params.question_id);
+    const result = await deleteQuestion(req.params.question_id, req.user);
     if (!result) return makeResponse({ res, status: 500, message: "Failed to delete question" });
     if (result.status) return makeResponse({ res, ...result });
     return makeResponse({ res, message: "Question deleted successfully" });
