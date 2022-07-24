@@ -9,6 +9,15 @@ export const addQuestionSchema = {
     enabled: Joi.boolean().optional(),
 }
 
+export const updateQuestionSchema = {
+    name: Joi.string().optional(),
+    description: Joi.string().optional(),
+    difficulty: Joi.string().valid('EASY', 'MEDIUM', 'HARD').optional(),
+    bash_only: Joi.boolean().optional(),
+    max_score: Joi.number().optional(),
+    enabled: Joi.boolean().optional(),
+}
+
 export const questionIdSchema = {
     question_id: Joi.string().hex()
         .length(24).required()
