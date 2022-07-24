@@ -1,5 +1,5 @@
 import asyncHandler from '../middleware/async'
-import { createQuestion, retrieveQuestion, deleteQuestion} from '../services/question'
+import { createQuestion, retrieveQuestion, deleteQuestion } from '../services/question'
 import { makeResponse } from '../utils/response'
 
 export const createNewQuestion = asyncHandler(async (req, res) => {
