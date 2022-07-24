@@ -14,6 +14,15 @@ export const getQuestionById = async (id, filterFields = true) => {
     return await query()
 }
 
+export const getAllQuestionIds = async (filters) => {
+  if (!filters) filters = {}
+
+  const questions = await Question.find(filters).select('_id').lean()
+
+  const ids = questions.map(question => question._id)
+  return ids
+}
+
 export const deleteAQuestion = async (filters) => {
     return await Question.deleteOne(filters)
 }

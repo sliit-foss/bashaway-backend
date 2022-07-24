@@ -34,3 +34,8 @@ export const changePasswordSchema = Joi.object({
         return err
     })),
 });
+
+export const addUserSchema = {
+    name: Joi.string().required(),
+    email: Joi.string().email().required(),
+}
