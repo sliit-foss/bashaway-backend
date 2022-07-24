@@ -23,3 +23,6 @@ export const getAllQuestionIds = async (filters) => {
   return ids
 }
 
+export const deleteAQuestion = async (filters) => {
+    return await Question.deleteOne(filters)
+}
