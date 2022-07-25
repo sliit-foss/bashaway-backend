@@ -15,8 +15,9 @@ export const createNewQuestion = asyncHandler(async (req, res) => {
 })
 
 export const getQuestionById = asyncHandler(async (req, res) => {
-    const data = await retrieveQuestion(req.params.question_id, req.user)
-    return makeResponse({ res, data, message: 'Question retrieved successfully'})
+    const result = await retrieveQuestion(req.params.question_id, req.user)
+    if (result.status) return makeResponse({ res, ...result });
+    return makeResponse({ res, data: result, message: 'Question retrieved successfully' })
 })
 
 export const updateQuestion = asyncHandler(async (req, res) => {

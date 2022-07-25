@@ -1,4 +1,7 @@
 import Question from '../models/question'
+import mongoose from 'mongoose';
+
+const ObjectId = mongoose.Types.ObjectId;
 
 export const findAllQuestions = async (user) => {
   return Question.find({
@@ -15,16 +18,19 @@ export const findQuestion = async (filters) => {
 }
 
 export const getQuestionById = async (id, user, filterFields = true) => {
-  let query = Question.find({
-    $and: [
-      { $match: { _id: id } },
-      {
-        $or: [{ creator_lock: false }, { creator_lock: true, creator: user._id }],
-      },
-    ],
-  })
-  if (filterFields) query = query.select('-creator -creator_lock')
-  return await query.exec()
+    let query = Question.find({
+        $and: [
+            { _id: { $eq: new ObjectId(id)  } },
+            {
+                $or: [
+                    { creator_lock: false },
+                    { creator_lock: true, creator: user._id },
+                ]
+            }
+        ]
+    })
+    if (filterFields) query = query.select('-creator -creator_lock')
+    return await query.exec()
 }
 
 export const getAllQuestionIds = async (filters = {}) => {
