@@ -25,3 +25,17 @@ export const loginSchema = Joi.object({
 export const verifySchema = Joi.object({
     verification_code: Joi.string().required(),
 })
+
+export const changePasswordSchema = Joi.object({
+    old_password: Joi.string().required(),
+    new_password: Joi.string().regex(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[#$@!%&*?])[A-Za-z\d#$@!%&*?]{8,30}$/).required().error(errors => errors.map(err => {
+        if (err.code === 'string.pattern.base')
+            err.message = `Password should have at least one lowercase letter, one uppercase letter, one number and one special character and should be at least 8 characters long`;
+        return err
+    })),
+});
+
+export const addUserSchema = {
+    name: Joi.string().required(),
+    email: Joi.string().email().required(),
+}
