@@ -6,7 +6,7 @@ export const insertSubmission = async (userId, question, link) => {
   await newSubmission.save()
 }
 
-export const getSubmissions = async ({ sort = {}, filters = {}, pageNum = 1, pageSize = 10 }) => {
+export const getSubmissions = async ({ sort = {}, filter = {}, pageNum = 1, pageSize = 10 }) => {
   const options = {
     sort,
     page: pageNum,
@@ -15,7 +15,7 @@ export const getSubmissions = async ({ sort = {}, filters = {}, pageNum = 1, pag
       locale: 'en',
     },
   }
-  return await Submission.paginate(filters, options).catch(err => {
+  return await Submission.paginate(filter, options).catch(err => {
     logger.error(`An error occurred when retrieving submissions - err: ${err.message}`)
     throw err
   })
