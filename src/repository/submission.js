@@ -27,6 +27,10 @@ export const getSubmissions = async ({ sort = {}, filters = {}, pageNum = 1, pag
   })
 }
 
+export const getSubmissionById = async (id) => {
+  return await Submission.findById(id).lean()
+}
+
 export const insertGrade = async (submission, score, admin) => {
   const query = { _id: submission }
   const newData = { score, gradedBy: admin }
