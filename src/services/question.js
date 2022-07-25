@@ -13,7 +13,7 @@ export const createQuestion = async (data, user) => {
 export const retrieveQuestion = async (question_id, user) => {
   const result = await getQuestionById(question_id, user._id);
   if (result.length === 0) return { status: 400, message: 'Question doesn\'t exist or you do not have permission to view this question' }
-  return result
+  return result[0]
 }
 
 export const updateQuestionById = async (question_id, data, user) => {
