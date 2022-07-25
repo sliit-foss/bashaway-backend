@@ -15,7 +15,7 @@ export const view = asyncHandler(async (req, res) => {
 export const grade = asyncHandler(async (req, res) => {
   const ret = await gradeSubmission(req.params.id, req.body, req.user)
   if (typeof ret === 'object')
-    return makeResponse({ res, status: ret.status, message: ret.message })
+    return makeResponse({ res, ...ret })
   else
     return makeResponse({ res, status: 200, message: 'Submission graded successfully' })
 })
