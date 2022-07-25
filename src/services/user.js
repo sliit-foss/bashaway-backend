@@ -6,6 +6,7 @@ import {
   getOneUser,
   createUser,
   getAllUserIds,
+  getAllUsers
 } from '../repository/user'
 import { getAllQuestionIds } from '../repository/question'
 import { sendMail } from './email'
@@ -21,6 +22,14 @@ export const updateScoreService = async (user) => {
   const scoreSum = result.reduce((acc, current) => current + acc, 0)
 
   return await findOneAndUpdateUser({ _id: user }, { score: scoreSum })
+}
+
+export const getUsers = async (query) => {
+  return await getAllUsers(query)
+}
+
+export const getUserByID = async (id) => {
+  return await getOneUser({ _id: id })
 }
 
 export const updateAllScoresService = async () => {
