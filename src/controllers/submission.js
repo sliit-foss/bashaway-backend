@@ -4,7 +4,7 @@ import { makeResponse } from '../utils/response'
 
 export const create = asyncHandler(async (req, res) => {
   await createSubmission(req.body, req.user)
-  makeResponse({ res, status: 201, message: 'Submission added successfully ' })
+  return makeResponse({ res, status: 201, message: 'Submission added successfully ' })
 })
 
 export const view = asyncHandler(async (req, res) => {
