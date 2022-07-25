@@ -17,9 +17,8 @@ export const findOneAndUpdateUser = async (filters, data) => {
   return user
 }
 
-export const getAllUsers = async ({ sort = {}, filters = {}, pageNum = 1, pageSize = 10 }) => {
+export const getAllUsers = async ({ sort = {}, filter = {}, pageNum = 1, pageSize = 10 }) => {
   const options = {
-    sort,
     page: pageNum,
     limit: pageSize,
     collation: {
@@ -27,7 +26,16 @@ export const getAllUsers = async ({ sort = {}, filters = {}, pageNum = 1, pageSi
     },
   }
 
-  return await User.paginate(filters, options).catch((err) => {
+  if (Object.keys(sort).length > 0) options.sort = sort
+
+  if (filter.member_count) {
+    filter.members = { $size: Number(filter.member_count) }
+    delete filter.member_count
+  }
+
+  return await User.aggregatePaginate(User.aggregate([{
+    $match: filter,
+  }, { $unset: ["password", "verification_code"] }]), options).catch((err) => {
     logger.error(`An error occurred when retrieving users - err: ${err.message}`)
     throw err
   })
