@@ -10,7 +10,11 @@ export const createSubmission = async ({ question, link }, { _id }) => {
   await insertSubmission(_id, question, link)
 }
 
-export const viewSubmissions = async (query) => {
+export const viewSubmissions = async (query, user) => {
+  if (user.role != 'ADMIN') {
+    if (!query.filter) query.filter = {}
+    query.filter.user = user._id
+  }
   return await getSubmissions(query)
 }
 
