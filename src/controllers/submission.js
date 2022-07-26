@@ -8,7 +8,7 @@ export const create = asyncHandler(async (req, res) => {
 })
 
 export const view = asyncHandler(async (req, res) => {
-  const data = await viewSubmissions(req.query)
+  const data = await viewSubmissions(req.query, req.user)
   return makeResponse({ res, status: 200, data, message: 'Submissions retrieved successfully' })
 })
 
