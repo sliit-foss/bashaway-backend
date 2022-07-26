@@ -16,7 +16,8 @@ export const getAll = asyncHandler(async (req, res) => {
 })
 
 export const getById = asyncHandler(async (req, res) => {
-  const user = await getUserByID(req.params.id)
+  const ret = await getUserByID(req.params.id)
+  if(ret.status) return makeResponse({ res, ...ret })
   return makeResponse({ res, status: 200, data: user, message: 'User retrieved succesfully' })
 })
 
