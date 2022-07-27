@@ -11,7 +11,7 @@ export const protect = asyncHandler(async (req, res, next) => {
     : null
   if (!token) return makeResponse({ res, status: 403, message: 'Unauthorized' })
   const decodedUser = decodeJwtToken(token).data
-  const user = decodedUser ? await getOneUser({ _id: decodedUser._id }) : null
+  const user = decodedUser ? (await getOneUser({ _id: decodedUser._id }, true) ): null  
   if (!user) return makeResponse({ res, status: 403, message: 'Unauthorized' })
   req.user = user
   next()

@@ -1,5 +1,5 @@
 import mongoose from 'mongoose';
-import mongoosePaginate from 'mongoose-paginate-v2';
+import aggregatePaginate from 'mongoose-aggregate-paginate-v2';
 
 const UserSchema = new mongoose.Schema(
   {
@@ -20,7 +20,7 @@ const UserSchema = new mongoose.Schema(
     },
     verification_code: {
         type: String,
-        required: true,
+        required: false,
     },
     is_verified: {
         type: Boolean,
@@ -52,6 +52,7 @@ const UserSchema = new mongoose.Schema(
     },
     members: {
       type: [{
+        _id: false,
         name : {
           type: String,
           required: true,
@@ -78,7 +79,7 @@ const UserSchema = new mongoose.Schema(
   },
 );
 
-UserSchema.plugin(mongoosePaginate);
+UserSchema.plugin(aggregatePaginate);
 
 UserSchema.index({ createdAt: 1 });
 
