@@ -22,7 +22,7 @@ export const getById = asyncHandler(async (req, res) => {
 })
 
 export const update = asyncHandler(async (req, res) => {
-  const result = await updateUserdetails(req.user, req.body)
+  const result = await updateUserdetails(req.params.id , req.user, req.body)
   if (!result) return makeResponse({ res, status: 500, message: "Failed to update user" })
   if (result.status) return makeResponse({ res, ...result })
   return makeResponse({ res, status: 200, data: result, message: "User updated successfully" })
