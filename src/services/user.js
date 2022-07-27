@@ -6,7 +6,7 @@ import {
   getOneUser,
   createUser,
   getAllUserIds,
-  getAllUsers
+  getAllUsers,
 } from '../repository/user'
 import { getAllQuestionIds } from '../repository/question'
 import { sendMail } from './email'
@@ -29,7 +29,13 @@ export const getUsers = async (query) => {
 }
 
 export const getUserByID = async (id) => {
-  return await getOneUser({ _id: id })
+  const user = await getOneUser({ _id: id })
+  if (!user)
+    return {
+      status: 422,
+      message: 'Error: Invalid submission ID',
+    }
+  return user
 }
 
 export const updateAllScoresService = async () => {
@@ -75,16 +81,21 @@ export const updateUserdetails = async (user, userDetails) => {
   if (userDetails.email) {
     userData = await getOneUser({ email: userDetails.email }, false)
     if (userData && userData?.id.toString() !== user._id)
-      return { status: 400, message: 'Email is already taken' }
+      return { status: 422, message: 'Email is already taken' }
   }
 
   if (userDetails.name) {
     userData = await getOneUser({ name: userDetails.name }, false)
     if (userData && userData?.id.toString() !== user._id)
-      return { status: 400, message: 'Name is already taken' }
+      return { status: 422, message: 'Name is already taken' }
   }
 
-  return await findOneAndUpdateUser({ _id: user._id }, userDetails)
+  const updatedUser = await findOneAndUpdateUser({ _id: user._id }, userDetails)
+  if (!updatedUser) return {
+    status: 422,
+    message: 'Error: Invalid submission ID'
+  }
+  return updatedUser
 }
 
 export const addNewUser = async (userDetails) => {
