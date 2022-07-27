@@ -75,60 +75,27 @@ export const changePasswordService = async (user, oldPassword, newPassword) => {
   return await findOneAndUpdateUser({ email: user.email }, { password: encryptedPassword })
 }
 
-export const updateUserdetails = async (userId, user, userDetails) => {
-
+export const updateUserdetails = async (user, userDetails) => {
   let userData
-  const admin = getOneUser({ _id: user._id , role: "ADMIN"}, false)
 
-  if(userId === user._id ){
-
-      if (userDetails.email) {
-          userData = await getOneUser({ email: userDetails.email }, false)
-          if (userData && userData?._id.toString() !== userId)
-          return { status: 422, message: 'Error: Email is already taken' }
-      }
-  
-      if (userDetails.name) {
-          userData = await getOneUser({ name: userDetails.name }, false)
-          if (userData && userData?._id.toString() !== userId)
-          return { status: 422, message: 'Error: Name is already taken' }
-      }
-      
-      const updatedUser = await findOneAndUpdateUser({ _id: user._id }, userDetails)
-      if (!updatedUser) return {
-          status: 422,
-          message: 'Error: Invalid User ID'
-      }
-      return updatedUser
-
+  if (userDetails.email) {
+    userData = await getOneUser({ email: userDetails.email }, false)
+    if (userData && userData?._id.toString() !== user._id)
+      return { status: 422, message: 'Email is already taken' }
   }
 
-  if(admin){
-      
-      if (userDetails.email) {
-          userData = await getOneUser({ email: userDetails.email }, false)
-          if (userData && userData?._id.toString() !== userId)
-          return { status: 422, message: 'Error: Email is already taken' }
-      }
-      
-      if (userDetails.name) {
-          userData = await getOneUser({ name: userDetails.name }, false)
-          if (userData && userData?._id.toString() !== userId)
-          return { status: 422, message: 'Error: Name is already taken' }
-      }
-      
-      const updatedUser = await findOneAndUpdateUser({ _id: userId }, userDetails)
-      if (!updatedUser) return {
-          status: 422,
-          message: 'Error: Invalid User ID'
-      }
-      return updatedUser
-
+  if (userDetails.name) {
+    userData = await getOneUser({ name: userDetails.name }, false)
+    if (userData && userData?._id.toString() !== user._id)
+      return { status: 422, message: 'Name is already taken' }
   }
 
-  return { status: 401, message: 'Error: You are not authorized to update this user'}
-
-
+  const updatedUser = await findOneAndUpdateUser({ _id: user._id }, userDetails)
+  if (!updatedUser) return {
+    status: 422,
+    message: 'Error: Invalid submission ID'
+  }
+  return updatedUser
 }
 
 export const addNewUser = async (userDetails) => {
