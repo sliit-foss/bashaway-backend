@@ -1,4 +1,4 @@
-require("dotenv").config();
+require('dotenv').config()
 import express from 'express'
 import compression from 'compression'
 import helmet from 'helmet'
@@ -31,6 +31,8 @@ app.use((err, req, res, next) => {
     for (const [key, value] of err.details.entries()) {
       return makeResponse({ res, status: 422, message: value.details[0].message })
     }
+  } else if (err.expose) {
+    return makeResponse({ res, ...err })
   } else
     return makeResponse({
       res,
@@ -41,10 +43,10 @@ app.use((err, req, res, next) => {
 
 connectDB()
 
-global.__basedir = __dirname;
+global.__basedir = __dirname
 
 const port = process.env.PORT || 3000
 
 app.listen(port, () => {
   console.log(`Bashaway server successfully started on port ${port}`)
-});
+})
