@@ -14,7 +14,7 @@ export const registerSchema = Joi.object({
         email: Joi.string().email().required(),
         phone: Joi.number().required(),
         academic_year: Joi.number().required().min(1).max(4)
-    })).max(4).optional(),
+    })).max(4).required().min(1),
 });
 
 export const loginSchema = Joi.object({
