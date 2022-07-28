@@ -46,7 +46,8 @@ export const getLatestScore = async ({ user, question }) => {
   const sort = {
     created_at: 'desc',
   }
-  const result = await Submission.findOne(filters).setOptions(sort).lean()
+  const result = await Submission.findOne(filters).setOptions({ sort }).lean()
+  console.log(result)
   if (result) return result.score
   else return 0
 }
