@@ -1,8 +1,9 @@
-require("dotenv").config();
+require('dotenv').config()
 import express from 'express'
 import compression from 'compression'
 import helmet from 'helmet'
 import cors from 'cors'
+import rateLimit from 'express-rate-limit'
 import connectDB from './database'
 import routes from './routes/index.routes'
 import { isCelebrateError } from 'celebrate'
@@ -10,6 +11,15 @@ import { makeResponse } from './utils/response'
 import logger from './utils/logger'
 
 const app = express()
+
+const limiter = rateLimit({
+  windowMs: 1 * 60 * 1000,
+  max: 100,
+  standardHeaders: true,
+  legacyHeaders: false,
+})
+
+app.use(limiter)
 
 app.use(helmet())
 
@@ -31,8 +41,10 @@ app.use((err, req, res, next) => {
     for (const [key, value] of err.details.entries()) {
       return makeResponse({ res, status: 422, message: value.details[0].message })
     }
+  } else if (err.expose) {
+    return makeResponse({ res, ...err })
   } else
-    return makeResponse({
+    return makeResponse({	
       res,
       status: 500,
       message: "Just patching things up. This'll be over in a jiffy!",
@@ -41,10 +53,10 @@ app.use((err, req, res, next) => {
 
 connectDB()
 
-global.__basedir = __dirname;
+global.__basedir = __dirname
 
 const port = process.env.PORT || 3000
 
 app.listen(port, () => {
   console.log(`Bashaway server successfully started on port ${port}`)
-});
+})
