@@ -1,5 +1,5 @@
 import asyncHandler from "../middleware/async"
-import { authRegister, authLogin, updateVerificationStatus } from "../services/auth"
+import { authRegister, authLogin, updateVerificationStatus, authResendVerification } from "../services/auth"
 import { makeResponse } from "../utils/response"
 import { sendTokenResponse } from "../utils/jwt";
 
@@ -22,6 +22,12 @@ export const verifyUser = asyncHandler(async (req, res) => {
     const user = await updateVerificationStatus(req.params.verification_code);
     if (user) return makeResponse({ res, data: user, message: "User verified successfully" });
     return makeResponse({ res, status: 400, message: "Invalid verification code" });
+})
+
+export const resendVerification = asyncHandler(async (req, res) => {
+    const result = await authResendVerification(req.body.email);
+    if(result.status) return makeResponse({ res, ...result }); 
+    return makeResponse({ res, message: "Verification email sent successfully" });
 })
 
 export const current = asyncHandler(async (req, res, next) => { 
