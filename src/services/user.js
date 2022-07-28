@@ -12,7 +12,7 @@ import { getAllQuestionIds } from '../repository/question'
 import { sendMail } from './email'
 
 export const updateScoreService = async (user) => {
-  const questions = getAllQuestionIds()
+  const questions = await getAllQuestionIds()
 
   const result = await Promise.all(
     questions.map((question) => {
