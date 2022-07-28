@@ -39,3 +39,7 @@ export const addUserSchema = {
     name: Joi.string().required(),
     email: Joi.string().email().required(),
 }
+
+export const userIdSchema = {
+  id: Joi.string().hex().length(24).required(),
+}
