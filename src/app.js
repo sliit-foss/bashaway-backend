@@ -42,7 +42,7 @@ app.use((err, req, res, next) => {
       return makeResponse({ res, status: 422, message: value.details[0].message })
     }
   } else if (err.expose) {
-    return makeResponse({ res, ...err })
+    return makeResponse({ res, status: err.status, message: err.message })
   } else
     return makeResponse({	
       res,
