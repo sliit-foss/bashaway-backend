@@ -31,12 +31,8 @@ app.use((err, req, res, next) => {
     for (const [key, value] of err.details.entries()) {
       return makeResponse({ res, status: 422, message: value.details[0].message })
     }
-  } else if (err.type && err.type == 'entity.parse.failed') {
-    return makeResponse({
-      res,
-      status: 400,
-      message: "Error: Cannot parse request body",
-    })
+  } else if (err.expose) {
+    return makeResponse({ res, ...err })
   } else
     return makeResponse({
       res,
