@@ -1,4 +1,4 @@
-import winston from "winston"
+import winston from 'winston'
 
 const stacktrace = winston.format((info) => {
   if (info instanceof Error) {
@@ -11,8 +11,14 @@ const stacktrace = winston.format((info) => {
 })
 
 const logger = winston.createLogger({
-  format: winston.format.combine(stacktrace(), winston.format.timestamp(), winston.format.json()),
+  format: winston.format.combine(
+    stacktrace(),
+    winston.format.timestamp(),
+    winston.format.json(),
+    winston.format.prettyPrint(),
+  ),
   transports: [
+    new winston.transports.Console(),
     new winston.transports.File({
       filename: `logs/error/${new Date().toISOString().slice(0, 10)}.log`,
       level: 'error',
@@ -24,13 +30,4 @@ const logger = winston.createLogger({
   ],
 })
 
-logger.add(
-  new winston.transports.Console({
-    format: winston.format.combine(
-      stacktrace(),
-      winston.format.timestamp(),
-      winston.format.json(),
-    ),
-  }),
-)
 export default logger
