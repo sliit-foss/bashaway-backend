@@ -5,8 +5,14 @@ import {
   insertGrade,
 } from '../repository/submission'
 import { getMaxScore } from '../repository/question'
+import { findQuestion } from '../repository/question'
 
 export const createSubmission = async ({ question, link }, { _id }) => {
+  if (!await findQuestion({ _id: question })) return {
+    status: 422,
+    message: 'Error: Invalid question ID'
+  }
+
   await insertSubmission(_id, question, link)
 }
 
