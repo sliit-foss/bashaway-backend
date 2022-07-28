@@ -81,11 +81,6 @@ export const updateUserdetails = async (userId ,user, userDetails) => {
   if(user.role !== 'ADMIN' && userId.toString() !== user._id.toString()) 
     return {status:403, message: "You are not authorized to update this user"}
 
-  if (userDetails.email) {
-    userData = await getOneUser({ email: userDetails.email }, false)
-    if (userData && userData?._id.toString() !== user._id)
-      return { status: 422, message: 'Email is already taken' }
-  }
 
   if (userDetails.name) {
     userData = await getOneUser({ name: userDetails.name }, false)
