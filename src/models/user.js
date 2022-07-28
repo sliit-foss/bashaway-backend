@@ -38,7 +38,7 @@ const UserSchema = new mongoose.Schema(
     },
     university: {
       type: String,
-      required: false,
+      required: true,
     },
     role: {
         type: String,
