@@ -68,6 +68,8 @@ const UserSchema = new mongoose.Schema(
         academic_year: {
           type: Number,
           required: true,
+          min: [1,"Academic year should be from 1 to 4"],
+          max: [4, "Academic year should be from 1 to 4"],
         }
       }],
       required: false,
