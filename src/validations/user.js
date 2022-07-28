@@ -12,7 +12,11 @@ export const registerSchema = Joi.object({
     members: Joi.array().items(Joi.object({
         name: Joi.string().required(),
         email: Joi.string().email().required(),
-        phone: Joi.number().required(),
+        phone: Joi.string().required().pattern(new RegExp(/^[0-9]{9,10}$/)).error(errors => errors.map(err => {
+            if (err.code === 'string.pattern.base')
+                err.message = `Phone number should contain 10 or 9 positive integers`;
+            return err
+        })),
         academic_year: Joi.number().required().min(1).max(4)
     })).max(4).optional(),
 });
