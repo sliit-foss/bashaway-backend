@@ -13,10 +13,10 @@ import logger from './utils/logger'
 const app = express()
 
 const limiter = rateLimit({
-	windowMs: 1 * 60 * 1000, 
-	max: 100, 
-	standardHeaders: true, 
-	legacyHeaders: false,
+  windowMs: 1 * 60 * 1000,
+  max: 100,
+  standardHeaders: true,
+  legacyHeaders: false,
 })
 
 app.use(limiter)
@@ -44,7 +44,7 @@ app.use((err, req, res, next) => {
   } else if (err.expose) {
     return makeResponse({ res, ...err })
   } else
-    return makeResponse({
+    return makeResponse({	
       res,
       status: 500,
       message: "Just patching things up. This'll be over in a jiffy!",
