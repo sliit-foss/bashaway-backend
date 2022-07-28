@@ -3,6 +3,7 @@ import express from 'express'
 import compression from 'compression'
 import helmet from 'helmet'
 import cors from 'cors'
+import rateLimit from 'express-rate-limit'
 import connectDB from './database'
 import routes from './routes/index.routes'
 import { isCelebrateError } from 'celebrate'
@@ -10,6 +11,15 @@ import { makeResponse } from './utils/response'
 import logger from './utils/logger'
 
 const app = express()
+
+const limiter = rateLimit({
+	windowMs: 1 * 60 * 1000, 
+	max: 100, 
+	standardHeaders: true, 
+	legacyHeaders: false,
+})
+
+app.use(limiter)
 
 app.use(helmet())
 
