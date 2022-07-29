@@ -33,7 +33,7 @@ export const getUserByID = async (id) => {
   if (!user)
     return {
       status: 422,
-      message: 'Error: Invalid submission ID',
+      message: 'Invalid submission ID',
     }
   return user
 }
@@ -96,7 +96,7 @@ export const updateUserdetails = async (userId ,user, userDetails) => {
   const updatedUser = await findOneAndUpdateUser({ _id: userId }, userDetails)
   if (!updatedUser) return {
     status: 422,
-    message: 'Error: Invalid user ID'
+    message: 'Invalid user ID'
   }
   return updatedUser
 }
