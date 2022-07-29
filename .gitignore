@@ -1,6 +1,7 @@
 dist/
 logs/
 node_modules/
+.vscode/
 package-lock.json
 yarn.lock
 yarn-error.log
