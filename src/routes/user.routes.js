@@ -10,7 +10,7 @@ import {
   changePassword,
 } from '../controllers/user'
 import { adminProtect } from '../middleware/auth'
-import { addUserSchema, changePasswordSchema, userIdSchema } from '../validations/user'
+import { addUserSchema, changePasswordSchema, userIdSchema , updateSchema } from '../validations/user'
 
 const userRouter = express.Router()
 
@@ -23,7 +23,7 @@ userRouter.put(
   celebrate({ [Segments.BODY]: changePasswordSchema }),
   changePassword,
 )
-userRouter.put('/:id', adminProtect, celebrate({ [Segments.PARAMS]: userIdSchema }), update)
+userRouter.put('/:id', adminProtect, celebrate({ [Segments.PARAMS]: userIdSchema , [Segments.BODY]: updateSchema }), update)
 userRouter.put('/:id/score', adminProtect, celebrate({ [Segments.PARAMS]: userIdSchema }), updateScore)
 
 export default userRouter

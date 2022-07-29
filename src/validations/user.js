@@ -47,3 +47,15 @@ export const addUserSchema = {
 export const userIdSchema = {
   id: Joi.string().hex().length(24).required(),
 }
+
+export const updateSchema = {
+    name: Joi.string().optional(),
+    university: Joi.string().optional(),
+    members: Joi.array().items(Joi.object({
+        name: Joi.string().required(),
+        email: Joi.string().email().required(),
+        phone: Joi.number().required(),
+        academic_year: Joi.number().required().min(1).max(4),
+    })).min(1).max(4).optional(),
+    photo_url: Joi.string().optional()
+}
