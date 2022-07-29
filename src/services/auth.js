@@ -43,8 +43,20 @@ export const verifyMailTemplate = async (email, verification_code) => {
   const replacements = {
     verify_URL: `${process.env.APP_DOMAIN}/api/auth/verify/${verification_code}`,
   }
+  const attachments = [
+    {
+    filename: 'bashawayLogo',
+    path: __basedir +'/html/images/bashawayLogo.png',
+    cid: 'bashawayLogo',
+    },
+    {
+    filename: 'fossLogo',
+    path: __basedir +'/html/images/fossLogo.png',
+    cid: 'fossLogo',
+    }
+  ]
   const subject = 'Welcome to the Bashaway'
-  await sendMail(email, 'verifyRegistration', replacements, subject)
+  await sendMail(email, 'verifyRegistration', replacements, subject,attachments)
   return true
 }
 
@@ -52,4 +64,13 @@ export const updateVerificationStatus = async (verificationCode) => {
   const user = await getOneUser({ verification_code: verificationCode })
   if (!user) return false
   return await findOneAndUpdateUser({ email: user.email }, { is_verified: true })
+}
+
+export const authResendVerification = async (email) => {
+  const user = await getOneUser({ email })
+  if (!user) return { status: 400, message: 'A user/group by the provided email does not exist' }
+  const verification_code = uuidv4()
+  const updatedUser = await findOneAndUpdateUser({ email }, { verification_code })
+  await verifyMailTemplate(email, verification_code)
+  return updatedUser
 }
