@@ -49,3 +49,14 @@ export const deleteAQuestion = async (filters) => {
 export const getMaxScore = async (questionId) => {
   return (await Question.findById(questionId).lean()).max_score
 }
+
+export const getAllQuestions = async (pageSize = 10, pageNum = 1) => {
+  const options = {
+    page: pageNum,
+    limit: pageSize,
+  }
+
+  return await Question.paginate({}, options).catch((err) => {
+    logger.error(`An error occurred when retrieving questions - err: ${err.message}`)
+  })
+}
