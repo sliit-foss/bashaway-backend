@@ -52,6 +52,6 @@ export const updateSchema = {
         email: Joi.string().email().required(),
         phone: Joi.number().required(),
         academic_year: Joi.number().required().min(1).max(4),
-    })).max(4).optional(),
+    })).min(1).max(4).optional(),
     photo_url: Joi.string().optional()
 }
