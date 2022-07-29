@@ -3,7 +3,9 @@ import logger from '../utils/logger'
 
 
 export const createUser = async (user) => {
-  return await new User(user).save()
+  const userMade = (await new User(user).save()).toObject()
+  delete userMade.password
+  return userMade
 }
 
 export const getAllUsers = async ({ sort = {}, filter = {}, pageNum = 1, pageSize = 10 }) => {
