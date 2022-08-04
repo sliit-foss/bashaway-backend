@@ -21,7 +21,7 @@ const SubmissionSchema = mongoose.Schema(
       type: Number,
       required: false
     },
-    gradedBy: {
+    graded_by: {
       type: mongoose.Schema.Types.ObjectId,
       ref: 'User',
       required: false

@@ -50,3 +50,7 @@ export const getLatestScore = async ({ user, question }) => {
   if (result) return result.score
   else return 0
 }
+
+export const getSubmissionsByQuestion = async (question) => {
+  return await Submission.find({question}).lean()
+}
