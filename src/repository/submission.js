@@ -31,6 +31,10 @@ export const getSubmissionById = async (id) => {
   return await Submission.findById(id).lean()
 }
 
+export const getOneSubmission = async (filters) => {
+  return await Submission.findOne(filters).lean()
+}
+
 export const insertGrade = async (submission, score, admin) => {
   const query = { _id: submission }
   const newData = { score, gradedBy: admin }

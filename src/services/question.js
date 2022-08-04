@@ -1,4 +1,5 @@
 import { findAllQuestions, insertQuestion, findQuestion, findAndUpdateQuestion, getQuestionById, deleteAQuestion } from '../repository/question'
+import { getOneSubmission } from '../repository/submission'
 
 export const retrieveAllQuestions = async (user) => {
     return findAllQuestions(user._id)
@@ -29,6 +30,16 @@ export const updateQuestionById = async (question_id, data, user) => {
 
 export const deleteQuestion = async (question_id, user) => {
     const question = await findQuestion({ _id: question_id })
+    const checkSubmission = await getOneSubmission({question : question_id})
+
+    if(question.enabled){
+        return({status: 400, message: 'Failed to delete question/ Question is active'})
+    }
+
+    if(checkSubmission){
+        return({status: 400, message: 'Failed to delete question/ Question already have a submission'})
+    }
+
     if (!question) return { status: 400, message: 'Question doesn\'t exist to remove' }
     if (question.creator_lock && question.creator.toString() !== user._id.toString()) return { status: 403, message: 'You are not authorized to delete this question' }
     return await deleteAQuestion({ _id: question_id })
