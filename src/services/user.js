@@ -58,6 +58,8 @@ export const updateAllScoresService = async () => {
 }
 
 export const changePasswordService = async (user, oldPassword, newPassword) => {
+  user = await getOneUser({ _id: user._id }, true) // because req.user doesn't have the password
+
   const isPasswordMatch = await new Promise((resolve, reject) => {
     bcrypt.compare(oldPassword, user.password, (err, hash) => {
       if (err) reject(err)
