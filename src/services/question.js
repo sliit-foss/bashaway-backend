@@ -32,12 +32,12 @@ export const deleteQuestion = async (question_id, user) => {
     const question = await findQuestion({ _id: question_id })
     const checkSubmission = await getOneSubmission({question : question_id})
 
-    if(question.enabled === true){
-        return({status: 400, message: 'Error - Question is active'})
+    if(question.enabled){
+        return({status: 400, message: 'Failed to delete question/ Question is active'})
     }
 
     if(checkSubmission){
-        return({status: 400, message: 'Error - This question already have a submission'})
+        return({status: 400, message: 'Failed to delete question/ Question already have a submission'})
     }
 
     if (!question) return { status: 400, message: 'Question doesn\'t exist to remove' }
