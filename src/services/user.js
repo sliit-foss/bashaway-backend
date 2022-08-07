@@ -102,7 +102,7 @@ export const addNewUser = async (userDetails) => {
   const genaratedPassword = Math.random().toString(36).slice(-8)
 
   const user = await getOneUser({ email: userDetails.email }, false)
-  if (user && user?._id.toString() !== userDetails._id)
+  if (user?._id.toString() !== userDetails._id)
     return { status: 400, message: 'Email is already taken' }
 
   const encryptedPassword = await new Promise((resolve, reject) => {
