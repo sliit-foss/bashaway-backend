@@ -9,7 +9,7 @@ import {
 import { getOneSubmission, getSubmissions } from '../repository/submission'
 
 export const retrieveAllQuestions = async (user) => {
-  return findAllQuestions(user._id)
+  return findAllQuestions(user)
 }
 
 export const createQuestion = async (data, user) => {
