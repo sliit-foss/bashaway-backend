@@ -4,8 +4,15 @@ import mongoose from 'mongoose';
 const ObjectId = mongoose.Types.ObjectId;
 
 export const findAllQuestions = async (user) => {
+  if(user.role == "ADMIN"){
+    return Question.find({
+      $or: [{ creator_lock: false }, { creator_lock: true, creator: user._id }],
+    }).select('-creator -creator_lock')
+  }
+
   return Question.find({
     $or: [{ creator_lock: false }, { creator_lock: true, creator: user._id }],
+    $and: [{ enabled: true }],
   }).select('-creator -creator_lock')
 }
 
