@@ -12,7 +12,7 @@ const transport = nodemailer.createTransport({
     },
 });
 
-export const sendMail = async (email, templateName, replacements, subject) => {
+export const sendMail = async (email, templateName, replacements, subject,attachments = []) => {
     const html = fs.readFileSync(__basedir + `/html/${templateName}.html`, "utf8")
     const template = handlebars.compile(html);
     const htmlToSend = template(replacements);
@@ -21,6 +21,7 @@ export const sendMail = async (email, templateName, replacements, subject) => {
         to: email,
         subject: subject,
         html: htmlToSend,
+        attachments
     };
     return new Promise((resolve, reject) => {
         transport.sendMail(mailOptions, (error) => {

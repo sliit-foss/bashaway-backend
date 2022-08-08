@@ -43,8 +43,20 @@ export const verifyMailTemplate = async (email, verification_code) => {
   const replacements = {
     verify_URL: `${process.env.APP_DOMAIN}/api/auth/verify/${verification_code}`,
   }
+  const attachments = [
+    {
+    filename: 'bashawayLogo',
+    path: __basedir +'/html/images/bashawayLogo.png',
+    cid: 'bashawayLogo',
+    },
+    {
+    filename: 'fossLogo',
+    path: __basedir +'/html/images/fossLogo.png',
+    cid: 'fossLogo',
+    }
+  ]
   const subject = 'Welcome to the Bashaway'
-  await sendMail(email, 'verifyRegistration', replacements, subject)
+  await sendMail(email, 'verifyRegistration', replacements, subject,attachments)
   return true
 }
 
