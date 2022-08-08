@@ -23,7 +23,7 @@ userRouter.put(
   celebrate({ [Segments.BODY]: changePasswordSchema }),
   changePassword,
 )
-userRouter.put('/:id', adminProtect, celebrate({ [Segments.PARAMS]: userIdSchema , [Segments.BODY]: updateSchema }), update)
+userRouter.put('/:id', celebrate({ [Segments.PARAMS]: userIdSchema , [Segments.BODY]: updateSchema }), update)
 userRouter.put('/:id/score', adminProtect, celebrate({ [Segments.PARAMS]: userIdSchema }), updateScore)
 
 export default userRouter

@@ -86,7 +86,7 @@ export const updateUserdetails = async (userId ,user, userDetails) => {
 
   if (userDetails.name) {
     userData = await getOneUser({ name: userDetails.name }, false)
-    if (userData && (userData?._id.toString() !== user._id.toString()))
+    if (userData && (userData?._id.toString() !== userId.toString()))
       return { status: 422, message: 'Name is already taken' }
   }
 
