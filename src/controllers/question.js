@@ -3,7 +3,7 @@ import { retrieveAllQuestions, createQuestion, retrieveQuestion, updateQuestionB
 import { makeResponse } from '../utils/response'
 
 export const getAllQuestions = asyncHandler(async (req, res) => {
-    const data = await retrieveAllQuestions(req.user)
+    const data = await retrieveAllQuestions(req.user , req.query)
     return makeResponse({ res, data, message: "Questions retrieved successfully" });
 })
 

@@ -8,8 +8,8 @@ import {
 } from '../repository/question'
 import { getOneSubmission, getSubmissions } from '../repository/submission'
 
-export const retrieveAllQuestions = async (user) => {
-  return findAllQuestions(user)
+export const retrieveAllQuestions = async (user, query) => {
+  return findAllQuestions(user, query)
 }
 
 export const createQuestion = async (data, user) => {
