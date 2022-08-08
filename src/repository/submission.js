@@ -20,6 +20,7 @@ export const getSubmissions = async ({ sort = {}, filter = {}, pageNum = 1, page
     collation: {
       locale: 'en',
     },
+    populate :(["user" , "graded_by" ,  "question" ]),
   }
   return await Submission.paginate(filter, options).catch((err) => {
     logger.error(`An error occurred when retrieving submissions - err: ${err.message}`)
