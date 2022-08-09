@@ -3,16 +3,18 @@ import mongoose from 'mongoose';
 
 const ObjectId = mongoose.Types.ObjectId;
 
-export const findAllQuestions = async (user) => {
+export const findAllQuestions = async (user, query) => {
   if(user.role == "ADMIN"){
     return Question.find({
       $or: [{ creator_lock: false }, { creator_lock: true, creator: user._id }],
+      $and: [query.filter],
     }).select('-creator -creator_lock')
   }
 
+  query.filter.enabled = true
   return Question.find({
     $or: [{ creator_lock: false }, { creator_lock: true, creator: user._id }],
-    $and: [{ enabled: true }],
+    $and: [query.filter],
   }).select('-creator -creator_lock')
 }
 
