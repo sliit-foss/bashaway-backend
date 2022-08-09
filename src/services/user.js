@@ -77,11 +77,11 @@ export const changePasswordService = async (user, oldPassword, newPassword) => {
   return await findOneAndUpdateUser({ email: user.email }, { password: encryptedPassword })
 }
 
-export const updateUserdetails = async (userId ,user, userDetails) => {
+export const updateUserdetails = async (userId, user, userDetails) => {
   let userData
 
-  if(user.role !== 'ADMIN' && userId.toString() !== user._id.toString()) 
-    return {status:403, message: "You are not authorized to update this user"}
+  if (user.role !== 'ADMIN' && userId.toString() !== user._id.toString())
+    return { status: 403, message: "You are not authorized to update this user" }
 
 
   if (userDetails.name) {
@@ -101,9 +101,16 @@ export const updateUserdetails = async (userId ,user, userDetails) => {
 export const addNewUser = async (userDetails) => {
   const genaratedPassword = Math.random().toString(36).slice(-8)
 
-  const user = await getOneUser({ email: userDetails.email }, false)
+  let user = await getOneUser({ email: userDetails.email }, false)
+
   if (user?._id.toString() !== userDetails._id)
     return { status: 400, message: 'Email is already taken' }
+
+  user = await getOneUser({ name: userDetails.name }, false)
+
+  if (user?.name.toString() == userDetails.name)
+    return { status: 400, message: 'Admin names must be unique' }
+
 
   const encryptedPassword = await new Promise((resolve, reject) => {
     bcrypt.hash(genaratedPassword, parseInt(process.env.BCRYPT_SALT_ROUNDS), (err, hash) => {
