@@ -83,7 +83,6 @@ export const updateUserdetails = async (userId, user, userDetails) => {
   if (user.role !== 'ADMIN' && userId.toString() !== user._id.toString())
     return { status: 403, message: "You are not authorized to update this user" }
 
-
   if (userDetails.name) {
     userData = await getOneUser({ name: userDetails.name }, false)
     if (userData && (userData?._id.toString() !== userId.toString()))
