@@ -108,7 +108,7 @@ export const addNewUser = async (userDetails) => {
 
   user = await getOneUser({ name: userDetails.name }, false)
 
-  if (user?.name.toString() == userDetails.name)
+  if (user?.name === userDetails.name)
     return { status: 400, message: 'Admin names must be unique' }
 
 
