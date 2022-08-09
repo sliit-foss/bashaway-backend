@@ -111,7 +111,6 @@ export const addNewUser = async (userDetails) => {
   if (user?.name === userDetails.name)
     return { status: 400, message: 'Admin names must be unique' }
 
-
   const encryptedPassword = await new Promise((resolve, reject) => {
     bcrypt.hash(genaratedPassword, parseInt(process.env.BCRYPT_SALT_ROUNDS), (err, hash) => {
       if (err) reject(err)
