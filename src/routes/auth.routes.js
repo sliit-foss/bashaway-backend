@@ -12,5 +12,5 @@ authRouter.get('/current', protect, current);
 authRouter.post('/verify', resendVerification);
 authRouter.get("/verify/:verification_code", celebrate({ [Segments.PARAMS]: verifySchema }), verifyUser);
 authRouter.post('/forgot_password', forgotPassword);
-authRouter.get('/reset_password/:verification_code', celebrate({ [Segments.BODY]: resetPasswordSchema }), resetPassword);
+authRouter.post('/reset_password/:verification_code', celebrate({ [Segments.BODY]: resetPasswordSchema }), resetPassword);
 export default authRouter;

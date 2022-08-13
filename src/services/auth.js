@@ -77,8 +77,7 @@ export const authResendVerification = async (email) => {
 
 export const resetPasswordMailTemplate = async (email, verification_code) => {
   const replacements = {
-    // verify_url: `${process.env.FRONTEND_DOMAIN}/forgot_password/${verification_code}`,
-    verify_url: `${process.env.APP_DOMAIN}/api/auth/reset_password/${verification_code}`,
+    verify_url: `${process.env.FRONTEND_DOMAIN}/forgot_password/${verification_code}`,
   }
   const attachments = [
     {
@@ -100,11 +99,6 @@ export const resetPasswordMailTemplate = async (email, verification_code) => {
 export const forgotPasswordEmail = async (email) => {
   const user = await getOneUser({ email })
   if (!user) return { status: 400, message: 'A user/group by the provided email does not exist' }
-  if (!user.is_verified)
-    return {
-      status: 400,
-      message: 'You are not a verified user. Please verify your account and come back',
-    }
   const verification_code = uuidv4()
   const updatedUser = await findOneAndUpdateUser({ email }, { verification_code })
   await resetPasswordMailTemplate(email, verification_code)
@@ -121,10 +115,9 @@ export const resetPasswordFromEmail = async (password, verificationCode) => {
       resolve(hash)
     })
   })
-  const verification_code = uuidv4()
   const updatedUser = await findOneAndUpdateUser(
     { email: user.email },
-    { password: encryptedPassword, verification_code },
+    { password: encryptedPassword, is_verified: true },
   )
   return updatedUser
 }
