@@ -1,5 +1,5 @@
 import asyncHandler from "../middleware/async"
-import { authRegister, authLogin, updateVerificationStatus, authResendVerification } from "../services/auth"
+import { authRegister, authLogin, updateVerificationStatus, authResendVerification, forgotPasswordEmail, resetPasswordFromEmail } from "../services/auth"
 import { makeResponse } from "../utils/response"
 import { sendTokenResponse } from "../utils/jwt";
 var fs = require('fs');
@@ -44,4 +44,16 @@ export const resendVerification = asyncHandler(async (req, res) => {
 
 export const current = asyncHandler(async (req, res, next) => {
   return makeResponse({ res, data: req.user, message: "Auth group details fetched successfully" });
+})
+
+export const forgotPassword = asyncHandler(async (req, res) => {
+  const result = await forgotPasswordEmail(req.body.email);
+  if (result.status) return makeResponse({ res, ...result });
+  return makeResponse({ res, message: "A password registration link has been emailed to you. Please use it to reset your password" });
+})
+
+export const resetPassword = asyncHandler(async (req, res) => {
+  const result = await resetPasswordFromEmail(req.body.password, req.params.verification_code);
+  if (result.status) return makeResponse({ res, ...result });
+  return makeResponse({ res, message: "Password reset successfully" });
 })
