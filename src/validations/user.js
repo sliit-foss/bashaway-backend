@@ -46,6 +46,10 @@ export const verifySchema = Joi.object({
   verification_code: Joi.string().required(),
 })
 
+export const resendVerifyMailSchema = Joi.object({
+  email: Joi.string().email().required(),
+})
+
 export const changePasswordSchema = Joi.object({
   old_password: Joi.string().required(),
   new_password: Joi.string()
