@@ -1,5 +1,6 @@
 import asyncHandler from "../middleware/async"
 import { authRegister, authLogin, updateVerificationStatus, authResendVerification, forgotPasswordEmail, resetPasswordFromEmail } from "../services/auth"
+import { getOneUser } from "../repository/user"
 import { makeResponse } from "../utils/response"
 import { sendTokenResponse } from "../utils/jwt";
 var fs = require('fs');
@@ -37,6 +38,10 @@ export const verifyUser = asyncHandler(async (req, res) => {
 })
 
 export const resendVerification = asyncHandler(async (req, res) => {
+  const user = await getOneUser({ email: req.body.email })
+  if(user.is_verified)
+    return makeResponse({ res, status: 405, message: "User already verified" });
+  
   const result = await authResendVerification(req.body.email);
   if (result.status) return makeResponse({ res, ...result });
   return makeResponse({ res, message: "Verification email sent successfully" });
