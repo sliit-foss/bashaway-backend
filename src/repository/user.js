@@ -32,7 +32,7 @@ export const getAllUsers = async ({ sort = {}, filter = {}, pageNum = 1, pageSiz
   })
 }
 
-export const getOneUser = async (filters, returnPassword) => {
+export const getOneUser = async (filters, returnPassword = false) => {
   const user = await User.findOne(filters).lean()
   if (!user) return null
 
