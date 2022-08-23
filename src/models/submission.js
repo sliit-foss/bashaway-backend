@@ -6,16 +6,16 @@ const SubmissionSchema = mongoose.Schema(
     user: {
       type: mongoose.Schema.Types.ObjectId,
       ref: 'User',
-      required: true,
+      required: true
     },
     question: {
       type: mongoose.Schema.Types.ObjectId,
       ref: 'Question',
-      required: true,
+      required: true
     },
     link: {
       type: String,
-      required: true,
+      required: true
     },
     score: {
       type: Number,
@@ -25,12 +25,12 @@ const SubmissionSchema = mongoose.Schema(
       type: mongoose.Schema.Types.ObjectId,
       ref: 'User',
       required: false
-    },
+    }
   },
   {
     versionKey: false,
-    timestamps: { createdAt: 'created_at', updatedAt: 'updated_at' },
-  },
+    timestamps: { createdAt: 'created_at', updatedAt: 'updated_at' }
+  }
 )
 
 SubmissionSchema.plugin(mongoosePaginate)

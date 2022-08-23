@@ -1,20 +1,20 @@
 import Question from '../models/question'
-import mongoose from 'mongoose';
+import mongoose from 'mongoose'
 
-const ObjectId = mongoose.Types.ObjectId;
+const ObjectId = mongoose.Types.ObjectId
 
 export const findAllQuestions = async (user, query) => {
-  if(user.role == "ADMIN"){
+  if (user.role == 'ADMIN') {
     return Question.find({
       $or: [{ creator_lock: false }, { creator_lock: true, creator: user._id }],
-      $and: [query.filter],
+      $and: [query.filter]
     }).select('-creator -creator_lock')
   }
 
   query.filter.enabled = true
   return Question.find({
     $or: [{ creator_lock: false }, { creator_lock: true, creator: user._id }],
-    $and: [query.filter],
+    $and: [query.filter]
   }).select('-creator -creator_lock')
 }
 
@@ -27,19 +27,16 @@ export const findQuestion = async (filters) => {
 }
 
 export const getQuestionById = async (id, user, filterFields = true) => {
-    let query = Question.find({
-        $and: [
-            { _id: { $eq: new ObjectId(id)  } },
-            {
-                $or: [
-                    { creator_lock: false },
-                    { creator_lock: true, creator: user._id },
-                ]
-            }
-        ]
-    })
-    if (filterFields) query = query.select('-creator -creator_lock')
-    return await query.exec()
+  let query = Question.find({
+    $and: [
+      { _id: { $eq: new ObjectId(id) } },
+      {
+        $or: [{ creator_lock: false }, { creator_lock: true, creator: user._id }]
+      }
+    ]
+  })
+  if (filterFields) query = query.select('-creator -creator_lock')
+  return await query.exec()
 }
 
 export const getAllQuestionIds = async (filters = {}) => {
@@ -62,7 +59,7 @@ export const getMaxScore = async (questionId) => {
 export const getAllQuestions = async (pageSize = 10, pageNum = 1) => {
   const options = {
     page: pageNum,
-    limit: pageSize,
+    limit: pageSize
   }
 
   return await Question.paginate({}, options).catch((err) => {

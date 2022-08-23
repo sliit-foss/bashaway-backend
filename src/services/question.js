@@ -1,11 +1,4 @@
-import {
-  findAllQuestions,
-  insertQuestion,
-  findQuestion,
-  findAndUpdateQuestion,
-  getQuestionById,
-  deleteAQuestion,
-} from '../repository/question'
+import { findAllQuestions, insertQuestion, findQuestion, findAndUpdateQuestion, getQuestionById, deleteAQuestion } from '../repository/question'
 import { getOneSubmission, getSubmissions } from '../repository/submission'
 
 export const retrieveAllQuestions = async (user, query) => {
@@ -23,7 +16,7 @@ export const retrieveQuestion = async (question_id, user) => {
   if (result.length === 0)
     return {
       status: 400,
-      message: "Question doesn't exist or you do not have permission to view this question",
+      message: "Question doesn't exist or you do not have permission to view this question"
     }
   return result[0]
 }
@@ -35,8 +28,7 @@ export const updateQuestionById = async (question_id, data, user) => {
     const check = await findQuestion({ name: data.name })
     if (check) return { status: 400, message: 'Question name already taken' }
   }
-  if (question.creator_lock && question.creator.toString() !== user._id.toString())
-    return { status: 403, message: 'You are not authorized to update this question' }
+  if (question.creator_lock && question.creator.toString() !== user._id.toString()) return { status: 403, message: 'You are not authorized to update this question' }
   if (data.max_score) {
     const r = await getSubmissions({ filter: { question: question_id } }).then((res) => {
       return res
@@ -60,7 +52,6 @@ export const deleteQuestion = async (question_id, user) => {
   }
 
   if (!question) return { status: 400, message: "Question doesn't exist to remove" }
-  if (question.creator_lock && question.creator.toString() !== user._id.toString())
-    return { status: 403, message: 'You are not authorized to delete this question' }
+  if (question.creator_lock && question.creator.toString() !== user._id.toString()) return { status: 403, message: 'You are not authorized to delete this question' }
   return await deleteAQuestion({ _id: question_id })
 }
