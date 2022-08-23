@@ -8,10 +8,9 @@ export const registerSchema = Joi.object({
     .required()
     .error((errors) =>
       errors.map((err) => {
-        if (err.code === 'string.pattern.base')
-          err.message = `Password should have at least one lowercase letter, one uppercase letter, one number and one special character and should be at least 8 characters long`
+        if (err.code === 'string.pattern.base') err.message = `Password should have at least one lowercase letter, one uppercase letter, one number and one special character and should be at least 8 characters long`
         return err
-      }),
+      })
     ),
   university: Joi.string().required(),
   members: Joi.array()
@@ -24,30 +23,29 @@ export const registerSchema = Joi.object({
           .pattern(new RegExp(/^[0-9]{9,10}$/))
           .error((errors) =>
             errors.map((err) => {
-              if (err.code === 'string.pattern.base')
-                err.message = `Phone number should contain 10 or 9 positive integers`
+              if (err.code === 'string.pattern.base') err.message = `Phone number should contain 10 or 9 positive integers`
               return err
-            }),
+            })
           ),
-        academic_year: Joi.number().required().min(1).max(4),
-      }),
+        academic_year: Joi.number().required().min(1).max(4)
+      })
     )
     .max(4)
     .required()
-    .min(1),
+    .min(1)
 })
 
 export const loginSchema = Joi.object({
   email: Joi.string().email().required(),
-  password: Joi.string().required(),
+  password: Joi.string().required()
 })
 
 export const verifySchema = Joi.object({
-  verification_code: Joi.string().required(),
+  verification_code: Joi.string().required()
 })
 
 export const resendVerifyMailSchema = Joi.object({
-  email: Joi.string().email().required(),
+  email: Joi.string().email().required()
 })
 
 export const changePasswordSchema = Joi.object({
@@ -57,20 +55,19 @@ export const changePasswordSchema = Joi.object({
     .required()
     .error((errors) =>
       errors.map((err) => {
-        if (err.code === 'string.pattern.base')
-          err.message = `Password should have at least one lowercase letter, one uppercase letter, one number and one special character and should be at least 8 characters long`
+        if (err.code === 'string.pattern.base') err.message = `Password should have at least one lowercase letter, one uppercase letter, one number and one special character and should be at least 8 characters long`
         return err
-      }),
-    ),
+      })
+    )
 })
 
 export const addUserSchema = {
   name: Joi.string().required(),
-  email: Joi.string().email().required(),
+  email: Joi.string().email().required()
 }
 
 export const userIdSchema = {
-  id: Joi.string().hex().length(24).required(),
+  id: Joi.string().hex().length(24).required()
 }
 
 export const updateSchema = {
@@ -82,13 +79,13 @@ export const updateSchema = {
         name: Joi.string().required(),
         email: Joi.string().email().required(),
         phone: Joi.number().required(),
-        academic_year: Joi.number().required().min(1).max(4),
-      }),
+        academic_year: Joi.number().required().min(1).max(4)
+      })
     )
     .min(1)
     .max(4)
     .optional(),
-  photo_url: Joi.string().optional(),
+  photo_url: Joi.string().optional()
 }
 
 export const resetPasswordSchema = {
@@ -97,13 +94,12 @@ export const resetPasswordSchema = {
     .required()
     .error((errors) =>
       errors.map((err) => {
-        if (err.code === 'string.pattern.base')
-          err.message = `Password should have at least one lowercase letter, one uppercase letter, one number and one special character and should be at least 8 characters long`
+        if (err.code === 'string.pattern.base') err.message = `Password should have at least one lowercase letter, one uppercase letter, one number and one special character and should be at least 8 characters long`
         return err
-      }),
-    ),
+      })
+    )
 }
 
 export const validUserResetPasswordSchema = {
-    verification_code: Joi.string().required(),
+  verification_code: Joi.string().required()
 }

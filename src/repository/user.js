@@ -1,7 +1,6 @@
 import User from '../models/user'
 import logger from '../utils/logger'
 
-
 export const createUser = async (user) => {
   const userMade = (await new User(user).save()).toObject()
   delete userMade.password
@@ -13,8 +12,8 @@ export const getAllUsers = async ({ sort = {}, filter = {}, pageNum = 1, pageSiz
     page: pageNum,
     limit: pageSize,
     collation: {
-      locale: 'en',
-    },
+      locale: 'en'
+    }
   }
 
   if (Object.keys(sort).length > 0) options.sort = sort
@@ -24,9 +23,15 @@ export const getAllUsers = async ({ sort = {}, filter = {}, pageNum = 1, pageSiz
     delete filter.member_count
   }
 
-  return await User.aggregatePaginate(User.aggregate([{
-    $match: filter,
-  }, { $unset: ["password", "verification_code"] }]), options).catch((err) => {
+  return await User.aggregatePaginate(
+    User.aggregate([
+      {
+        $match: filter
+      },
+      { $unset: ['password', 'verification_code'] }
+    ]),
+    options
+  ).catch((err) => {
     logger.error(`An error occurred when retrieving users - err: ${err.message}`)
     throw err
   })
@@ -50,7 +55,7 @@ export const findOneAndUpdateUser = async (filters, data) => {
 
 export const getAllUserIds = async (filters = {}) => {
   const users = await User.find(filters).select('_id').lean()
-  return users.map(user => user._id)
+  return users.map((user) => user._id)
 }
 
 export const findOneAndRemoveUser = async (filters) => {

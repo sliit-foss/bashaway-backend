@@ -19,7 +19,7 @@ export const authRegister = async ({ name, email, password, university, members 
     password: encryptedPassword,
     verification_code: verification_code,
     university,
-    members,
+    members
   })
   await verifyMailTemplate(email, verification_code)
   return registeredUser
@@ -41,19 +41,19 @@ export const authLogin = async ({ email, password }) => {
 
 export const verifyMailTemplate = async (email, verification_code) => {
   const replacements = {
-    verify_url: `${process.env.APP_DOMAIN}/api/auth/verify/${verification_code}`,
+    verify_url: `${process.env.APP_DOMAIN}/api/auth/verify/${verification_code}`
   }
   const attachments = [
     {
       filename: 'bashawayLogo',
       path: __basedir + '/html/images/bashawayLogo.png',
-      cid: 'bashawayLogo',
+      cid: 'bashawayLogo'
     },
     {
       filename: 'fossLogo',
       path: __basedir + '/html/images/fossLogo.png',
-      cid: 'fossLogo',
-    },
+      cid: 'fossLogo'
+    }
   ]
   const subject = 'Welcome to the Bashaway'
   await sendMail(email, 'verifyRegistration', replacements, subject, attachments)
@@ -77,19 +77,19 @@ export const authResendVerification = async (email) => {
 
 export const resetPasswordMailTemplate = async (email, verification_code) => {
   const replacements = {
-    verify_url: `${process.env.FRONTEND_DOMAIN}/forgot_password/${verification_code}`,
+    verify_url: `${process.env.FRONTEND_DOMAIN}/forgot_password/${verification_code}`
   }
   const attachments = [
     {
       filename: 'bashawayLogo',
       path: __basedir + '/html/images/bashawayLogo.png',
-      cid: 'bashawayLogo',
+      cid: 'bashawayLogo'
     },
     {
       filename: 'fossLogo',
       path: __basedir + '/html/images/fossLogo.png',
-      cid: 'fossLogo',
-    },
+      cid: 'fossLogo'
+    }
   ]
   const subject = 'Welcome to Bashaway'
   await sendMail(email, 'resetPassword', replacements, subject, attachments)
@@ -115,9 +115,6 @@ export const resetPasswordFromEmail = async (password, verificationCode) => {
       resolve(hash)
     })
   })
-  const updatedUser = await findOneAndUpdateUser(
-    { email: user.email },
-    { password: encryptedPassword, is_verified: true },
-  )
+  const updatedUser = await findOneAndUpdateUser({ email: user.email }, { password: encryptedPassword, is_verified: true })
   return updatedUser
 }

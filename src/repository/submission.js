@@ -7,7 +7,7 @@ export const insertSubmission = async (userId, question, link) => {
     question,
     link,
     score: null,
-    gradedBy: null,
+    gradedBy: null
   })
   await newSubmission.save()
 }
@@ -18,9 +18,9 @@ export const getSubmissions = async ({ sort = {}, filter = {}, pageNum = 1, page
     page: pageNum,
     limit: pageSize,
     collation: {
-      locale: 'en',
+      locale: 'en'
     },
-    populate :(["user" , "graded_by" ,  "question" ]),
+    populate: ['user', 'graded_by', 'question']
   }
   return await Submission.paginate(filter, options).catch((err) => {
     logger.error(`An error occurred when retrieving submissions - err: ${err.message}`)
@@ -46,10 +46,10 @@ export const getLatestScore = async ({ user, question }) => {
   const filters = {
     user,
     question,
-    score: { $ne: null },
+    score: { $ne: null }
   }
   const sort = {
-    created_at: 'desc',
+    created_at: 'desc'
   }
   const result = await Submission.findOne(filters).setOptions({ sort }).lean()
   if (result) return result.score
@@ -57,5 +57,5 @@ export const getLatestScore = async ({ user, question }) => {
 }
 
 export const getSubmissionsByQuestion = async (question) => {
-  return await Submission.find({question}).lean()
+  return await Submission.find({ question }).lean()
 }
