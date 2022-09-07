@@ -10,8 +10,11 @@ export const findAllQuestions = async (user, query) => {
       $and: [query.filter]
     }).select('-creator -creator_lock')
   }
-
-  query.filter.enabled = true
+  if (query.filter) {
+    query.filter.enabled = true
+  } else {
+    query.filter = { enabled: true }
+  }
   return Question.find({
     $or: [{ creator_lock: false }, { creator_lock: true, creator: user._id }],
     $and: [query.filter]
