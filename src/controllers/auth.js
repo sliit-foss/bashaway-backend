@@ -70,7 +70,7 @@ export const forgotPassword = asyncHandler(async (req, res) => {
 })
 
 export const resetPassword = asyncHandler(async (req, res) => {
-  const result = await resetPasswordFromEmail(req.body.password, req.params.verification_code)
+  const result = await resetPasswordFromEmail(req.body.new_password, req.params.verification_code)
   if (result.status) return makeResponse({ res, ...result })
   return makeResponse({ res, message: 'Password reset successfully' })
 })

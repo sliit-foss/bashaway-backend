@@ -77,7 +77,7 @@ export const authResendVerification = async (email) => {
 
 export const resetPasswordMailTemplate = async (email, verification_code) => {
   const replacements = {
-    verify_url: `${process.env.FRONTEND_DOMAIN}/forgot_password/${verification_code}`
+    reset_url: `${process.env.FRONTEND_DOMAIN}/reset-password/${verification_code}`
   }
   const attachments = [
     {
