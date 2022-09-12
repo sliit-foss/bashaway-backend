@@ -4,7 +4,10 @@
   "description": "Backend",
   "main": "src/app.js",
   "scripts": {
-    "build": "babel src -d dist",
+    "build": "npm run clean && npm run build-babel && npm run copy",
+    "build-babel": "babel -d ./dist ./src -s",
+    "clean": "rm -rf dist && mkdir dist",
+    "copy": "babel src --out-dir ./dist --copy-files",
     "dev": "nodemon --exec babel-node src/app.js",
     "start": "node dist/app.js",
     "lint": "eslint --ignore-path .gitignore && prettier . --write",
