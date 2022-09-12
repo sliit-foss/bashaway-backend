@@ -3,8 +3,10 @@ import { authRegister, authLogin, updateVerificationStatus, authResendVerificati
 import { getOneUser } from '../repository/user'
 import { makeResponse } from '../utils/response'
 import { sendTokenResponse } from '../utils/jwt'
-var fs = require('fs')
+const fs = require('fs')
+
 export const register = asyncHandler(async (req, res) => {
+  if (req.user) return makeResponse({ res, status: 400, message: "You've already registered for an account." })
   const result = await authRegister(req.body)
   if (!result) return makeResponse({ res, status: 500, message: 'Registration failed.' })
   if (result.status) return makeResponse({ res, ...result })
