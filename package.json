@@ -11,7 +11,7 @@
     "dev": "nodemon --exec babel-node src/app.js",
     "start": "node dist/app.js",
     "lint": "eslint --ignore-path .gitignore && prettier . --write",
-    "test": "test"
+    "test": "echo test"
   },
   "repository": {
     "type": "git",
