@@ -4,8 +4,6 @@ import { createUser, getOneUser, findOneAndUpdateUser } from '../repository/user
 import { sendMail } from './email'
 
 export const authRegister = async ({ name, email, password, university, members }) => {
-  const user = await getOneUser({ email })
-  if (user) return { status: 400, message: 'User already exists' }
   const encryptedPassword = await new Promise((resolve, reject) => {
     bcrypt.hash(password, parseInt(process.env.BCRYPT_SALT_ROUNDS), (err, hash) => {
       if (err) reject(err)
