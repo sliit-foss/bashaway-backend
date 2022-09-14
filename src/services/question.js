@@ -6,8 +6,6 @@ export const retrieveAllQuestions = async (user, query) => {
 }
 
 export const createQuestion = async (data, user) => {
-  const question = await findQuestion({ name: data.name })
-  if (question) return { status: 400, message: 'Question name already taken' }
   return await insertQuestion({ ...data, creator: user._id })
 }
 
