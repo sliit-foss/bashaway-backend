@@ -92,14 +92,6 @@ export const updateUserdetails = async (userId, user, userDetails) => {
 export const addNewUser = async (userDetails) => {
   const genaratedPassword = Math.random().toString(36).slice(-8)
 
-  let user = await getOneUser({ email: userDetails.email }, false)
-
-  if (user?._id.toString() !== userDetails._id) return { status: 400, message: 'Email is already taken' }
-
-  user = await getOneUser({ name: userDetails.name }, false)
-
-  if (user?.name === userDetails.name) return { status: 400, message: 'Admin names must be unique' }
-
   const encryptedPassword = await new Promise((resolve, reject) => {
     bcrypt.hash(genaratedPassword, parseInt(process.env.BCRYPT_SALT_ROUNDS), (err, hash) => {
       if (err) reject(err)

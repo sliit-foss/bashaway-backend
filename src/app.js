@@ -43,6 +43,9 @@ app.use((err, req, res, next) => {
     }
   } else if (err.expose) {
     return makeResponse({ res, status: err.status, message: err.message })
+  } else if (err.name == 'MongoServerError' && err.code === 11000) {
+    const key = Object.keys(err.keyValue)[0]
+    return makeResponse({ res, status: 400, message: `The ${key} ${err.keyValue[key]} is already taken` })
   } else
     return makeResponse({
       res,
