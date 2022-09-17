@@ -18,7 +18,7 @@ export const registerSchema = Joi.object({
       Joi.object({
         name: Joi.string().required(),
         email: Joi.string().email().required(),
-        phone: Joi.string().min(10).required(),
+        phone: Joi.string().min(9).required(),
         academic_year: Joi.number().required().min(1).max(4)
       })
     )
@@ -70,7 +70,7 @@ export const updateSchema = {
       Joi.object({
         name: Joi.string().required(),
         email: Joi.string().email().required(),
-        phone: Joi.string().min(10).required(),
+        phone: Joi.string().min(9).required(),
         academic_year: Joi.number().required().min(1).max(4)
       })
     )
