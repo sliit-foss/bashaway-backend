@@ -17,10 +17,11 @@ const QuestionSchema = new mongoose.Schema(
       enum: ['EASY', 'MEDIUM', 'HARD'],
       required: true
     },
-    bash_only: {
-      type: Boolean,
-      required: true
-    },
+    constraints: [
+      {
+        type: String
+      }
+    ],
     max_score: {
       type: Number,
       required: true
@@ -39,6 +40,10 @@ const QuestionSchema = new mongoose.Schema(
       type: Boolean,
       required: true,
       default: false
+    },
+    codebase_url: {
+      type: String,
+      required: true
     }
   },
   {

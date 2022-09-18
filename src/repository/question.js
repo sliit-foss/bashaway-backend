@@ -4,21 +4,37 @@ import mongoose from 'mongoose'
 const ObjectId = mongoose.Types.ObjectId
 
 export const findAllQuestions = async (user, query) => {
+  if (!query.filter) {
+    query.filter = {}
+  }
+  let filter
   if (user.role == 'ADMIN') {
-    return Question.find({
+    filter = {
       $or: [{ creator_lock: false }, { creator_lock: true, creator: user._id }],
       $and: [query.filter]
-    }).select('-creator -creator_lock')
+    }
   }
-  if (query.filter) {
-    query.filter.enabled = true
-  } else {
-    query.filter = { enabled: true }
-  }
-  return Question.find({
+  query.filter.enabled = true
+  filter = {
     $or: [{ creator_lock: false }, { creator_lock: true, creator: user._id }],
     $and: [query.filter]
-  }).select('-creator -creator_lock')
+  }
+
+  const options = {
+    select: '-creator -creator_lock'
+  }
+
+  if (query.page) {
+    options.page = query.page
+  }
+
+  if (query.limit) {
+    options.limit = query.limit
+  }
+
+  console.log(filter)
+
+  return !query.page ? Question.find(filter) : Question.paginate(filter, options)
 }
 
 export const insertQuestion = async (data) => {
