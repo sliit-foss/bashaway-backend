@@ -89,7 +89,7 @@ export const resetPasswordMailTemplate = async (email, verification_code) => {
       cid: 'fossLogo'
     }
   ]
-  const subject = 'Welcome to Bashaway'
+  const subject = 'Bashaway - Reset Account Password'
   await sendMail(email, 'resetPassword', replacements, subject, attachments)
   return true
 }
