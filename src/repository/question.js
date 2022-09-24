@@ -32,8 +32,6 @@ export const findAllQuestions = async (user, query) => {
     options.limit = query.limit
   }
 
-  console.log(filter)
-
   return !query.page ? Question.find(filter) : Question.paginate(filter, options)
 }
 
