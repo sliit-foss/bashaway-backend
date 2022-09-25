@@ -53,7 +53,7 @@ export const getQuestionById = async (id, user, filterFields = true) => {
         $or: [{ creator_lock: false }, { creator_lock: true, creator: user._id }]
       }
     ]
-  })
+  }).lean()
   if (filterFields) query = query.select('-creator -creator_lock')
   return await query.exec()
 }

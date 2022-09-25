@@ -6,8 +6,7 @@ export const retrieveAllQuestions = async (user, query) => {
   const questions = await findAllQuestions(user, query)
   await Promise.all(
     (query.page ? questions.docs : questions).map(async (question) => {
-      await attachSubmissionAttributesToQuestion(question)
-      return question
+      return attachSubmissionAttributesToQuestion(question)
     })
   )
   return questions
@@ -24,7 +23,7 @@ export const retrieveQuestion = async (question_id, user) => {
       status: 400,
       message: "Question doesn't exist or you do not have permission to view this question"
     }
-  return result[0]
+  return attachSubmissionAttributesToQuestion(result[0])
 }
 
 export const updateQuestionById = async (question_id, data, user) => {
