@@ -1,16 +1,13 @@
 import { findAllQuestions, insertQuestion, findQuestion, findAndUpdateQuestion, getQuestionById, deleteAQuestion } from '../repository/question'
-import { getOneSubmission, getSubmissionCount, getSubmissions } from '../repository/submission'
+import { getOneSubmission, getSubmissions } from '../repository/submission'
+import { attachSubmissionAttributesToQuestion } from '../helpers'
 
 export const retrieveAllQuestions = async (user, query) => {
   const questions = await findAllQuestions(user, query)
   await Promise.all(
-    questions.map(async (question, index) => {
-      questions[index].total_submissions = await getSubmissionCount(question._id)
-
-      const filters = { question: question._id }
-      const options = { sort: { created_at: -1 } }
-      const latestSubmission = await getOneSubmission(filters, options)
-      questions[index].submitted_at = latestSubmission ? latestSubmission.created_at : null
+    (query.page ? questions.docs : questions).map(async (question) => {
+      await attachSubmissionAttributesToQuestion(question)
+      return question
     })
   )
   return questions
