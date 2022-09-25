@@ -12,11 +12,11 @@ export const insertSubmission = async (userId, question, link) => {
   await newSubmission.save()
 }
 
-export const getSubmissions = async ({ sort = {}, filter = {}, pageNum = 1, pageSize = 10 }) => {
+export const getSubmissions = async ({ sort = {}, filter = {}, page = 1, limit = 10 }) => {
   const options = {
     sort,
-    page: pageNum,
-    limit: pageSize,
+    page,
+    limit,
     collation: {
       locale: 'en'
     },

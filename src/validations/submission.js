@@ -29,6 +29,6 @@ export const submissionViewSchema = {
       updated_at: Joi.any().valid('asc', 'desc', '1', '-1').optional()
     })
     .optional(),
-  pageNum: Joi.number().optional(),
-  pageSize: Joi.number().optional()
+  page: Joi.number().optional(),
+  limit: Joi.number().optional()
 }

@@ -75,10 +75,10 @@ export const getMaxScore = async (questionId) => {
   return (await Question.findById(questionId).lean()).max_score
 }
 
-export const getAllQuestions = async (pageSize = 10, pageNum = 1) => {
+export const getAllQuestions = async (page = 10, limit = 1) => {
   const options = {
-    page: pageNum,
-    limit: pageSize
+    page,
+    limit
   }
 
   return await Question.paginate({}, options).catch((err) => {

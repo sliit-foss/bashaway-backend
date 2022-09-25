@@ -7,10 +7,10 @@ export const createUser = async (user) => {
   return userMade
 }
 
-export const getAllUsers = async ({ sort = {}, filter = {}, pageNum = 1, pageSize = 10 }) => {
+export const getAllUsers = async ({ sort = {}, filter = {}, page = 1, limit = 10 }) => {
   const options = {
-    page: pageNum,
-    limit: pageSize,
+    page,
+    limit,
     collation: {
       locale: 'en'
     }
