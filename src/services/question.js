@@ -1,8 +1,19 @@
 import { findAllQuestions, insertQuestion, findQuestion, findAndUpdateQuestion, getQuestionById, deleteAQuestion } from '../repository/question'
-import { getOneSubmission, getSubmissions } from '../repository/submission'
+import { getOneSubmission, getSubmissionCount, getSubmissions } from '../repository/submission'
 
 export const retrieveAllQuestions = async (user, query) => {
-  return findAllQuestions(user, query)
+  const questions = await findAllQuestions(user, query)
+  await Promise.all(
+    questions.map(async (question, index) => {
+      questions[index].total_submissions = await getSubmissionCount(question._id)
+
+      const filters = { question: question._id }
+      const options = { sort: { created_at: -1 } }
+      const latestSubmission = await getOneSubmission(filters, options)
+      questions[index].submitted_at = latestSubmission ? latestSubmission.created_at : null
+    })
+  )
+  return questions
 }
 
 export const createQuestion = async (data, user) => {
@@ -46,7 +57,7 @@ export const deleteQuestion = async (question_id, user) => {
   }
 
   if (checkSubmission) {
-    return { status: 400, message: 'Failed to delete question/ Question already have a submission' }
+    return { status: 400, message: 'Failed to delete question/ Question already has a submission' }
   }
 
   if (!question) return { status: 400, message: "Question doesn't exist to remove" }
