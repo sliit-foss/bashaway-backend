@@ -32,8 +32,8 @@ export const getSubmissionById = async (id) => {
   return await Submission.findById(id).lean()
 }
 
-export const getOneSubmission = async (filters) => {
-  return await Submission.findOne(filters).lean()
+export const getOneSubmission = async (filters, options = {}) => {
+  return await Submission.findOne(filters, options).lean()
 }
 
 export const insertGrade = async (submission, score, admin) => {
@@ -58,4 +58,8 @@ export const getLatestScore = async ({ user, question }) => {
 
 export const getSubmissionsByQuestion = async (question) => {
   return await Submission.find({ question }).lean()
+}
+
+export const getSubmissionCount = async (questionId) => {
+  return (await Submission.distinct('user', { question: questionId })).length
 }
