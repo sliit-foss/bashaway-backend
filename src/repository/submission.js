@@ -12,7 +12,9 @@ export const insertSubmission = async (userId, question, link) => {
   await newSubmission.save()
 }
 
-export const getSubmissions = async ({ sort = {}, filter = {}, page = 1, limit = 10 }) => {
+export const getSubmissions = async ({ sort = {}, filter = {}, page, limit = 10 }) => {
+  const populate = ['user', 'graded_by', 'question']
+
   const options = {
     sort,
     page,
@@ -20,12 +22,14 @@ export const getSubmissions = async ({ sort = {}, filter = {}, page = 1, limit =
     collation: {
       locale: 'en'
     },
-    populate: ['user', 'graded_by', 'question']
+    populate
   }
-  return await Submission.paginate(filter, options).catch((err) => {
-    logger.error(`An error occurred when retrieving submissions - err: ${err.message}`)
-    throw err
-  })
+  return (await page)
+    ? Submission.paginate(filter, options).catch((err) => {
+        logger.error(`An error occurred when retrieving submissions - err: ${err.message}`)
+        throw err
+      })
+    : Submission.find(filter).sort(sort).populate(populate).lean()
 }
 
 export const getSubmissionById = async (id) => {
