@@ -7,7 +7,7 @@ export const createUser = async (user) => {
   return userMade
 }
 
-export const getAllUsers = async ({ sort = {}, filter = {}, page = 1, limit = 10 }) => {
+export const getAllUsers = async ({ sort = {}, filter = {}, page, limit = 10 }) => {
   const options = {
     page,
     limit,
@@ -23,15 +23,15 @@ export const getAllUsers = async ({ sort = {}, filter = {}, page = 1, limit = 10
     delete filter.member_count
   }
 
-  return await User.aggregatePaginate(
+  const aggregateQuery = () =>
     User.aggregate([
       {
         $match: filter
       },
       { $unset: ['password', 'verification_code'] }
-    ]),
-    options
-  ).catch((err) => {
+    ])
+
+  return await (page ? User.aggregatePaginate(aggregateQuery(), options) : aggregateQuery()).catch((err) => {
     logger.error(`An error occurred when retrieving users - err: ${err.message}`)
     throw err
   })
