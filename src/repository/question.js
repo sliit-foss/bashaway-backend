@@ -22,7 +22,8 @@ export const findAllQuestions = async (user, query) => {
 
   const options = {
     select: '-creator -creator_lock',
-    lean: true
+    lean: true,
+    sort: query.sort || { created_at: -1 }
   }
 
   if (query.page) {
@@ -33,7 +34,7 @@ export const findAllQuestions = async (user, query) => {
     options.limit = query.limit
   }
 
-  return !query.page ? Question.find(filter).lean() : Question.paginate(filter, options)
+  return !query.page ? Question.find(filter).sort(options.sort).lean() : Question.paginate(filter, options)
 }
 
 export const insertQuestion = async (data) => {
