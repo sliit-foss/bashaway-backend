@@ -58,6 +58,30 @@ export const getAllUserIds = async (filters = {}) => {
   return users.map((user) => user._id)
 }
 
+export const getAllUniverstyUserGroups = async () => {
+  return await User.aggregate([
+    {
+      $match: {
+        role: 'GROUP'
+      }
+    },
+    {
+      $group: {
+        _id: '$university',
+        count: { $sum: 1 }
+      }
+    },
+    { $sort: { count: -1 } },
+    {
+      $project: {
+        _id: 0,
+        name: '$_id',
+        count: 1
+      }
+    }
+  ])
+}
+
 export const findOneAndRemoveUser = async (filters) => {
   return await User.findOneAndRemove(filters)
 }
