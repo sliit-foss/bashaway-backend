@@ -3,7 +3,7 @@ import mongoose from 'mongoose'
 
 const ObjectId = mongoose.Types.ObjectId
 
-export const findAllQuestions = async (user, query) => {
+export const findAllQuestions = async (user, query = {}) => {
   if (!query.filter) {
     query.filter = {}
   }
@@ -73,15 +73,4 @@ export const deleteAQuestion = async (filters) => {
 
 export const getMaxScore = async (questionId) => {
   return (await Question.findById(questionId).lean()).max_score
-}
-
-export const getAllQuestions = async (page = 10, limit = 1) => {
-  const options = {
-    page,
-    limit
-  }
-
-  return await Question.paginate({}, options).catch((err) => {
-    logger.error(`An error occurred when retrieving questions - err: ${err.message}`)
-  })
 }

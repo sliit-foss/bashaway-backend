@@ -60,8 +60,24 @@ export const getLatestScore = async ({ user, question }) => {
   else return 0
 }
 
-export const getSubmissionsByQuestion = async (question) => {
-  return await Submission.find({ question }).lean()
+export const getSubmissionsByQuestion = async () => {
+  return await Submission.aggregate([
+    {
+      $group: {
+        _id: '$question',
+        count: { $sum: 1 }
+      }
+    },
+    { $sort: { count: -1 } },
+    { $lookup: { from: 'questions', localField: '_id', foreignField: '_id', as: 'question' } },
+    {
+      $project: {
+        _id: 0,
+        question: 1,
+        count: 1
+      }
+    }
+  ])
 }
 
 export const getSubmissionCount = async (questionId) => {

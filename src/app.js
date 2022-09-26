@@ -39,7 +39,11 @@ app.get('/', (req, res) => res.status(200).json({ message: 'Bashaway Server Up a
 app.use('/api', routes)
 
 app.use((err, req, res, next) => {
-  logger.error(`Error: ${err.message} | Stack: ${err.stack}`)
+  logger.error(`Error: ${err.message} | Request Path - ${req.path} | Stack: ${err.stack}`, {
+    payload: req.body,
+    headers: req.headers,
+    query: req.query
+  })
   if (isCelebrateError(err)) {
     for (const [key, value] of err.details.entries()) {
       return makeResponse({ res, status: 422, message: value.details[0].message })
