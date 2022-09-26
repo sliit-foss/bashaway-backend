@@ -54,7 +54,7 @@ export const getQuestionById = async (id, user, filterFields = true) => {
       }
     ]
   }).lean()
-  if (filterFields) query = query.select('-creator -creator_lock')
+  if (filterFields) query = query.select('-creator_lock')
   return await query.exec()
 }
 

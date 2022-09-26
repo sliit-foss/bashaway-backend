@@ -5,6 +5,9 @@ export const queryMapper = (req, res, next) => {
       if (isRegex(req.query.filter[key])) {
         req.query.filter[key] = new RegExp(req.query.filter[key].slice(1, -1))
       }
+      if (req.query.filter[key] === 'true' || req.query.filter[key] === 'false') {
+        req.query.filter[key] = req.query.filter[key] === 'true'
+      }
     })
   }
   next()

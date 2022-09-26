@@ -7,6 +7,7 @@ export const addQuestionSchema = {
   constraints: Joi.array().items(Joi.string()).optional(),
   max_score: Joi.number().required(),
   enabled: Joi.boolean().optional(),
+  creator_lock: Joi.boolean().optional(),
   codebase_url: Joi.string().required()
 }
 
@@ -17,6 +18,7 @@ export const updateQuestionSchema = {
   constraints: Joi.array().items(Joi.string()).optional(),
   max_score: Joi.number().optional(),
   enabled: Joi.boolean().optional(),
+  creator_lock: Joi.boolean().optional(),
   codebase_url: Joi.string().optional()
 }
 
