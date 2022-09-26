@@ -4,7 +4,7 @@ export const registerSchema = Joi.object({
   name: Joi.string().required(),
   email: Joi.string().email().required(),
   password: Joi.string()
-    .regex(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[#$@!%&*?])[A-Za-z\d#$@!%&.*?]{8,30}$/)
+    .regex(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[#$@!%&*?])[A-Za-z\d#$@!%&._*?]{8,30}$/)
     .required()
     .error((errors) =>
       errors.map((err) => {
@@ -43,7 +43,7 @@ export const resendVerifyMailSchema = Joi.object({
 export const changePasswordSchema = Joi.object({
   old_password: Joi.string().required(),
   new_password: Joi.string()
-    .regex(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[#$@!%&*?])[A-Za-z\d#$@!%&*?]{8,30}$/)
+    .regex(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[#$@!%&*?])[A-Za-z\d#$@!%&._*?]{8,30}$/)
     .required()
     .error((errors) =>
       errors.map((err) => {
@@ -83,7 +83,7 @@ export const updateSchema = {
 
 export const resetPasswordSchema = {
   new_password: Joi.string()
-    .regex(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[#$@!%&*?])[A-Za-z\d#$@!%&*?]{8,30}$/)
+    .regex(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[#$@!%&*?])[A-Za-z\d#$@!%&._*?]{8,30}$/)
     .required()
     .error((errors) =>
       errors.map((err) => {
