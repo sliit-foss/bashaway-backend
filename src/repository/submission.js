@@ -70,6 +70,7 @@ export const getSubmissionsByQuestion = async () => {
     },
     { $sort: { count: -1 } },
     { $lookup: { from: 'questions', localField: '_id', foreignField: '_id', as: 'question' } },
+    { $unwind: '$question' },
     {
       $project: {
         _id: 0,

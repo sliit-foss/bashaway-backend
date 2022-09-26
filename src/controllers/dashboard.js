@@ -3,7 +3,7 @@ import { getAllQuestionsSubmissions, getRegistrations } from '../services/dashbo
 import { makeResponse } from '../utils/response'
 
 export const getQuestionSubmission = asyncHandler(async (req, res) => {
-  const data = await getAllQuestionsSubmissions()
+  const data = await getAllQuestionsSubmissions(req.user)
   return makeResponse({
     res,
     status: 200,
