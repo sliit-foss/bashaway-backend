@@ -42,7 +42,7 @@ export const getOneSubmission = async (filters, options = {}) => {
 
 export const insertGrade = async (submission, score, admin) => {
   const query = { _id: submission }
-  const newData = { score, gradedBy: admin }
+  const newData = { score, graded_by: admin }
   await Submission.findOneAndUpdate(query, newData, { upsert: true })
 }
 

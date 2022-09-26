@@ -19,14 +19,9 @@ export const submissionViewSchema = {
     .optional(),
   sort: Joi.object()
     .keys({
-      _id: Joi.any().valid('asc', 'desc', '1', '-1').optional(),
-      user: Joi.any().valid('asc', 'desc', '1', '-1').optional(),
-      question: Joi.any().valid('asc', 'desc', '1', '-1').optional(),
-      link: Joi.any().valid('asc', 'desc', '1', '-1').optional(),
-      score: Joi.any().valid('asc', 'desc', '1', '-1').optional(),
-      graded_by: Joi.any().valid('asc', 'desc', '1', '-1').optional(),
-      created_at: Joi.any().valid('asc', 'desc', '1', '-1').optional(),
-      updated_at: Joi.any().valid('asc', 'desc', '1', '-1').optional()
+      score: Joi.any().valid('asc', 'desc', '1', '-1', 1, -1).optional(),
+      created_at: Joi.any().valid('asc', 'desc', '1', '-1', 1, -1).optional(),
+      updated_at: Joi.any().valid('asc', 'desc', '1', '-1', 1, -1).optional()
     })
     .optional(),
   page: Joi.number().optional(),
