@@ -125,7 +125,8 @@ export const addNewUser = async (userDetails) => {
 
 const sendAdminPassword = async (email, password) => {
   const replacements = {
-    genaratedPassword: password
+    genaratedPassword: password,
+    adminFrontendDomain: process.env.ADMIN_FRONTEND_DOMAIN || 'https://admin.bashaway.sliitfoss.org'
   }
   const subject = 'Welcome to the Bashaway'
   return await sendMail(email, 'sendAdminPassword', replacements, subject)

@@ -75,7 +75,7 @@ export const authResendVerification = async (email) => {
 
 export const resetPasswordMailTemplate = async (email, verification_code) => {
   const replacements = {
-    reset_url: `${process.env.FRONTEND_DOMAIN}/reset-password/${verification_code}`
+    reset_url: `${process.env.FRONTEND_DOMAIN || 'https://portal.bashaway.sliitfoss.org'}/reset-password/${verification_code}`
   }
   const attachments = [
     {
