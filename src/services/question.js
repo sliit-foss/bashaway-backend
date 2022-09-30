@@ -1,8 +1,15 @@
 import { findAllQuestions, insertQuestion, findQuestion, findAndUpdateQuestion, getQuestionById, deleteAQuestion } from '../repository/question'
 import { getOneSubmission, getSubmissions } from '../repository/submission'
+import { attachSubmissionAttributesToQuestion } from '../helpers'
 
 export const retrieveAllQuestions = async (user, query) => {
-  return findAllQuestions(user, query)
+  const questions = await findAllQuestions(user, query)
+  await Promise.all(
+    (query.page ? questions.docs : questions).map(async (question) => {
+      return attachSubmissionAttributesToQuestion(question)
+    })
+  )
+  return questions
 }
 
 export const createQuestion = async (data, user) => {
@@ -16,7 +23,7 @@ export const retrieveQuestion = async (question_id, user) => {
       status: 400,
       message: "Question doesn't exist or you do not have permission to view this question"
     }
-  return result[0]
+  return attachSubmissionAttributesToQuestion(result[0])
 }
 
 export const updateQuestionById = async (question_id, data, user) => {
@@ -24,7 +31,7 @@ export const updateQuestionById = async (question_id, data, user) => {
   if (!question) return { status: 400, message: "Question doesn't exist to update" }
   if (data.name) {
     const check = await findQuestion({ name: data.name })
-    if (check) return { status: 400, message: 'Question name already taken' }
+    if (check && check._id?.toString() !== question_id?.toString()) return { status: 400, message: 'Question name already taken' }
   }
   if (question.creator_lock && question.creator.toString() !== user._id.toString()) return { status: 403, message: 'You are not authorized to update this question' }
   if (data.max_score) {
@@ -46,7 +53,7 @@ export const deleteQuestion = async (question_id, user) => {
   }
 
   if (checkSubmission) {
-    return { status: 400, message: 'Failed to delete question/ Question already have a submission' }
+    return { status: 400, message: 'Failed to delete question/ Question already has a submission' }
   }
 
   if (!question) return { status: 400, message: "Question doesn't exist to remove" }

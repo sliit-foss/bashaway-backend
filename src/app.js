@@ -9,6 +9,7 @@ import routes from './routes/index.routes'
 import { isCelebrateError } from 'celebrate'
 import { makeResponse } from './utils/response'
 import logger from './utils/logger'
+import { queryMapper } from './middleware/query'
 
 const app = express()
 
@@ -30,6 +31,8 @@ app.use(cors({ origin: true, credentials: true }))
 app.use(express.json({ limit: '1mb' }))
 
 app.use(express.urlencoded({ extended: true }))
+
+app.use(queryMapper)
 
 app.get('/', (req, res) => res.status(200).json({ message: 'Bashaway Server Up and Running' }))
 

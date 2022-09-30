@@ -3,22 +3,38 @@ import mongoose from 'mongoose'
 
 const ObjectId = mongoose.Types.ObjectId
 
-export const findAllQuestions = async (user, query) => {
+export const findAllQuestions = async (user, query = {}) => {
+  if (!query.filter) {
+    query.filter = {}
+  }
+  let filter
   if (user.role == 'ADMIN') {
-    return Question.find({
+    filter = {
       $or: [{ creator_lock: false }, { creator_lock: true, creator: user._id }],
       $and: [query.filter]
-    }).select('-creator -creator_lock')
+    }
   }
-  if (query.filter) {
-    query.filter.enabled = true
-  } else {
-    query.filter = { enabled: true }
-  }
-  return Question.find({
+  query.filter.enabled = true
+  filter = {
     $or: [{ creator_lock: false }, { creator_lock: true, creator: user._id }],
     $and: [query.filter]
-  }).select('-creator -creator_lock')
+  }
+
+  const options = {
+    select: '-creator -creator_lock',
+    lean: true,
+    sort: query.sort || { created_at: -1 }
+  }
+
+  if (query.page) {
+    options.page = query.page
+  }
+
+  if (query.limit) {
+    options.limit = query.limit
+  }
+
+  return !query.page ? Question.find(filter).sort(options.sort).lean() : Question.paginate(filter, options)
 }
 
 export const insertQuestion = async (data) => {
@@ -37,8 +53,8 @@ export const getQuestionById = async (id, user, filterFields = true) => {
         $or: [{ creator_lock: false }, { creator_lock: true, creator: user._id }]
       }
     ]
-  })
-  if (filterFields) query = query.select('-creator -creator_lock')
+  }).lean()
+  if (filterFields) query = query.select('-creator_lock')
   return await query.exec()
 }
 
@@ -57,15 +73,4 @@ export const deleteAQuestion = async (filters) => {
 
 export const getMaxScore = async (questionId) => {
   return (await Question.findById(questionId).lean()).max_score
-}
-
-export const getAllQuestions = async (pageSize = 10, pageNum = 1) => {
-  const options = {
-    page: pageNum,
-    limit: pageSize
-  }
-
-  return await Question.paginate({}, options).catch((err) => {
-    logger.error(`An error occurred when retrieving questions - err: ${err.message}`)
-  })
 }

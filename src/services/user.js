@@ -73,7 +73,12 @@ export const changePasswordService = async (user, oldPassword, newPassword) => {
 export const updateUserdetails = async (userId, user, userDetails) => {
   let userData
 
-  if (user.role !== 'ADMIN' && userId.toString() !== user._id.toString()) return { status: 403, message: 'You are not authorized to update this user' }
+  if (user.role !== 'ADMIN') {
+    if (userId.toString() !== user._id.toString()) {
+      return { status: 403, message: 'You are not authorized to update this user' }
+    }
+    delete userDetails.is_active
+  }
 
   if (userDetails.name) {
     userData = await getOneUser({ name: userDetails.name }, false)
@@ -120,7 +125,8 @@ export const addNewUser = async (userDetails) => {
 
 const sendAdminPassword = async (email, password) => {
   const replacements = {
-    genaratedPassword: password
+    genaratedPassword: password,
+    adminFrontendDomain: process.env.ADMIN_FRONTEND_DOMAIN || 'https://admin.bashaway.sliitfoss.org'
   }
   const subject = 'Welcome to the Bashaway'
   return await sendMail(email, 'sendAdminPassword', replacements, subject)

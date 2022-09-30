@@ -77,7 +77,8 @@ export const updateSchema = {
     .min(1)
     .max(4)
     .optional(),
-  photo_url: Joi.string().optional()
+  photo_url: Joi.string().optional(),
+  is_active: Joi.boolean().optional()
 }
 
 export const resetPasswordSchema = {

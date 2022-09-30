@@ -7,10 +7,10 @@ export const createUser = async (user) => {
   return userMade
 }
 
-export const getAllUsers = async ({ sort = {}, filter = {}, pageNum = 1, pageSize = 10 }) => {
+export const getAllUsers = async ({ sort = {}, filter = {}, page, limit = 10 }) => {
   const options = {
-    page: pageNum,
-    limit: pageSize,
+    page,
+    limit,
     collation: {
       locale: 'en'
     }
@@ -23,15 +23,15 @@ export const getAllUsers = async ({ sort = {}, filter = {}, pageNum = 1, pageSiz
     delete filter.member_count
   }
 
-  return await User.aggregatePaginate(
+  const aggregateQuery = () =>
     User.aggregate([
       {
         $match: filter
       },
       { $unset: ['password', 'verification_code'] }
-    ]),
-    options
-  ).catch((err) => {
+    ])
+
+  return await (page ? User.aggregatePaginate(aggregateQuery(), options) : aggregateQuery()).catch((err) => {
     logger.error(`An error occurred when retrieving users - err: ${err.message}`)
     throw err
   })
@@ -56,6 +56,30 @@ export const findOneAndUpdateUser = async (filters, data) => {
 export const getAllUserIds = async (filters = {}) => {
   const users = await User.find(filters).select('_id').lean()
   return users.map((user) => user._id)
+}
+
+export const getAllUniverstyUserGroups = async () => {
+  return await User.aggregate([
+    {
+      $match: {
+        role: 'GROUP'
+      }
+    },
+    {
+      $group: {
+        _id: '$university',
+        count: { $sum: 1 }
+      }
+    },
+    { $sort: { count: -1 } },
+    {
+      $project: {
+        _id: 0,
+        name: '$_id',
+        count: 1
+      }
+    }
+  ])
 }
 
 export const findOneAndRemoveUser = async (filters) => {
