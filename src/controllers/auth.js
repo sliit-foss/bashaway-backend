@@ -5,7 +5,12 @@ import { makeResponse } from '../utils/response'
 import { sendTokenResponse } from '../utils/jwt'
 const fs = require('fs')
 
+const registrationEnd = new Date(2022, 8, 30, 8, 0, 0)
+
 export const register = asyncHandler(async (req, res) => {
+  if (Date.now() >= registrationEnd.getTime()) {
+    return makeResponse({ res, status: 400, message: 'Registration closed.' })
+  }
   if (req.user) return makeResponse({ res, status: 400, message: "You've already registered for an account." })
   const result = await authRegister(req.body)
   if (!result) return makeResponse({ res, status: 500, message: 'Registration failed.' })
