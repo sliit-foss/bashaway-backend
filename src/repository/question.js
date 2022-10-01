@@ -13,8 +13,9 @@ export const findAllQuestions = async (user, query = {}) => {
       $or: [{ creator_lock: false }, { creator_lock: true, creator: user._id }],
       $and: [query.filter]
     }
+  } else {
+    query.filter.enabled = true
   }
-  query.filter.enabled = true
   filter = {
     $or: [{ creator_lock: false }, { creator_lock: true, creator: user._id }],
     $and: [query.filter]
