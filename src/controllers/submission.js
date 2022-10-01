@@ -3,7 +3,7 @@ import { createSubmission, viewSubmissions, gradeSubmission } from '../services/
 import { makeResponse } from '../utils/response'
 
 export const create = asyncHandler(async (req, res) => {
-  const submissionsDisabled = Date.now() > 1664613000000 // 2022 October 1st 2:00 PM
+  const submissionsDisabled = Date.now() > 1664616600000 // 2022 October 1st 3:00 PM
   if (submissionsDisabled) {
     return makeResponse({ res, status: 400, message: 'Submission period has expired' })
   }
