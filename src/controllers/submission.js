@@ -1,4 +1,4 @@
-import asyncHandler from '@/middleware/async';
+import { asyncHandler } from '@/middleware';
 import { createSubmission, gradeSubmission, viewSubmissions } from '@/services/submission';
 import { makeResponse } from '@/utils/response';
 

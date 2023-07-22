@@ -1,13 +1,13 @@
+import crypto from 'crypto';
 import express from 'express';
+import context from 'express-http-context';
 import rateLimit from 'express-rate-limit';
-import { isCelebrateError } from 'celebrate';
 import compression from 'compression';
 import cors from 'cors';
 import helmet from 'helmet';
 import connectDB from '@/database';
-import { queryMapper } from '@/middleware/query';
+import { errorHandler, queryMapper, responseInterceptor } from '@/middleware';
 import { default as routes } from '@/routes/index.routes';
-import { logger, makeResponse } from '@/utils/response';
 
 require('dotenv').config();
 
@@ -32,34 +32,22 @@ app.use(express.json({ limit: '1mb' }));
 
 app.use(express.urlencoded({ extended: true }));
 
+app.use(context.middleware);
+
+app.use((req, _res, next) => {
+  context.set('correlationId', req.headers['x-correlation-id'] ?? crypto.randomBytes(16).toString('hex'));
+  next();
+});
+
 app.use(queryMapper);
 
-app.get('/', (req, res) => res.status(200).json({ message: 'Bashaway Server Up and Running' }));
+app.get('/', (_, res) => res.status(200).json({ message: 'Bashaway Server Up and Running' }));
 
 app.use('/api', routes);
 
-app.use((err, req, res, _) => {
-  logger.error(`Error: ${err.message} | Request Path - ${req.path} | Stack: ${err.stack}`, {
-    payload: req.body,
-    headers: req.headers,
-    query: req.query
-  });
-  if (isCelebrateError(err)) {
-    for (const [_, value] of err.details.entries()) {
-      return makeResponse({ res, status: 422, message: value.details[0].message });
-    }
-  } else if (err.expose) {
-    return makeResponse({ res, status: err.status, message: err.message });
-  } else if (err.name == 'MongoServerError' && err.code === 11000) {
-    const key = Object.keys(err.keyValue)[0];
-    return makeResponse({ res, status: 400, message: `The ${key} ${err.keyValue[key]} is already taken` });
-  } else
-    return makeResponse({
-      res,
-      status: 500,
-      message: "Just patching things up. This'll be over in a jiffy!"
-    });
-});
+app.use(responseInterceptor);
+
+app.use(errorHandler);
 
 connectDB();
 

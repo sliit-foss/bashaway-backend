@@ -9,11 +9,11 @@
     "importOrder": [
       "^(express/(.*)$)|^(express$)",
       "^(.*express-*(.*)$)",
-      "^(bcrypt$)|^(cors$)|^(celebrate$)|^(compression$)|^(helmet$)",
+      "^(bcrypt$)|^(cors$)|^(celebrate$)|^(compression$)|(crypto$)|^(helmet$)",
       "^(handlebars$)|^(http*$)",
       "^(jsonwebtoken$)|^(lodash$)|^(moment$)|^(morgan$)|^(multer$)|^(nodemailer$)",
       "^(mongoose$)|^(.*mongoose-*(.*)$)",
-      "^(nodemailer$)|^(uuid$)|^(winston$)",
+      "^(nodemailer$)",
       "^.*controllers(.*)$",
       "^.*database(.*)$",
       "^.*helpers(.*)$",

@@ -1,5 +1,7 @@
+import { moduleLogger } from '@sliit-foss/module-logger';
 import User from '@/models/user';
-import logger from '@/utils/logger';
+
+const logger = moduleLogger('User-repository');
 
 export const createUser = async (user) => {
   const userMade = (await new User(user).save()).toObject();

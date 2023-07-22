@@ -1,4 +1,4 @@
-import asyncHandler from '@/middleware/async';
+import { asyncHandler } from '@/middleware';
 import { getAllQuestionsSubmissions, getRegistrations } from '@/services/dashboard';
 import { makeResponse } from '@/utils/response';
 

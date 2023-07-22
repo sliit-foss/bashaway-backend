@@ -1,4 +1,4 @@
-import asyncHandler from '@/middleware/async';
+import { asyncHandler } from '@/middleware';
 import {
   addNewUser,
   changePasswordService,

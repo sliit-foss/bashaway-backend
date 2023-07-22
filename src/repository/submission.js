@@ -1,5 +1,7 @@
+import { moduleLogger } from '@sliit-foss/module-logger';
 import Submission from '@/models/submission';
-import logger from '@/utils/logger';
+
+const logger = moduleLogger('Submission-repository');
 
 export const insertSubmission = async (userId, question, link) => {
   const newSubmission = new Submission({

@@ -1,7 +1,6 @@
-import { getOneUser } from '@/repository/user';
-import { decodeJwtToken } from '@/utils/jwt';
-import { makeResponse } from '@/utils/response';
 import asyncHandler from './async';
+import { getOneUser } from '@/repository/user';
+import { decodeJwtToken, makeResponse } from '@/utils';
 
 export const protect = asyncHandler(async (req, res, next) => {
   const token = req.headers.authorization

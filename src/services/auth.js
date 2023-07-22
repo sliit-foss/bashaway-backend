@@ -1,7 +1,7 @@
+import crypto from 'crypto';
 import bcrypt from 'bcrypt';
-import { v4 as uuidv4 } from 'uuid';
-import { createUser, findOneAndUpdateUser, getOneUser } from '@/repository/user';
 import { sendMail } from './email';
+import { createUser, findOneAndUpdateUser, getOneUser } from '@/repository/user';
 
 export const authRegister = async ({ name, email, password, university, members }) => {
   const encryptedPassword = await new Promise((resolve, reject) => {
@@ -10,7 +10,7 @@ export const authRegister = async ({ name, email, password, university, members 
       resolve(hash);
     });
   });
-  const verification_code = uuidv4();
+  const verification_code = crypto.randomUUID();
   const registeredUser = await createUser({
     name,
     email,
@@ -67,7 +67,7 @@ export const updateVerificationStatus = async (verificationCode) => {
 export const authResendVerification = async (email) => {
   const user = await getOneUser({ email });
   if (!user) return { status: 400, message: 'A user/group by the provided email does not exist' };
-  const verification_code = uuidv4();
+  const verification_code = crypto.randomUUID();
   const updatedUser = await findOneAndUpdateUser({ email }, { verification_code });
   await verifyMailTemplate(email, verification_code);
   return updatedUser;
@@ -99,7 +99,7 @@ export const resetPasswordMailTemplate = async (email, verification_code) => {
 export const forgotPasswordEmail = async (email) => {
   const user = await getOneUser({ email });
   if (!user) return { status: 400, message: 'A user/group by the provided email does not exist' };
-  const verification_code = uuidv4();
+  const verification_code = crypto.randomUUID();
   const updatedUser = await findOneAndUpdateUser({ email }, { verification_code });
   await resetPasswordMailTemplate(email, verification_code);
   return updatedUser;

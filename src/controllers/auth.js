@@ -1,4 +1,4 @@
-import asyncHandler from '@/middleware/async';
+import { asyncHandler } from '@/middleware';
 import { getOneUser } from '@/repository/user';
 import {
   authLogin,
@@ -8,8 +8,7 @@ import {
   resetPasswordFromEmail,
   updateVerificationStatus
 } from '@/services/auth';
-import { sendTokenResponse } from '@/utils/jwt';
-import { makeResponse } from '@/utils/response';
+import { makeResponse, sendTokenResponse } from '@/utils';
 
 const fs = require('fs');
 

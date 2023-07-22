@@ -1,6 +1,6 @@
-import { addQuestionSchema, questionIdSchema, updateQuestionSchema } from '@/validations/question';
 import express from 'express';
 import { Segments, celebrate } from 'celebrate';
+import { addQuestionSchema, questionIdSchema, updateQuestionSchema } from '@/validations/question';
 import {
   createNewQuestion,
   deleteOldQuestion,
