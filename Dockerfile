@@ -4,8 +4,10 @@ WORKDIR /app
 
 COPY . .
 
-RUN yarn install
-RUN yarn build
+RUN npm i -g pnpm@8.0.0
+
+RUN pnpm install --ignore-scripts
+RUN pnpm build
 
 CMD ["node", "dist/app.js"]
 

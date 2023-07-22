@@ -9,53 +9,55 @@
     "clean": "rm -rf dist && mkdir dist",
     "copy": "babel src --out-dir ./dist --copy-files",
     "dev": "nodemon --exec babel-node src/app.js",
+    "format": "prettier --write \"**/*.{js,md}\" --cache",
+    "lint": "eslint src --ext js,jsx,mdx --ignore-path .gitignore --fix --cache --report-unused-disable-directives",
+    "prepare": "lefthook install",
     "start": "node dist/app.js",
-    "lint": "eslint --ignore-path .gitignore && prettier . --write",
     "test": "echo test"
   },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/sliit-foss/bashaway-backend.git"
   },
-  "author": "",
-  "license": "ISC",
+  "author": "SLIIT FOSS",
+  "license": "MIT",
   "bugs": {
     "url": "https://github.com/sliit-foss/bashaway-backend/issues"
   },
   "homepage": "https://github.com/sliit-foss/bashaway-backend#readme",
   "dependencies": {
-    "bcrypt": "^5.0.1",
-    "celebrate": "^15.0.1",
-    "compression": "^1.7.4",
-    "cors": "^2.8.5",
-    "express": "^4.18.1",
-    "express-rate-limit": "^6.5.1",
-    "handlebars": "^4.7.7",
-    "helmet": "^5.1.0",
-    "jsonwebtoken": "^8.5.1",
-    "migrate-mongo": "^9.0.0",
-    "mongoose": "^6.4.3",
-    "mongoose-aggregate-paginate-v2": "^1.0.6",
-    "mongoose-paginate-v2": "^1.7.0",
-    "nodemailer": "^6.7.7",
-    "nodemon": "^2.0.19",
-    "uuid": "^8.3.2",
-    "winston": "^3.8.1"
+    "bcrypt": "5.0.1",
+    "celebrate": "15.0.1",
+    "compression": "1.7.4",
+    "cors": "2.8.5",
+    "express": "4.18.1",
+    "express-rate-limit": "6.5.1",
+    "handlebars": "4.7.7",
+    "helmet": "5.1.0",
+    "jsonwebtoken": "8.5.1",
+    "migrate-mongo": "9.0.0",
+    "mongoose": "6.4.3",
+    "mongoose-aggregate-paginate-v2": "1.0.6",
+    "mongoose-paginate-v2": "1.7.0",
+    "nodemailer": "6.7.7",
+    "uuid": "8.3.2",
+    "winston": "3.8.1"
   },
   "devDependencies": {
     "@babel/cli": "7.17.10",
     "@babel/core": "7.17.12",
     "@babel/eslint-parser": "7.18.2",
-    "@babel/node": "^7.18.6",
-    "@babel/preset-env": "^7.18.6",
-    "dotenv": "^16.0.1",
-    "eslint": "^8.19.0",
-    "husky": "^4.3.8",
-    "prettier": "^2.7.1"
-  },
-  "husky": {
-    "hooks": {
-      "pre-commit": "yarn lint && git add ."
-    }
+    "@babel/node": "7.18.6",
+    "@babel/preset-env": "7.18.6",
+    "@commitlint/cli": "17.6.5",
+    "@commitlint/config-conventional": "17.6.5",
+    "@sliit-foss/eslint-config-internal": "1.1.4",
+    "@trivago/prettier-plugin-sort-imports": "4.1.1",
+    "dotenv": "16.0.1",
+    "eslint": "8.45.0",
+    "eslint-plugin-import": "2.27.5",
+    "lefthook": "1.4.3",
+    "nodemon": "2.0.19",
+    "prettier": "2.8.8"
   }
 }

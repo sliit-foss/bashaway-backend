@@ -1,13 +1,13 @@
-import { Joi } from 'celebrate'
+import { Joi } from 'celebrate';
 
 export const submissionIdSchema = {
   id: Joi.string().hex().length(24).required()
-}
+};
 
 export const submissionCreateSchema = {
   question: Joi.string().hex().length(24).required(),
   link: Joi.string().required()
-}
+};
 
 export const submissionViewSchema = {
   filter: Joi.object()
@@ -26,4 +26,4 @@ export const submissionViewSchema = {
     .optional(),
   page: Joi.number().optional(),
   limit: Joi.number().optional()
-}
+};

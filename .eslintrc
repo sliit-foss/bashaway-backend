@@ -1,51 +1,16 @@
 {
-  "parser": "@babel/eslint-parser",
+  "extends": [
+    "@sliit-foss/eslint-config-internal"
+  ],
   "env": {
+    "browser": false,
     "node": true,
+    "jest": true,
     "es6": true
   },
-  "parserOptions": {
-    "ecmaVersion": 6,
-    "sourceType": "module",
-    "requireConfigFile": false
-  },
   "rules": {
-    "arrow-body-style": ["error", "as-needed"],
-    "arrow-parens": ["error", "always"],
-    "arrow-spacing": "error",
-    "camelcase": ["off"],
-    "curly": "error",
-    "default-case": "error",
-    "dot-notation": "warn",
-    "eqeqeq": "error",
-    "max-len": [
-      "warn",
-      {
-        "code": 180,
-        "ignoreUrls": true,
-        "ignoreRegExpLiterals": true
-      }
-    ],
-    "newline-per-chained-call": "off",
-    "no-alert": "warn",
-    "no-confusing-arrow": "off",
-    "no-console": "warn",
-    "no-duplicate-imports": [
-      "error",
-      {
-        "includeExports": true
-      }
-    ],
-    "no-else-return": "error",
-    "no-eq-null": "error",
-    "no-extra-bind": "error",
-    "no-lone-blocks": "error",
-    "no-multiple-empty-lines": "error",
-    "no-return-await": "error",
-    "no-useless-concat": "error",
-    "no-useless-constructor": "error",
-    "no-useless-escape": "error",
-    "no-var": "error",
-    "prefer-const": "error"
+    "no-sparse-arrays": "off",
+    "no-nested-ternary": "off",
+    "newline-per-chained-call": "off"
   }
 }

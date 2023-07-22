@@ -1,5 +1,5 @@
-import mongoose from 'mongoose'
-import aggregatePaginate from 'mongoose-aggregate-paginate-v2'
+import mongoose from 'mongoose';
+import aggregatePaginate from 'mongoose-aggregate-paginate-v2';
 
 const UserSchema = new mongoose.Schema(
   {
@@ -82,14 +82,14 @@ const UserSchema = new mongoose.Schema(
     versionKey: false,
     timestamps: { createdAt: 'created_at', updatedAt: 'updated_at' }
   }
-)
+);
 
-UserSchema.plugin(aggregatePaginate)
+UserSchema.plugin(aggregatePaginate);
 
-UserSchema.index({ createdAt: 1 })
+UserSchema.index({ createdAt: 1 });
 
-const User = mongoose.model('User', UserSchema)
+const User = mongoose.model('User', UserSchema);
 
-User.syncIndexes()
+User.syncIndexes();
 
-export default User
+export default User;

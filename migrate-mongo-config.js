@@ -1,4 +1,4 @@
-require('dotenv/config')
+require('dotenv/config');
 
 module.exports = {
   mongodb: {
@@ -18,4 +18,4 @@ module.exports = {
   migrationFileExtension: '.js',
   useFileHash: false,
   moduleSystem: 'commonjs'
-}
+};

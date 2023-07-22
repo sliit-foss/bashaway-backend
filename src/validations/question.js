@@ -1,4 +1,4 @@
-import { Joi } from 'celebrate'
+import { Joi } from 'celebrate';
 
 export const addQuestionSchema = {
   name: Joi.string().required(),
@@ -9,7 +9,7 @@ export const addQuestionSchema = {
   enabled: Joi.boolean().optional(),
   creator_lock: Joi.boolean().optional(),
   codebase_url: Joi.string().required()
-}
+};
 
 export const updateQuestionSchema = {
   name: Joi.string().optional(),
@@ -20,8 +20,8 @@ export const updateQuestionSchema = {
   enabled: Joi.boolean().optional(),
   creator_lock: Joi.boolean().optional(),
   codebase_url: Joi.string().optional()
-}
+};
 
 export const questionIdSchema = {
   question_id: Joi.string().hex().length(24).required()
-}
+};

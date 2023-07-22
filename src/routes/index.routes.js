@@ -1,17 +1,17 @@
-import express from 'express'
-import authRouter from './auth.routes'
-import userRouter from './user.routes'
-import submissionRouter from './submission.routes'
-import questionRouter from './question.routes'
-import dashboardRouter from './dashboard.routes'
-import { protect, adminProtect } from '../middleware/auth'
+import { adminProtect, protect } from '../middleware/auth';
+import authRouter from './auth.routes';
+import dashboardRouter from './dashboard.routes';
+import questionRouter from './question.routes';
+import submissionRouter from './submission.routes';
+import userRouter from './user.routes';
+import express from 'express';
 
-const router = express.Router()
+const router = express.Router();
 
-router.use('/auth', authRouter)
-router.use('/submissions', protect, submissionRouter)
-router.use('/users', protect, userRouter)
-router.use('/questions', protect, questionRouter)
-router.use('/dashboard', protect, adminProtect, dashboardRouter)
+router.use('/auth', authRouter);
+router.use('/submissions', protect, submissionRouter);
+router.use('/users', protect, userRouter);
+router.use('/questions', protect, questionRouter);
+router.use('/dashboard', protect, adminProtect, dashboardRouter);
 
-export default router
+export default router;

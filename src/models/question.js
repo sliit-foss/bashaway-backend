@@ -1,5 +1,5 @@
-import mongoose from 'mongoose'
-import mongoosePaginate from 'mongoose-paginate-v2'
+import mongoose from 'mongoose';
+import mongoosePaginate from 'mongoose-paginate-v2';
 
 const QuestionSchema = new mongoose.Schema(
   {
@@ -50,14 +50,14 @@ const QuestionSchema = new mongoose.Schema(
     versionKey: false,
     timestamps: { createdAt: 'created_at', updatedAt: 'updated_at' }
   }
-)
+);
 
-QuestionSchema.plugin(mongoosePaginate)
+QuestionSchema.plugin(mongoosePaginate);
 
-QuestionSchema.index({ createdAt: 1 })
+QuestionSchema.index({ createdAt: 1 });
 
-const Question = mongoose.model('Question', QuestionSchema)
+const Question = mongoose.model('Question', QuestionSchema);
 
-Question.syncIndexes()
+Question.syncIndexes();
 
-export default Question
+export default Question;

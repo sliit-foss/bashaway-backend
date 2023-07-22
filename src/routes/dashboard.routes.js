@@ -1,8 +1,9 @@
-import express from 'express'
-import { getQuestionSubmission, getRegistrationInfo } from '../controllers/dashboard'
-const dashboardRouter = express.Router()
+import { getQuestionSubmission, getRegistrationInfo } from '../controllers/dashboard';
+import express from 'express';
 
-dashboardRouter.get('/submissions', getQuestionSubmission)
-dashboardRouter.get('/registrations', getRegistrationInfo)
+const dashboardRouter = express.Router();
 
-export default dashboardRouter
+dashboardRouter.get('/submissions', getQuestionSubmission);
+dashboardRouter.get('/registrations', getRegistrationInfo);
+
+export default dashboardRouter;
