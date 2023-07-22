@@ -1,4 +1,15 @@
 import {
+  loginSchema,
+  registerSchema,
+  resendVerifyMailSchema,
+  resetPasswordSchema,
+  validUserResetPasswordSchema,
+  verifySchema
+} from '@/validations/user';
+import express from 'express';
+import rateLimit from 'express-rate-limit';
+import { Segments, celebrate } from 'celebrate';
+import {
   current,
   forgotPassword,
   login,
@@ -6,19 +17,8 @@ import {
   resendVerification,
   resetPassword,
   verifyUser
-} from '../controllers/auth';
-import { protect } from '../middleware/auth';
-import {
-  loginSchema,
-  registerSchema,
-  resendVerifyMailSchema,
-  resetPasswordSchema,
-  validUserResetPasswordSchema,
-  verifySchema
-} from '../validations/user';
-import { Segments, celebrate } from 'celebrate';
-import express from 'express';
-import rateLimit from 'express-rate-limit';
+} from '@/controllers/auth';
+import { protect } from '@/middleware/auth';
 
 const authRouter = express.Router();
 

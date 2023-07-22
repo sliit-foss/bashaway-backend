@@ -1,5 +1,5 @@
-import User from '../models/user';
-import logger from '../utils/logger';
+import User from '@/models/user';
+import logger from '@/utils/logger';
 
 export const createUser = async (user) => {
   const userMade = (await new User(user).save()).toObject();

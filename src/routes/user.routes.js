@@ -1,8 +1,8 @@
-import { changePassword, create, getAll, getById, update, updateAllScores, updateScore } from '../controllers/user';
-import { adminProtect } from '../middleware/auth';
-import { addUserSchema, changePasswordSchema, updateSchema, userIdSchema } from '../validations/user';
-import { Segments, celebrate } from 'celebrate';
+import { addUserSchema, changePasswordSchema, updateSchema, userIdSchema } from '@/validations/user';
 import express from 'express';
+import { Segments, celebrate } from 'celebrate';
+import { changePassword, create, getAll, getById, update, updateAllScores, updateScore } from '@/controllers/user';
+import { adminProtect } from '@/middleware/auth';
 
 const userRouter = express.Router();
 

@@ -1,4 +1,4 @@
-import { attachSubmissionAttributesToQuestion } from '../helpers';
+import { attachSubmissionAttributesToQuestion } from '@/helpers';
 import {
   deleteAQuestion,
   findAllQuestions,
@@ -6,8 +6,8 @@ import {
   findQuestion,
   getQuestionById,
   insertQuestion
-} from '../repository/question';
-import { getOneSubmission, getSubmissions } from '../repository/submission';
+} from '@/repository/question';
+import { getOneSubmission, getSubmissions } from '@/repository/submission';
 
 export const retrieveAllQuestions = async (user, query) => {
   const questions = await findAllQuestions(user, query);

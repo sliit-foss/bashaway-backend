@@ -1,6 +1,6 @@
-import { findAllQuestions } from '../repository/question';
-import { getSubmissionsByQuestion } from '../repository/submission';
-import { getAllUniverstyUserGroups } from '../repository/user';
+import { findAllQuestions } from '@/repository/question';
+import { getSubmissionsByQuestion } from '@/repository/submission';
+import { getAllUniverstyUserGroups } from '@/repository/user';
 
 export const getAllQuestionsSubmissions = async (user) => {
   const results = await getSubmissionsByQuestion();

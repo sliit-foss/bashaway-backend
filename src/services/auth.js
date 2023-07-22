@@ -1,7 +1,7 @@
-import { createUser, findOneAndUpdateUser, getOneUser } from '../repository/user';
-import { sendMail } from './email';
 import bcrypt from 'bcrypt';
 import { v4 as uuidv4 } from 'uuid';
+import { createUser, findOneAndUpdateUser, getOneUser } from '@/repository/user';
+import { sendMail } from './email';
 
 export const authRegister = async ({ name, email, password, university, members }) => {
   const encryptedPassword = await new Promise((resolve, reject) => {

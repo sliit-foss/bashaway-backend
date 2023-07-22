@@ -1,5 +1,5 @@
-import Question from '../models/question';
 import mongoose from 'mongoose';
+import Question from '@/models/question';
 
 const ObjectId = mongoose.Types.ObjectId;
 

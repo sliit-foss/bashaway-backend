@@ -1,12 +1,12 @@
-import asyncHandler from '../middleware/async';
+import asyncHandler from '@/middleware/async';
 import {
   createQuestion,
   deleteQuestion,
   retrieveAllQuestions,
   retrieveQuestion,
   updateQuestionById
-} from '../services/question';
-import { makeResponse } from '../utils/response';
+} from '@/services/question';
+import { makeResponse } from '@/utils/response';
 
 export const getAllQuestions = asyncHandler(async (req, res) => {
   const data = await retrieveAllQuestions(req.user, req.query);

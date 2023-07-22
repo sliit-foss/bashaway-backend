@@ -1,5 +1,6 @@
-import { getAllQuestionIds } from '../repository/question';
-import { getLatestScore } from '../repository/submission';
+import bcrypt from 'bcrypt';
+import { getAllQuestionIds } from '@/repository/question';
+import { getLatestScore } from '@/repository/submission';
 import {
   createUser,
   findOneAndRemoveUser,
@@ -7,9 +8,8 @@ import {
   getAllUserIds,
   getAllUsers,
   getOneUser
-} from '../repository/user';
+} from '@/repository/user';
 import { sendMail } from './email';
-import bcrypt from 'bcrypt';
 
 export const updateScoreService = async (user) => {
   const questions = await getAllQuestionIds();

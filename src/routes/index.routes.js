@@ -1,10 +1,10 @@
-import { adminProtect, protect } from '../middleware/auth';
+import express from 'express';
+import { adminProtect, protect } from '@/middleware/auth';
 import authRouter from './auth.routes';
 import dashboardRouter from './dashboard.routes';
 import questionRouter from './question.routes';
 import submissionRouter from './submission.routes';
 import userRouter from './user.routes';
-import express from 'express';
 
 const router = express.Router();
 

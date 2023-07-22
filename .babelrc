@@ -1,4 +1,10 @@
 {
   "presets": ["@babel/preset-env"],
-  "plugins": []
+  "plugins": [
+    ["module-resolver", {
+      "alias": {
+        "@": ["./src"]
+      }
+    }]
+  ]
 }

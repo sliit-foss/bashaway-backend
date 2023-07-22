@@ -1,5 +1,5 @@
-import logger from '../utils/logger';
 import mongoose from 'mongoose';
+import logger from '@/utils/logger';
 
 const connectDB = () => {
   mongoose.connect(process.env.MONGO_URI, { keepAlive: true, connectTimeoutMS: 3000 }).catch((error) => {

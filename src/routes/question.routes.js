@@ -1,14 +1,14 @@
+import { addQuestionSchema, questionIdSchema, updateQuestionSchema } from '@/validations/question';
+import express from 'express';
+import { Segments, celebrate } from 'celebrate';
 import {
   createNewQuestion,
   deleteOldQuestion,
   getAllQuestions,
   getQuestionById,
   updateQuestion
-} from '../controllers/question';
-import { adminProtect } from '../middleware/auth';
-import { addQuestionSchema, questionIdSchema, updateQuestionSchema } from '../validations/question';
-import { Segments, celebrate } from 'celebrate';
-import express from 'express';
+} from '@/controllers/question';
+import { adminProtect } from '@/middleware/auth';
 
 const questionRouter = express.Router();
 

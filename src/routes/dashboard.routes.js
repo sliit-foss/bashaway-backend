@@ -1,5 +1,5 @@
-import { getQuestionSubmission, getRegistrationInfo } from '../controllers/dashboard';
 import express from 'express';
+import { getQuestionSubmission, getRegistrationInfo } from '@/controllers/dashboard';
 
 const dashboardRouter = express.Router();
 

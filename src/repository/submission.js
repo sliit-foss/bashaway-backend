@@ -1,5 +1,5 @@
-import Submission from '../models/submission';
-import logger from '../utils/logger';
+import Submission from '@/models/submission';
+import logger from '@/utils/logger';
 
 export const insertSubmission = async (userId, question, link) => {
   const newSubmission = new Submission({

@@ -1,8 +1,8 @@
-import { create, grade, view } from '../controllers/submission';
-import { adminProtect } from '../middleware/auth';
-import { submissionCreateSchema, submissionIdSchema, submissionViewSchema } from '../validations/submission';
-import { Segments, celebrate } from 'celebrate';
+import { submissionCreateSchema, submissionIdSchema, submissionViewSchema } from '@/validations/submission';
 import express from 'express';
+import { Segments, celebrate } from 'celebrate';
+import { create, grade, view } from '@/controllers/submission';
+import { adminProtect } from '@/middleware/auth';
 
 const submissionRouter = express.Router();
 

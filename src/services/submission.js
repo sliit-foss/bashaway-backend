@@ -1,5 +1,5 @@
-import { findQuestion, getMaxScore } from '../repository/question';
-import { getSubmissionById, getSubmissions, insertGrade, insertSubmission } from '../repository/submission';
+import { findQuestion, getMaxScore } from '@/repository/question';
+import { getSubmissionById, getSubmissions, insertGrade, insertSubmission } from '@/repository/submission';
 
 export const createSubmission = async ({ question, link }, { _id }) => {
   if (!(await findQuestion({ _id: question })))

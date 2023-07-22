@@ -1,14 +1,13 @@
-import connectDB from './database';
-import { queryMapper } from './middleware/query';
-import routes from './routes/index.routes';
-import logger from './utils/logger';
-import { makeResponse } from './utils/response';
+import express from 'express';
+import rateLimit from 'express-rate-limit';
 import { isCelebrateError } from 'celebrate';
 import compression from 'compression';
 import cors from 'cors';
-import express from 'express';
-import rateLimit from 'express-rate-limit';
 import helmet from 'helmet';
+import connectDB from '@/database';
+import { queryMapper } from '@/middleware/query';
+import { default as routes } from '@/routes/index.routes';
+import { logger, makeResponse } from '@/utils/response';
 
 require('dotenv').config();
 

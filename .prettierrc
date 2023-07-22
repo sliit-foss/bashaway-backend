@@ -6,7 +6,26 @@
     "quoteProps": "consistent",
     "trailingComma": "none",
     "plugins": ["@trivago/prettier-plugin-sort-imports"],
-    "importOrder": [],
+    "importOrder": [
+      "^(express/(.*)$)|^(express$)",
+      "^(.*express-*(.*)$)",
+      "^(bcrypt$)|^(cors$)|^(celebrate$)|^(compression$)|^(helmet$)",
+      "^(handlebars$)|^(http*$)",
+      "^(jsonwebtoken$)|^(lodash$)|^(moment$)|^(morgan$)|^(multer$)|^(nodemailer$)",
+      "^(mongoose$)|^(.*mongoose-*(.*)$)",
+      "^(nodemailer$)|^(uuid$)|^(winston$)",
+      "^.*controllers(.*)$",
+      "^.*database(.*)$",
+      "^.*helpers(.*)$",
+      "^.*html(.*)$",
+      "^.*middleware(.*)$",
+      "^.*models(.*)$",
+      "^.*repository(.*)$",
+      "^.*routes(.*)$",
+      "^.*services(.*)$",
+      "^.*utils(.*)$",
+      "^[./]"
+    ],
     "importOrderSeparation": false,
     "importOrderSortSpecifiers": true
   }

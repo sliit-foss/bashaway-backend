@@ -1,6 +1,6 @@
-import asyncHandler from '../middleware/async';
-import { getAllQuestionsSubmissions, getRegistrations } from '../services/dashboard';
-import { makeResponse } from '../utils/response';
+import asyncHandler from '@/middleware/async';
+import { getAllQuestionsSubmissions, getRegistrations } from '@/services/dashboard';
+import { makeResponse } from '@/utils/response';
 
 export const getQuestionSubmission = asyncHandler(async (req, res) => {
   const data = await getAllQuestionsSubmissions(req.user);
