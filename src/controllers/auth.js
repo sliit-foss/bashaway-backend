@@ -1,4 +1,3 @@
-import { asyncHandler } from '@/middleware';
 import { getOneUser } from '@/repository/user';
 import {
   authLogin,
@@ -14,7 +13,7 @@ const fs = require('fs');
 
 const registrationEnd = new Date(2022, 8, 30, 8, 0, 0);
 
-export const register = asyncHandler(async (req, res) => {
+export const register = async (req, res) => {
   if (Date.now() >= registrationEnd.getTime()) {
     return makeResponse({ res, status: 400, message: 'Registration closed.' });
   }
@@ -26,9 +25,9 @@ export const register = asyncHandler(async (req, res) => {
     res,
     message: 'Registration Successfull. Please check your email to verify your account.'
   });
-});
+};
 
-export const login = asyncHandler(async (req, res) => {
+export const login = async (req, res) => {
   const user = await authLogin(req.body);
   if (!user) return makeResponse({ res, status: 401, message: 'Invalid email or password' });
   if (!user.is_verified)
@@ -44,9 +43,9 @@ export const login = asyncHandler(async (req, res) => {
       message: 'Your account has been deactivated. Please contact a bashaway administrator to resolve it'
     });
   return sendTokenResponse(res, user, 'User logged in successfully');
-});
+};
 
-export const verifyUser = asyncHandler(async (req, res) => {
+export const verifyUser = async (req, res) => {
   const user = await updateVerificationStatus(req.params.verification_code);
   if (user) {
     res.writeHead(200, { 'Content-Type': 'text/html' });
@@ -62,32 +61,32 @@ export const verifyUser = asyncHandler(async (req, res) => {
   } else {
     return makeResponse({ res, status: 400, message: 'Invalid verification code' });
   }
-});
+};
 
-export const resendVerification = asyncHandler(async (req, res) => {
+export const resendVerification = async (req, res) => {
   const user = await getOneUser({ email: req.body.email });
   if (user.is_verified) return makeResponse({ res, status: 405, message: 'User already verified' });
 
   const result = await authResendVerification(req.body.email);
   if (result.status) return makeResponse({ res, ...result });
   return makeResponse({ res, message: 'Verification email sent successfully' });
-});
+};
 
-export const current = asyncHandler((req, res) => {
+export const current = (req, res) => {
   return makeResponse({ res, data: req.user, message: 'Auth group details fetched successfully' });
-});
+};
 
-export const forgotPassword = asyncHandler(async (req, res) => {
+export const forgotPassword = async (req, res) => {
   const result = await forgotPasswordEmail(req.body.email);
   if (result.status) return makeResponse({ res, ...result });
   return makeResponse({
     res,
     message: 'A password registration link has been emailed to you. Please use it to reset your password'
   });
-});
+};
 
-export const resetPassword = asyncHandler(async (req, res) => {
+export const resetPassword = async (req, res) => {
   const result = await resetPasswordFromEmail(req.body.new_password, req.params.verification_code);
   if (result.status) return makeResponse({ res, ...result });
   return makeResponse({ res, message: 'Password reset successfully' });
-});
+};

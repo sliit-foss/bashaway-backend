@@ -1,4 +1,4 @@
-import asyncHandler from './async';
+import { asyncHandler } from '@sliit-foss/functions';
 import { getOneUser } from '@/repository/user';
 import { decodeJwtToken, makeResponse } from '@/utils';
 

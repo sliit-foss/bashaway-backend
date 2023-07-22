@@ -5,7 +5,7 @@ import rateLimit from 'express-rate-limit';
 import compression from 'compression';
 import cors from 'cors';
 import helmet from 'helmet';
-import connectDB from '@/database';
+import { default as connectDB } from '@/database';
 import { errorHandler, queryMapper, responseInterceptor } from '@/middleware';
 import { default as routes } from '@/routes/index.routes';
 
