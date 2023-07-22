@@ -1,3 +1,4 @@
+import createError from 'http-errors';
 import { getOneUser } from '@/repository/user';
 import {
   authLogin,
@@ -14,13 +15,9 @@ const fs = require('fs');
 const registrationEnd = new Date(2022, 8, 30, 8, 0, 0);
 
 export const register = async (req, res) => {
-  if (Date.now() >= registrationEnd.getTime()) {
-    return makeResponse({ res, status: 400, message: 'Registration closed.' });
-  }
-  if (req.user) return makeResponse({ res, status: 400, message: "You've already registered for an account." });
-  const result = await authRegister(req.body);
-  if (!result) return makeResponse({ res, status: 500, message: 'Registration failed.' });
-  if (result.status) return makeResponse({ res, ...result });
+  if (Date.now() >= registrationEnd.getTime()) throw new createError(400, 'Registration closed');
+  if (req.user) throw new createError(400, "You've already registered for an account.");
+  await authRegister(req.body);
   return makeResponse({
     res,
     message: 'Registration Successfull. Please check your email to verify your account.'
@@ -29,19 +26,13 @@ export const register = async (req, res) => {
 
 export const login = async (req, res) => {
   const user = await authLogin(req.body);
-  if (!user) return makeResponse({ res, status: 401, message: 'Invalid email or password' });
-  if (!user.is_verified)
-    return makeResponse({
-      res,
-      status: 401,
-      message: 'Account not verified. Please check your email'
-    });
+  if (!user) throw new createError(401, 'Invalid email or password');
+  if (!user.is_verified) throw new createError(401, 'Account not verified. Please check your email');
   if (!user.is_active)
-    return makeResponse({
-      res,
-      status: 401,
-      message: 'Your account has been deactivated. Please contact a bashaway administrator to resolve it'
-    });
+    throw new createError(
+      401,
+      'Your account has been deactivated. Please contact a bashaway administrator to resolve it'
+    );
   return sendTokenResponse(res, user, 'User logged in successfully');
 };
 
@@ -49,7 +40,7 @@ export const verifyUser = async (req, res) => {
   const user = await updateVerificationStatus(req.params.verification_code);
   if (user) {
     res.writeHead(200, { 'Content-Type': 'text/html' });
-    fs.readFile('./src/html/verificationSuccessfully.html', null, function (error, data) {
+    fs.readFile('./src/html/verificationSuccessfull.html', null, function (error, data) {
       if (error) {
         res.write('file not found');
         res.writeHead(404);
@@ -59,16 +50,14 @@ export const verifyUser = async (req, res) => {
       res.end();
     });
   } else {
-    return makeResponse({ res, status: 400, message: 'Invalid verification code' });
+    throw new createError(400, 'Invalid verification code');
   }
 };
 
 export const resendVerification = async (req, res) => {
   const user = await getOneUser({ email: req.body.email });
-  if (user.is_verified) return makeResponse({ res, status: 405, message: 'User already verified' });
-
-  const result = await authResendVerification(req.body.email);
-  if (result.status) return makeResponse({ res, ...result });
+  if (user.is_verified) throw new createError(400, 'User already verified');
+  await authResendVerification(req.body.email);
   return makeResponse({ res, message: 'Verification email sent successfully' });
 };
 
@@ -77,8 +66,7 @@ export const current = (req, res) => {
 };
 
 export const forgotPassword = async (req, res) => {
-  const result = await forgotPasswordEmail(req.body.email);
-  if (result.status) return makeResponse({ res, ...result });
+  await forgotPasswordEmail(req.body.email);
   return makeResponse({
     res,
     message: 'A password registration link has been emailed to you. Please use it to reset your password'
@@ -86,7 +74,6 @@ export const forgotPassword = async (req, res) => {
 };
 
 export const resetPassword = async (req, res) => {
-  const result = await resetPasswordFromEmail(req.body.new_password, req.params.verification_code);
-  if (result.status) return makeResponse({ res, ...result });
+  await resetPasswordFromEmail(req.body.new_password, req.params.verification_code);
   return makeResponse({ res, message: 'Password reset successfully' });
 };

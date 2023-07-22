@@ -1,7 +1,8 @@
-import crypto from 'crypto';
+import createError from 'http-errors';
 import bcrypt from 'bcrypt';
-import { sendMail } from './email';
+import crypto from 'crypto';
 import { createUser, findOneAndUpdateUser, getOneUser } from '@/repository/user';
+import { sendMail } from './email';
 
 export const authRegister = async ({ name, email, password, university, members }) => {
   const encryptedPassword = await new Promise((resolve, reject) => {
@@ -66,7 +67,7 @@ export const updateVerificationStatus = async (verificationCode) => {
 
 export const authResendVerification = async (email) => {
   const user = await getOneUser({ email });
-  if (!user) return { status: 400, message: 'A user/group by the provided email does not exist' };
+  if (!user) throw new createError(400, 'A user/group by the provided email does not exist');
   const verification_code = crypto.randomUUID();
   const updatedUser = await findOneAndUpdateUser({ email }, { verification_code });
   await verifyMailTemplate(email, verification_code);
@@ -98,7 +99,7 @@ export const resetPasswordMailTemplate = async (email, verification_code) => {
 
 export const forgotPasswordEmail = async (email) => {
   const user = await getOneUser({ email });
-  if (!user) return { status: 400, message: 'A user/group by the provided email does not exist' };
+  if (!user) throw new createError(400, 'A user/group by the provided email does not exist');
   const verification_code = crypto.randomUUID();
   const updatedUser = await findOneAndUpdateUser({ email }, { verification_code });
   await resetPasswordMailTemplate(email, verification_code);
@@ -107,8 +108,7 @@ export const forgotPasswordEmail = async (email) => {
 
 export const resetPasswordFromEmail = async (password, verificationCode) => {
   const user = await getOneUser({ verification_code: verificationCode });
-  if (!user) return { status: 400, message: 'Click the link we have sent to your email and try again.' };
-
+  if (!user) throw new createError(400, 'Click the link we have sent to your email and try again.');
   const encryptedPassword = await new Promise((resolve, reject) => {
     bcrypt.hash(password, parseInt(process.env.BCRYPT_SALT_ROUNDS), (err, hash) => {
       if (err) reject(err);

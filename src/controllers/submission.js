@@ -1,13 +1,13 @@
+import createError from 'http-errors';
 import { createSubmission, gradeSubmission, viewSubmissions } from '@/services/submission';
 import { makeResponse } from '@/utils/response';
 
 export const create = async (req, res) => {
   const submissionsDisabled = Date.now() > 1664616600000; // 2022 October 1st 3:00 PM
   if (submissionsDisabled) {
-    return makeResponse({ res, status: 400, message: 'Submission period has expired' });
+    throw new createError(400, 'Submission period has expired');
   }
-  const ret = await createSubmission(req.body, req.user);
-  if (ret) return makeResponse({ res, ...ret });
+  await createSubmission(req.body, req.user);
   return makeResponse({ res, status: 201, message: 'Submission added successfully ' });
 };
 
@@ -17,7 +17,6 @@ export const view = async (req, res) => {
 };
 
 export const grade = async (req, res) => {
-  const ret = await gradeSubmission(req.params.id, req.body, req.user);
-  if (typeof ret === 'object') return makeResponse({ res, ...ret });
+  await gradeSubmission(req.params.id, req.body, req.user);
   return makeResponse({ res, message: 'Submission graded successfully' });
 };

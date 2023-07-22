@@ -1,5 +1,5 @@
+import createError from 'http-errors';
 import bcrypt from 'bcrypt';
-import { sendMail } from './email';
 import { getAllQuestionIds } from '@/repository/question';
 import { getLatestScore } from '@/repository/submission';
 import {
@@ -10,6 +10,7 @@ import {
   getAllUsers,
   getOneUser
 } from '@/repository/user';
+import { sendMail } from './email';
 
 export const updateScoreService = async (user) => {
   const questions = await getAllQuestionIds();
@@ -30,11 +31,7 @@ export const getUsers = (query) => {
 
 export const getUserByID = async (id) => {
   const user = await getOneUser({ _id: id });
-  if (!user)
-    return {
-      status: 422,
-      message: 'Invalid submission ID'
-    };
+  if (!user) throw new createError(404, 'Invalid user ID');
   return user;
 };
 
@@ -66,7 +63,7 @@ export const changePasswordService = async (user, oldPassword, newPassword) => {
       resolve(hash);
     });
   });
-  if (!isPasswordMatch) return { status: 400, message: 'Invalid current password' };
+  if (!isPasswordMatch) throw new createError(400, 'Invalid current password');
 
   const encryptedPassword = await new Promise((resolve, reject) => {
     bcrypt.hash(newPassword, parseInt(process.env.BCRYPT_SALT_ROUNDS), (err, hash) => {
@@ -82,23 +79,19 @@ export const updateUserdetails = async (userId, user, userDetails) => {
 
   if (user.role !== 'ADMIN') {
     if (userId.toString() !== user._id.toString()) {
-      return { status: 403, message: 'You are not authorized to update this user' };
+      throw new createError(403, 'You are not authorized to update this user');
     }
     delete userDetails.is_active;
   }
 
   if (userDetails.name) {
     userData = await getOneUser({ name: userDetails.name }, false);
-    if (userData && userData?._id.toString() !== userId.toString())
-      return { status: 422, message: 'Name is already taken' };
+    if (userData && userData?._id.toString() !== userId.toString()) throw new createError(422, 'Name is already taken');
   }
 
   const updatedUser = await findOneAndUpdateUser({ _id: userId }, userDetails);
-  if (!updatedUser)
-    return {
-      status: 422,
-      message: 'Invalid user ID'
-    };
+  if (!updatedUser) throw new createError(422, 'Invalid user ID');
+
   return updatedUser;
 };
 
