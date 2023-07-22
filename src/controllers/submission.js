@@ -14,11 +14,11 @@ export const create = asyncHandler(async (req, res) => {
 
 export const view = asyncHandler(async (req, res) => {
   const data = await viewSubmissions(req.query, req.user);
-  return makeResponse({ res, status: 200, data, message: 'Submissions retrieved successfully' });
+  return makeResponse({ res, data, message: 'Submissions retrieved successfully' });
 });
 
 export const grade = asyncHandler(async (req, res) => {
   const ret = await gradeSubmission(req.params.id, req.body, req.user);
   if (typeof ret === 'object') return makeResponse({ res, ...ret });
-  return makeResponse({ res, status: 200, message: 'Submission graded successfully' });
+  return makeResponse({ res, message: 'Submission graded successfully' });
 });
