@@ -2,7 +2,7 @@ import { asyncHandler } from '@sliit-foss/functions';
 import { getOneUser } from '@/repository/user';
 import { decodeJwtToken, makeResponse } from '@/utils';
 
-export const protect = asyncHandler(async (req, res, next) => {
+export const protect = asyncHandler(async (req, res) => {
   const token = req.headers.authorization
     ? req.headers.authorization.startsWith('Bearer')
       ? req.headers.authorization.split(' ')[1]?.replace('null', '')?.replace('undefined', '')
@@ -13,10 +13,8 @@ export const protect = asyncHandler(async (req, res, next) => {
   const user = decodedUser ? await getOneUser({ _id: decodedUser._id }, false) : null;
   if (!user) return makeResponse({ res, status: 403, message: 'Unauthorized' });
   req.user = user;
-  next();
 });
 
-export const adminProtect = asyncHandler((req, res, next) => {
+export const adminProtect = asyncHandler((req, res) => {
   if (req.user.role !== 'ADMIN') return makeResponse({ res, status: 403, message: 'Unauthorized' });
-  next();
 });

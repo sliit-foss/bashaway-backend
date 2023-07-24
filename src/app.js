@@ -1,10 +1,12 @@
-import crypto from 'crypto';
+import { default as httpLogger } from '@sliit-foss/http-logger';
 import express from 'express';
 import context from 'express-http-context';
 import rateLimit from 'express-rate-limit';
 import compression from 'compression';
 import cors from 'cors';
+import crypto from 'crypto';
 import helmet from 'helmet';
+import { pick } from 'lodash';
 import { default as connectDB } from '@/database';
 import { errorHandler, queryMapper, responseInterceptor } from '@/middleware';
 import { default as routes } from '@/routes/index.routes';
@@ -38,6 +40,14 @@ app.use((req, _res, next) => {
   context.set('correlationId', req.headers['x-correlation-id'] ?? crypto.randomBytes(16).toString('hex'));
   next();
 });
+
+app.use(
+  httpLogger({
+    loggable: ({ headers }) => ({
+      ...pick(headers, ['x-user-email', 'user-agent'])
+    })
+  })
+);
 
 app.use(queryMapper);
 

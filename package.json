@@ -27,6 +27,7 @@
   "homepage": "https://github.com/sliit-foss/bashaway-backend#readme",
   "dependencies": {
     "@sliit-foss/functions": "2.2.2",
+    "@sliit-foss/http-logger": "1.1.1",
     "@sliit-foss/module-logger": "1.1.2",
     "bcrypt": "5.0.1",
     "celebrate": "15.0.1",
@@ -39,6 +40,7 @@
     "helmet": "5.1.0",
     "http-errors": "2.0.0",
     "jsonwebtoken": "8.5.1",
+    "lodash": "4.17.21",
     "migrate-mongo": "9.0.0",
     "mongoose": "6.4.3",
     "mongoose-aggregate-paginate-v2": "1.0.6",

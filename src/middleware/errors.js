@@ -1,7 +1,7 @@
 import { moduleLogger } from '@sliit-foss/module-logger';
 import { isCelebrateError } from 'celebrate';
-import { responseInterceptor } from './response';
 import { makeResponse } from '@/utils';
+import { responseInterceptor } from './response';
 
 const logger = moduleLogger('Error-handler');
 
@@ -10,8 +10,7 @@ export const errorHandler = (err, req, res, _) => {
   if (!res.errorLogged) {
     logger.error(`Error: ${err.message} | Request Path - ${req.path} | Stack: ${err.stack}`, {
       payload: req.body,
-      headers: req.headers,
-      query: req.query
+      headers: req.headers
     });
     res.errorLogged = true;
   }
