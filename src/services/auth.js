@@ -1,8 +1,8 @@
+import crypto from 'crypto';
 import createError from 'http-errors';
 import bcrypt from 'bcrypt';
-import crypto from 'crypto';
-import { createUser, findOneAndUpdateUser, getOneUser } from '@/repository/user';
 import { sendMail } from './email';
+import { createUser, findOneAndUpdateUser, getOneUser } from '@/repository/user';
 
 export const authRegister = async ({ name, email, password, university, members }) => {
   const encryptedPassword = await new Promise((resolve, reject) => {

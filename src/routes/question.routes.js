@@ -1,7 +1,7 @@
-import { addQuestionSchema, questionIdSchema, updateQuestionSchema } from '@/validations/question';
 import { tracedAsyncHandler } from '@sliit-foss/functions';
 import express from 'express';
 import { Segments, celebrate } from 'celebrate';
+import { addQuestionSchema, questionIdSchema, updateQuestionSchema } from '@/validations/question';
 import {
   createNewQuestion,
   deleteOldQuestion,

@@ -1,7 +1,7 @@
-import { addUserSchema, changePasswordSchema, updateSchema, userIdSchema } from '@/validations/user';
 import { tracedAsyncHandler } from '@sliit-foss/functions';
 import express from 'express';
 import { Segments, celebrate } from 'celebrate';
+import { addUserSchema, changePasswordSchema, updateSchema, userIdSchema } from '@/validations/user';
 import { changePassword, create, getAll, getById, update, updateAllScores, updateScore } from '@/controllers/user';
 import { adminProtect } from '@/middleware/auth';
 

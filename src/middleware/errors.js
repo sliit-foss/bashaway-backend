@@ -1,7 +1,7 @@
 import { moduleLogger } from '@sliit-foss/module-logger';
 import { isCelebrateError } from 'celebrate';
-import { makeResponse } from '@/utils';
 import { responseInterceptor } from './response';
+import { makeResponse } from '@/utils';
 
 const logger = moduleLogger('Error-handler');
 
@@ -15,7 +15,7 @@ export const errorHandler = (err, req, res, _) => {
     res.errorLogged = true;
   }
 
-  responseInterceptor({}, res, () => {});
+  responseInterceptor({}, res);
 
   if (isCelebrateError(err)) {
     // eslint-disable-next-line no-unused-vars

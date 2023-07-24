@@ -1,7 +1,7 @@
-import { submissionCreateSchema, submissionIdSchema, submissionViewSchema } from '@/validations/submission';
 import { tracedAsyncHandler } from '@sliit-foss/functions';
 import express from 'express';
 import { Segments, celebrate } from 'celebrate';
+import { submissionCreateSchema, submissionIdSchema, submissionViewSchema } from '@/validations/submission';
 import { create, grade, view } from '@/controllers/submission';
 import { adminProtect } from '@/middleware/auth';
 
