@@ -9,7 +9,7 @@ import {
   resetPasswordFromEmail,
   updateVerificationStatus
 } from '@/services/auth';
-import { makeResponse, sendTokenResponse } from '@/utils';
+import { makeResponse, sendRefreshTokenResponse, sendTokenResponse } from '@/utils';
 
 const fs = require('fs');
 
@@ -84,5 +84,5 @@ export const refresh = async (req, res) => {
   const userByToken = await getUserByToken(req.body.refresh_token);
   if (!userByToken) throw new createError(401, 'Invalid refresh token');
   if (userByToken._id.toString() !== user._id.toString()) throw new createError(401, 'Invalid refresh token');
-  return sendTokenResponse(res, user, 'Token refreshed successfully');
+  return sendRefreshTokenResponse(res, user, 'Token refreshed successfully');
 };
