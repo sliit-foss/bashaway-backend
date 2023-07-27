@@ -3,6 +3,7 @@ import createError from 'http-errors';
 import bcrypt from 'bcrypt';
 import { sendMail } from './email';
 import { createUser, findOneAndUpdateUser, getOneUser } from '@/repository/user';
+import { decodeJwtToken } from '@/utils';
 
 export const authRegister = async ({ name, email, password, university, members }) => {
   const encryptedPassword = await new Promise((resolve, reject) => {
@@ -120,4 +121,10 @@ export const resetPasswordFromEmail = async (password, verificationCode) => {
     { password: encryptedPassword, is_verified: true }
   );
   return updatedUser;
+};
+
+export const getUserByToken = async (token) => {
+  const decodedUser = decodeJwtToken(token).data;
+  const user = decodedUser ? await getOneUser({ _id: decodedUser._id }, false) : null;
+  return user;
 };
