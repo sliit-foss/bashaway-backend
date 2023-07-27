@@ -14,6 +14,7 @@ import {
   current,
   forgotPassword,
   login,
+  logout,
   register,
   resendVerification,
   resetPassword,
@@ -50,5 +51,6 @@ authRouter.post(
   celebrate({ [Segments.PARAMS]: validUserResetPasswordSchema, [Segments.BODY]: resetPasswordSchema }),
   tracedAsyncHandler(resetPassword)
 );
+authRouter.post('/logout', protect, tracedAsyncHandler(logout));
 
 export default authRouter;
