@@ -10,7 +10,7 @@ export const sendTokenResponse = (res, user, message) => {
 
 export const generateToken = (user) => {
   return jwt.sign({ data: user }, process.env.JWT_SECRET, {
-    expiresIn: `${process.env.JWT_EXPIRE}s`
+    expiresIn: `${process.env.JWT_EXPIRE}m`
   });
 };
 
@@ -20,8 +20,9 @@ export const decodeJwtToken = (token) => {
 
 export const sendRefreshTokenResponse = (res, user, message) => {
   const refreshToken = generateRefreshToken(user);
+  const accessToken = generateToken(user);
   res.status(200).json({
-    data: { user, refresh_token: refreshToken },
+    data: { user, refresh_token: refreshToken, access_token: accessToken },
     message
   });
 };
