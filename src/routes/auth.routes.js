@@ -52,6 +52,6 @@ authRouter.post(
   celebrate({ [Segments.PARAMS]: validUserResetPasswordSchema, [Segments.BODY]: resetPasswordSchema }),
   tracedAsyncHandler(resetPassword)
 );
-authRouter.post('/refresh', celebrate({ [Segments.BODY]: refreshTokenSchema }), protect, tracedAsyncHandler(refresh));
+authRouter.post('/refresh', celebrate({ [Segments.BODY]: refreshTokenSchema }), tracedAsyncHandler(refresh));
 
 export default authRouter;

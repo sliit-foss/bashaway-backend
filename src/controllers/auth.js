@@ -83,6 +83,6 @@ export const refresh = async (req, res) => {
   const user = req.user;
   const userByToken = await getUserByToken(req.body.refresh_token);
   if (!userByToken) throw new createError(401, 'Invalid refresh token');
-  if (userByToken._id.toString() !== user._id.toString()) throw new createError(401, 'Invalid refresh token');
+  if (userByToken._id !== user._id) throw new createError(401, 'Invalid refresh token');
   return sendRefreshTokenResponse(res, user, 'Token refreshed successfully');
 };
