@@ -10,7 +10,7 @@ export const sendTokenResponse = (res, user, message) => {
 
 export const generateToken = (user) => {
   return jwt.sign({ data: user }, process.env.JWT_SECRET, {
-    expiresIn: `${process.env.JWT_EXPIRE}d`
+    expiresIn: `${process.env.JWT_EXPIRE}s`
   });
 };
 
