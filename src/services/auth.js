@@ -1,10 +1,9 @@
-import crypto from 'crypto';
 import createError from 'http-errors';
 import bcrypt from 'bcrypt';
-import { sendMail } from './email';
-import { addBackListToken } from '@/repository/token';
+import crypto from 'crypto';
 import { createUser, findOneAndUpdateUser, getOneUser } from '@/repository/user';
 import { decodeJwtToken } from '@/utils';
+import { sendMail } from './email';
 
 export const authRegister = async ({ name, email, password, university, members }) => {
   const encryptedPassword = await new Promise((resolve, reject) => {
@@ -128,8 +127,4 @@ export const getUserByToken = async (token) => {
   const decodedUser = decodeJwtToken(token).data;
   const user = decodedUser ? await getOneUser({ _id: decodedUser._id }, false) : null;
   return user;
-};
-
-export const blacklistToken = (token) => {
-  addBackListToken(token);
 };

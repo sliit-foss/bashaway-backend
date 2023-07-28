@@ -1,10 +1,10 @@
 import createError from 'http-errors';
+import { blacklistToken } from '@/repository/token';
 import { getOneUser } from '@/repository/user';
 import {
   authLogin,
   authRegister,
   authResendVerification,
-  blacklistToken,
   forgotPasswordEmail,
   getUserByToken,
   resetPasswordFromEmail,

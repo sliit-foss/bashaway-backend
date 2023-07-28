@@ -1,7 +1,7 @@
 import { moduleLogger } from '@sliit-foss/module-logger';
 import { isCelebrateError } from 'celebrate';
-import { responseInterceptor } from './response';
 import { makeResponse } from '@/utils';
+import { responseInterceptor } from './response';
 
 const logger = moduleLogger('Error-handler');
 
@@ -18,8 +18,7 @@ export const errorHandler = (err, req, res, _) => {
   responseInterceptor({}, res);
 
   if (isCelebrateError(err)) {
-    // eslint-disable-next-line no-unused-vars
-    for (const [_, value] of err.details.entries()) {
+    for (const [, value] of err.details.entries()) {
       return makeResponse({ res, status: 422, message: value.details[0].message });
     }
   } else if (err.name == 'MongoServerError' && err.code === 11000) {
@@ -27,8 +26,9 @@ export const errorHandler = (err, req, res, _) => {
     return makeResponse({ res, status: 400, message: `The ${key} ${err.keyValue[key]} is already taken` });
   } else if (err.message === 'jwt expired') {
     return makeResponse({ res, status: 401, message: 'Token expired' });
+  } else if (['invalid token', 'jwt malformed'].includes(err.message)) {
+    return makeResponse({ res, status: 401, message: 'Invalid token' });
   }
-
   return makeResponse({
     res,
     status: err.status ?? 500,
