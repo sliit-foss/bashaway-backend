@@ -2,8 +2,9 @@ import jwt from 'jsonwebtoken';
 
 export const sendTokenResponse = (res, user, message) => {
   const accessToken = generateToken(user);
+  const refreshToken = generateRefreshToken(user);
   res.status(200).json({
-    data: { user, access_token: accessToken },
+    data: { user, refresh_token: refreshToken, access_token: accessToken },
     message
   });
 };
@@ -19,10 +20,9 @@ export const decodeJwtToken = (token) => {
 };
 
 export const sendRefreshTokenResponse = (res, user, message) => {
-  const refreshToken = generateRefreshToken(user);
   const accessToken = generateToken(user);
   res.status(200).json({
-    data: { user, refresh_token: refreshToken, access_token: accessToken },
+    data: { user, access_token: accessToken },
     message
   });
 };
