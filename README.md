@@ -1,48 +1,43 @@
-# Bashaway-Backend
+<br/>
 
-_Backend for the Bashaway 2022 event, organized by SLIIT FOSS community._
+<br/>
 
-Bashaway is a competitive coding event where the participants must automate a given task using scripting. Partipants must form groups of <group size> and solve the automation problems using the technologies given below:
+<p align="center">
+  <img src="https://github.com/sliit-foss/bashaway-official/assets/73662613/c15f7a94-592b-410f-b581-c98d25a9ca42" width="420" alt="Bashaway Logo"/>
+</p>
 
-- list
-- of
-- languages
+<br/>
 
-## Features
+<p align="center">
+  <a aria-label="SLIIT FOSS logo" href="https://sliitfoss.org">
+    <img src="https://img.shields.io/badge/Made_by_the_SLIIT_FOSS_Community-blue">
+  </a>
+  <a aria-label="License" href="https://github.com/sliit-foss/bashaway-backend/blob/main/LICENSE">
+    <img alt="" src="https://img.shields.io/badge/License-MIT-yellow.svg">
+  </a>
+</p>
 
-- Participant
-  - Registration
-  - Answer submission
-- Admin
-  - User management
-  - View submissions
+<br/>
 
-## API
+Bashaway is a competitive coding event where the participants must automate a given task using scripting. Partipants must form groups of 4 and solve the automation problems using bash and optionally, a given set of technologies
 
-The following endpoints are available.
+## API Documentation
 
-- Authentication
+- [Postman collection](https://documenter.getpostman.com/view/13842706/2s9XxsWcDC)
+- [Wiki](https://github.com/sliit-foss/bashaway-backend/wiki)
 
-| Endpint            | Description |
-| ------------------ | ----------- |
-| /api/auth/login    |             |
-| /api/auth/register |             |
-| /api/auth/logout   |             |
-| /api/auth/current  |             |
+## Getting started
 
-- Answer submision
+- Run `pnpm install` to install all dependencies
+- Run `pnpm dev` to start the development server
 
-| Endpint                | Description |
-| ---------------------- | ----------- |
-| /api/submission/create |             |
-| /api/submission/view   |             |
+## Commit messages
 
-## Contributors
+- We follow conventional commits during our development workflow as a good practice. More information can be found at their official [documentation](https://www.conventionalcommits.org/en/v1.0.0-beta.4/#examples)
+- Refer the [commitlint.config.js](https://github.com/sliit-foss/bashaway-backend/blob/main/commitlint.config.cjs) file for a full list of supported commit message prefixes
 
-- List
-- Of
-- Contributors
+## Additional tools
 
-_Brought to you by SLIIT FOSS_
+- This project is bootstrapped with [Lefthook](https://evilmartians.com/opensource/lefthook), [Eslint](https://eslint.org/) and [Prettier](https://prettier.io/). Please make good use of them.
 
-![alt text](https://avatars.githubusercontent.com/u/36430259?s=190)
+<br/>
