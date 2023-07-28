@@ -99,3 +99,7 @@ export const resetPasswordSchema = {
 export const validUserResetPasswordSchema = {
   verification_code: Joi.string().required()
 };
+
+export const refreshTokenSchema = {
+  refresh_token: Joi.string().required()
+};

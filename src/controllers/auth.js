@@ -6,10 +6,11 @@ import {
   authResendVerification,
   blacklistToken,
   forgotPasswordEmail,
+  getUserByToken,
   resetPasswordFromEmail,
   updateVerificationStatus
 } from '@/services/auth';
-import { makeResponse, sendTokenResponse } from '@/utils';
+import { makeResponse, sendRefreshTokenResponse, sendTokenResponse } from '@/utils';
 
 const fs = require('fs');
 
@@ -77,6 +78,12 @@ export const forgotPassword = async (req, res) => {
 export const resetPassword = async (req, res) => {
   await resetPasswordFromEmail(req.body.new_password, req.params.verification_code);
   return makeResponse({ res, message: 'Password reset successfully' });
+};
+
+export const refresh = async (req, res) => {
+  const userByToken = await getUserByToken(req.body.refresh_token);
+  if (!userByToken) throw new createError(401, 'Invalid refresh token');
+  return sendRefreshTokenResponse(res, userByToken, 'Token refreshed successfully');
 };
 
 export const logout = (req, res) => {

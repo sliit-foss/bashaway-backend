@@ -4,6 +4,7 @@ import rateLimit from 'express-rate-limit';
 import { Segments, celebrate } from 'celebrate';
 import {
   loginSchema,
+  refreshTokenSchema,
   registerSchema,
   resendVerifyMailSchema,
   resetPasswordSchema,
@@ -15,6 +16,7 @@ import {
   forgotPassword,
   login,
   logout,
+  refresh,
   register,
   resendVerification,
   resetPassword,
@@ -51,6 +53,7 @@ authRouter.post(
   celebrate({ [Segments.PARAMS]: validUserResetPasswordSchema, [Segments.BODY]: resetPasswordSchema }),
   tracedAsyncHandler(resetPassword)
 );
+authRouter.post('/refresh', celebrate({ [Segments.BODY]: refreshTokenSchema }), tracedAsyncHandler(refresh));
 authRouter.post('/logout', protect, tracedAsyncHandler(logout));
 
 export default authRouter;
