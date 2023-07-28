@@ -1,9 +1,9 @@
-const backListTokens = [];
+const blackListedTokens = [];
 
 export const addBackListToken = (token) => {
-  backListTokens.push(token);
+  blackListedTokens.push(token);
 };
 
-export const isTokenBackListed = (token) => {
-  return backListTokens.includes(token);
+export const isBlacklistedToken = (token) => {
+  return blackListedTokens.includes(token);
 };

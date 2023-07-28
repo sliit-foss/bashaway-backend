@@ -1,5 +1,5 @@
 import { asyncHandler } from '@sliit-foss/functions';
-import { isTokenBackListed } from '@/repository/token';
+import { isBlacklistedToken } from '@/repository/token';
 import { getOneUser } from '@/repository/user';
 import { decodeJwtToken, makeResponse } from '@/utils';
 
@@ -10,12 +10,12 @@ export const protect = asyncHandler(async (req, res) => {
       : null
     : null;
   if (!token) return makeResponse({ res, status: 403, message: 'Unauthorized' });
-  const isBackListedToken = isTokenBackListed(token);
+  const isBackListedToken = isBlacklistedToken(token);
   if (isBackListedToken) return makeResponse({ res, status: 403, message: 'Unauthorized' });
   const decodedUser = decodeJwtToken(token).data;
   const user = decodedUser ? await getOneUser({ _id: decodedUser._id }, false) : null;
   if (!user) return makeResponse({ res, status: 403, message: 'Unauthorized' });
-  user.token = token;
+  user.user_token = token;
   req.user = user;
 });
 

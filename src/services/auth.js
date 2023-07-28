@@ -123,6 +123,6 @@ export const resetPasswordFromEmail = async (password, verificationCode) => {
   return updatedUser;
 };
 
-export const backListToken = (token) => {
+export const blacklistToken = (token) => {
   addBackListToken(token);
 };

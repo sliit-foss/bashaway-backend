@@ -4,7 +4,7 @@ import {
   authLogin,
   authRegister,
   authResendVerification,
-  backListToken,
+  blacklistToken,
   forgotPasswordEmail,
   resetPasswordFromEmail,
   updateVerificationStatus
@@ -80,6 +80,6 @@ export const resetPassword = async (req, res) => {
 };
 
 export const logout = (req, res) => {
-  backListToken(req.user.token);
+  blacklistToken(req.user.user_token);
   return makeResponse({ res, message: 'Logout successfully' });
 };
