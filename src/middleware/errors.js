@@ -25,7 +25,10 @@ export const errorHandler = (err, req, res, _) => {
   } else if (err.name == 'MongoServerError' && err.code === 11000) {
     const key = Object.keys(err.keyValue)[0];
     return makeResponse({ res, status: 400, message: `The ${key} ${err.keyValue[key]} is already taken` });
+  } else if (err.message === 'jwt expired') {
+    return makeResponse({ res, status: 401, message: 'Token expired' });
   }
+
   return makeResponse({
     res,
     status: err.status ?? 500,
