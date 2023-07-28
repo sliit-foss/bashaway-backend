@@ -26,9 +26,9 @@
   },
   "homepage": "https://github.com/sliit-foss/bashaway-backend#readme",
   "dependencies": {
-    "@sliit-foss/functions": "2.2.2",
-    "@sliit-foss/http-logger": "1.1.1",
-    "@sliit-foss/module-logger": "1.1.2",
+    "@sliit-foss/functions": "2.2.3",
+    "@sliit-foss/http-logger": "1.1.2",
+    "@sliit-foss/module-logger": "1.1.5",
     "bcrypt": "5.0.1",
     "celebrate": "15.0.1",
     "compression": "1.7.4",

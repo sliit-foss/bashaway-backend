@@ -1,9 +1,9 @@
-import { tracedAsyncHandler } from '@sliit-foss/functions';
 import express from 'express';
+import { tracedAsyncHandler } from '@sliit-foss/functions';
 import { Segments, celebrate } from 'celebrate';
-import { submissionCreateSchema, submissionIdSchema, submissionViewSchema } from '@/validations/submission';
 import { create, grade, view } from '@/controllers/submission';
 import { adminProtect } from '@/middleware/auth';
+import { submissionCreateSchema, submissionIdSchema, submissionViewSchema } from '@/validations/submission';
 
 const submissionRouter = express.Router();
 

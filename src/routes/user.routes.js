@@ -1,9 +1,9 @@
-import { tracedAsyncHandler } from '@sliit-foss/functions';
 import express from 'express';
+import { tracedAsyncHandler } from '@sliit-foss/functions';
 import { Segments, celebrate } from 'celebrate';
-import { addUserSchema, changePasswordSchema, updateSchema, userIdSchema } from '@/validations/user';
 import { changePassword, create, getAll, getById, update, updateAllScores, updateScore } from '@/controllers/user';
 import { adminProtect } from '@/middleware/auth';
+import { addUserSchema, changePasswordSchema, updateSchema, userIdSchema } from '@/validations/user';
 
 const userRouter = express.Router();
 

@@ -1,16 +1,7 @@
-import { tracedAsyncHandler } from '@sliit-foss/functions';
 import express from 'express';
 import rateLimit from 'express-rate-limit';
+import { tracedAsyncHandler } from '@sliit-foss/functions';
 import { Segments, celebrate } from 'celebrate';
-import {
-  loginSchema,
-  refreshTokenSchema,
-  registerSchema,
-  resendVerifyMailSchema,
-  resetPasswordSchema,
-  validUserResetPasswordSchema,
-  verifySchema
-} from '@/validations/user';
 import {
   current,
   forgotPassword,
@@ -23,6 +14,15 @@ import {
   verifyUser
 } from '@/controllers/auth';
 import { protect } from '@/middleware/auth';
+import {
+  loginSchema,
+  refreshTokenSchema,
+  registerSchema,
+  resendVerifyMailSchema,
+  resetPasswordSchema,
+  validUserResetPasswordSchema,
+  verifySchema
+} from '@/validations/user';
 
 const authRouter = express.Router();
 

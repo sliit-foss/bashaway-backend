@@ -1,7 +1,6 @@
-import { tracedAsyncHandler } from '@sliit-foss/functions';
 import express from 'express';
+import { tracedAsyncHandler } from '@sliit-foss/functions';
 import { Segments, celebrate } from 'celebrate';
-import { addQuestionSchema, questionIdSchema, updateQuestionSchema } from '@/validations/question';
 import {
   createNewQuestion,
   deleteOldQuestion,
@@ -10,6 +9,7 @@ import {
   updateQuestion
 } from '@/controllers/question';
 import { adminProtect } from '@/middleware/auth';
+import { addQuestionSchema, questionIdSchema, updateQuestionSchema } from '@/validations/question';
 
 const questionRouter = express.Router();
 

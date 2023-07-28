@@ -6,14 +6,14 @@ settings:
 
 dependencies:
   '@sliit-foss/functions':
-    specifier: 2.2.2
-    version: 2.2.2
+    specifier: 2.2.3
+    version: 2.2.3
   '@sliit-foss/http-logger':
-    specifier: 1.1.1
-    version: 1.1.1
-  '@sliit-foss/module-logger':
     specifier: 1.1.2
     version: 1.1.2
+  '@sliit-foss/module-logger':
+    specifier: 1.1.5
+    version: 1.1.5
   bcrypt:
     specifier: 5.0.1
     version: 5.0.1
@@ -2205,29 +2205,21 @@ packages:
     resolution: {integrity: sha512-EERle7sDlqnAf4XcPfkMyki3gRvKSmzjIz6LzBH3IPdBwQACvhgye8oPcZ3bUe/d41z+5gLweMYCPEttYqjw4A==}
     dev: true
 
-  /@sliit-foss/functions@2.2.2:
-    resolution: {integrity: sha512-8VhebpoW2jHR5n8ApJs73s1NYI72k8OKVdHd83kI/oWrS4BpCK6QnTcHqn0zTT6VbH0PZyAFe8wr/quo7lpjBA==}
+  /@sliit-foss/functions@2.2.3:
+    resolution: {integrity: sha512-SH4ymghdrpBFQj6h/TkfG+uO/NG180PT0P7a/MYyeNBu4YYbIjkE6jQJ76RaXAoMwZjtPHsKLmW8FT8OJL8DLQ==}
     dependencies:
-      '@sliit-foss/module-logger': 1.1.3
+      '@sliit-foss/module-logger': 1.1.5
       express-http-context: 1.2.4
     dev: false
 
-  /@sliit-foss/http-logger@1.1.1:
-    resolution: {integrity: sha512-KDsM1urWha1IgIh4luE6HRhrPwuT4iHu4+QcBE0DRgr2RTktLv/v+QdQl54Sx5d727kZrgFGt2b96v2CRlNdGQ==}
+  /@sliit-foss/http-logger@1.1.2:
+    resolution: {integrity: sha512-DUWskPTjzdk3mMsCAAUIf6YGYW1d7a0ylHO5c4ty7ZgkCRpqfCZJPxAXEIjq7sISXS2F9djE+iLedaw9J5ERIA==}
     dependencies:
-      '@sliit-foss/module-logger': 1.1.3
+      '@sliit-foss/module-logger': 1.1.5
     dev: false
 
-  /@sliit-foss/module-logger@1.1.2:
-    resolution: {integrity: sha512-Mr2zGZhaN52EKVk0ElWMqeYwMDQp4eEuiIQkYWzUuhupZRgPTpF8Bbp4AT46Sslq+BGlTTVdyUVNSWpPa8FEBA==}
-    dependencies:
-      express-http-context: 1.2.4
-      winston: 3.8.2
-      winston-daily-rotate-file: 4.7.1(winston@3.8.2)
-    dev: false
-
-  /@sliit-foss/module-logger@1.1.3:
-    resolution: {integrity: sha512-+J6ZkSQ6LRkreqcKtMJzqC+TKQrQ/kqLsycpicfZaPZCi6tpzWJ66wCsmmJTQ8+h1fTqVrI6UBWhalPMYnJqmg==}
+  /@sliit-foss/module-logger@1.1.5:
+    resolution: {integrity: sha512-bKpKi0Yp/ZDYP3yaZTT2zw2f2c49qIkCK5NLKE+qs4UctZtWc1cRSDZZVDP/QAEQ7UMeIECFKX5l+ig8obMvlQ==}
     dependencies:
       express-http-context: 1.2.4
       winston: 3.8.2
