@@ -15,7 +15,7 @@ export const protect = asyncHandler(async (req, res) => {
   const decodedUser = decodeJwtToken(token).data;
   const user = decodedUser ? await getOneUser({ _id: decodedUser._id }, false) : null;
   if (!user) return makeResponse({ res, status: 403, message: 'Unauthorized' });
-  user.user_token = token;
+  req.user_token = token;
   req.user = user;
 });
 
