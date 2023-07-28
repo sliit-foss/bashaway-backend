@@ -2,6 +2,7 @@ import crypto from 'crypto';
 import createError from 'http-errors';
 import bcrypt from 'bcrypt';
 import { sendMail } from './email';
+import { addBackListToken } from '@/repository/token';
 import { createUser, findOneAndUpdateUser, getOneUser } from '@/repository/user';
 
 export const authRegister = async ({ name, email, password, university, members }) => {
@@ -120,4 +121,8 @@ export const resetPasswordFromEmail = async (password, verificationCode) => {
     { password: encryptedPassword, is_verified: true }
   );
   return updatedUser;
+};
+
+export const blacklistToken = (token) => {
+  addBackListToken(token);
 };

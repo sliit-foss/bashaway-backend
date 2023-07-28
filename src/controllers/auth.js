@@ -4,6 +4,7 @@ import {
   authLogin,
   authRegister,
   authResendVerification,
+  blacklistToken,
   forgotPasswordEmail,
   resetPasswordFromEmail,
   updateVerificationStatus
@@ -76,4 +77,9 @@ export const forgotPassword = async (req, res) => {
 export const resetPassword = async (req, res) => {
   await resetPasswordFromEmail(req.body.new_password, req.params.verification_code);
   return makeResponse({ res, message: 'Password reset successfully' });
+};
+
+export const logout = (req, res) => {
+  blacklistToken(req.user_token);
+  return makeResponse({ res, message: 'Logout successfully' });
 };
