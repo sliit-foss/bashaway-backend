@@ -15,6 +15,7 @@ import {
   current,
   forgotPassword,
   login,
+  logout,
   refresh,
   register,
   resendVerification,
@@ -53,5 +54,6 @@ authRouter.post(
   tracedAsyncHandler(resetPassword)
 );
 authRouter.post('/refresh', celebrate({ [Segments.BODY]: refreshTokenSchema }), tracedAsyncHandler(refresh));
+authRouter.post('/logout', protect, tracedAsyncHandler(logout));
 
 export default authRouter;

@@ -4,6 +4,7 @@ import {
   authLogin,
   authRegister,
   authResendVerification,
+  blacklistToken,
   forgotPasswordEmail,
   getUserByToken,
   resetPasswordFromEmail,
@@ -83,4 +84,9 @@ export const refresh = async (req, res) => {
   const userByToken = await getUserByToken(req.body.refresh_token);
   if (!userByToken) throw new createError(401, 'Invalid refresh token');
   return sendRefreshTokenResponse(res, userByToken, 'Token refreshed successfully');
+};
+
+export const logout = (req, res) => {
+  blacklistToken(req.user_token);
+  return makeResponse({ res, message: 'Logout successfull' });
 };
