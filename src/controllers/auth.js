@@ -81,5 +81,5 @@ export const resetPassword = async (req, res) => {
 
 export const logout = (req, res) => {
   blacklistToken(req.user_token);
-  return makeResponse({ res, message: 'Logout successfully' });
+  return makeResponse({ res, message: 'Logout successfull' });
 };
