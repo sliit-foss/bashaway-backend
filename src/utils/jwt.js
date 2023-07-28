@@ -22,7 +22,7 @@ export const decodeJwtToken = (token) => {
 export const sendRefreshTokenResponse = (res, user, message) => {
   const accessToken = generateToken(user);
   res.status(200).json({
-    data: { user, access_token: accessToken },
+    data: { access_token: accessToken },
     message
   });
 };

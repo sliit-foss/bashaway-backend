@@ -1,3 +1,7 @@
+import { tracedAsyncHandler } from '@sliit-foss/functions';
+import express from 'express';
+import rateLimit from 'express-rate-limit';
+import { Segments, celebrate } from 'celebrate';
 import {
   loginSchema,
   refreshTokenSchema,
@@ -7,10 +11,6 @@ import {
   validUserResetPasswordSchema,
   verifySchema
 } from '@/validations/user';
-import { tracedAsyncHandler } from '@sliit-foss/functions';
-import express from 'express';
-import rateLimit from 'express-rate-limit';
-import { Segments, celebrate } from 'celebrate';
 import {
   current,
   forgotPassword,
