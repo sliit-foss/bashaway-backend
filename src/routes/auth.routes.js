@@ -22,7 +22,7 @@ import {
   resetPasswordSchema,
   validUserResetPasswordSchema,
   verifySchema
-} from '@/validations/user';
+} from '@/validations/auth';
 
 const authRouter = express.Router();
 
