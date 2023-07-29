@@ -28,7 +28,7 @@ const SubmissionSchema = mongoose.Schema(
     }
   },
   {
-    versionKey: false,
+    versionKey: true,
     timestamps: { createdAt: 'created_at', updatedAt: 'updated_at' }
   }
 );
