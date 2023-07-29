@@ -41,6 +41,10 @@ export const resendVerifyMailSchema = Joi.object({
   email: Joi.string().email().required()
 });
 
+export const forgotPasswordSchema = {
+  email: Joi.string().email().required()
+};
+
 export const resetPasswordSchema = {
   new_password: Joi.string()
     .regex(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[#$@!%&*?])[A-Za-z\d#$@!%&^()._*?]{8,30}$/)
