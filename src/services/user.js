@@ -1,5 +1,6 @@
 import bcrypt from 'bcrypt';
 import createError from 'http-errors';
+import { sendMail } from './email';
 import { getAllQuestionIds } from '@/repository/question';
 import { getLatestScore } from '@/repository/submission';
 import {
@@ -10,7 +11,6 @@ import {
   getAllUsers,
   getOneUser
 } from '@/repository/user';
-import { sendMail } from './email';
 
 export const updateScoreService = async (user) => {
   const questions = await getAllQuestionIds();

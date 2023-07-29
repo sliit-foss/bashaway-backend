@@ -103,3 +103,7 @@ export const validUserResetPasswordSchema = {
 export const refreshTokenSchema = {
   refresh_token: Joi.string().required()
 };
+
+export const forgotPasswordSchema = {
+  email: Joi.string().email().required()
+};

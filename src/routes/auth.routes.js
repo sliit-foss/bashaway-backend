@@ -15,6 +15,7 @@ import {
 } from '@/controllers/auth';
 import { protect } from '@/middleware/auth';
 import {
+  forgotPasswordSchema,
   loginSchema,
   refreshTokenSchema,
   registerSchema,
@@ -47,7 +48,11 @@ authRouter.get(
   celebrate({ [Segments.PARAMS]: verifySchema }),
   tracedAsyncHandler(verifyUser)
 );
-authRouter.post('/forgot_password', tracedAsyncHandler(forgotPassword));
+authRouter.post(
+  '/forgot_password',
+  celebrate({ [Segments.BODY]: forgotPasswordSchema }),
+  tracedAsyncHandler(forgotPassword)
+);
 authRouter.post(
   '/reset_password/:verification_code',
   celebrate({ [Segments.PARAMS]: validUserResetPasswordSchema, [Segments.BODY]: resetPasswordSchema }),
