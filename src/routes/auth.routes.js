@@ -34,9 +34,9 @@ const verifyEmailLimiter = rateLimit({
   legacyHeaders: false
 });
 
-    authRouter.post('/login', celebrate({ [Segments.BODY]: loginSchema }), tracedAsyncHandler(login));
-        authRouter.post('/register', celebrate({ [Segments.BODY]: registerSchema }), tracedAsyncHandler(register));
-    authRouter.get('/current', protect, tracedAsyncHandler(current));
+authRouter.post('/login', celebrate({ [Segments.BODY]: loginSchema }), tracedAsyncHandler(login));
+authRouter.post('/register', celebrate({ [Segments.BODY]: registerSchema }), tracedAsyncHandler(register));
+authRouter.get('/current', protect, tracedAsyncHandler(current));
 authRouter.post(
   '/verify',
   celebrate({ [Segments.BODY]: resendVerifyMailSchema }),
