@@ -28,8 +28,8 @@ Bashaway is a competitive coding event where the participants must automate a gi
 
 ## Deployments
 
- - [Production](https://api.bashaway.sliitfoss.org) (Not always running)
- - [Staging](https://api.staging.bashaway.sliitfoss.org)
+- [Production](https://api.bashaway.sliitfoss.org) (Not always running)
+- [Staging](https://api.staging.bashaway.sliitfoss.org)
 
 ## Getting started
 
