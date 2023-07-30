@@ -34,11 +34,11 @@ jobs:
       - name: Run linter
         uses: sliit-foss/actions/quality-checks/linter@main
 
-quality-checks-formatter:
-  runs-on: ubuntu-latest
-  steps:
-    - name: Checkout repository 🛎️
-      uses: actions/checkout@v3
+  quality-checks-formatter:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository 🛎️
+        uses: actions/checkout@v3
 
-    - name: Run formatter
-      uses: sliit-foss/actions/quality-checks/formatter@main
+      - name: Run formatter
+        uses: sliit-foss/actions/quality-checks/formatter@main
