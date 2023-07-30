@@ -26,6 +26,11 @@ Bashaway is a competitive coding event where the participants must automate a gi
 - [Postman collection](https://documenter.getpostman.com/view/13842706/2s9XxsWcDC)
 - [Wiki](https://github.com/sliit-foss/bashaway-backend/wiki)
 
+## Deployments
+
+- [Production](https://api.bashaway.sliitfoss.org) (Not always running)
+- [Staging](https://api.staging.bashaway.sliitfoss.org)
+
 ## Getting started
 
 - Run `pnpm install` to install all dependencies
