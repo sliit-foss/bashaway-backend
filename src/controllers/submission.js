@@ -1,5 +1,5 @@
 import createError from 'http-errors';
-import { createSubmission, gradeSubmission, viewSubmissions } from '@/services/submission';
+import { createSubmission, getLeaderboard, gradeSubmission, viewSubmissions } from '@/services/submission';
 import { makeResponse } from '@/utils/response';
 
 export const create = async (req, res) => {
@@ -19,4 +19,13 @@ export const view = async (req, res) => {
 export const grade = async (req, res) => {
   await gradeSubmission(req.params.id, req.body, req.user);
   return makeResponse({ res, message: 'Submission graded successfully' });
+};
+
+export const getLeaderboardInfo = async (req, res) => {
+  const data = await getLeaderboard();
+  return makeResponse({
+    res,
+    data,
+    message: 'Leaderboard info retrieved successfully'
+  });
 };
