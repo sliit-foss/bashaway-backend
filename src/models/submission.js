@@ -19,16 +19,14 @@ const SubmissionSchema = mongoose.Schema(
     },
     score: {
       type: Number,
-      required: false
+      default: 0
     },
     graded_by: {
       type: mongoose.Schema.Types.ObjectId,
-      ref: 'User',
-      required: false
+      ref: 'User'
     },
-    is_automatically_graded: {
+    automatically_graded: {
       type: Boolean,
-      required: false,
       default: false
     }
   },

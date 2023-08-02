@@ -28,7 +28,6 @@ const QuestionSchema = new mongoose.Schema(
     },
     enabled: {
       type: Boolean,
-      required: true,
       default: true
     },
     creator: {
@@ -38,7 +37,6 @@ const QuestionSchema = new mongoose.Schema(
     },
     creator_lock: {
       type: Boolean,
-      required: true,
       default: false
     },
     codebase_url: {

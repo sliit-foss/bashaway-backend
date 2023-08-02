@@ -20,32 +20,26 @@ const UserSchema = new mongoose.Schema(
       minlength: 8
     },
     verification_code: {
-      type: String,
-      required: false
+      type: String
     },
     is_verified: {
       type: Boolean,
-      required: true,
       default: false
     },
     is_active: {
       type: Boolean,
-      required: true,
       default: true
     },
     photo_url: {
-      type: String,
-      required: false
+      type: String
     },
     university: {
-      type: String,
-      required: false
+      type: String
     },
     role: {
       type: String,
       enum: ['ADMIN', 'GROUP'],
-      default: 'GROUP',
-      required: true
+      default: 'GROUP'
     },
     members: {
       type: [
@@ -70,8 +64,7 @@ const UserSchema = new mongoose.Schema(
             max: [4, 'Academic year should be from 1 to 4']
           }
         }
-      ],
-      required: false
+      ]
     }
   },
   {
