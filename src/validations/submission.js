@@ -19,7 +19,8 @@ export const submissionViewSchema = {
     .keys({
       question: Joi.string().hex().length(24).optional(),
       user: Joi.string().hex().length(24).optional(),
-      graded_by: Joi.string().hex().length(24).optional()
+      graded_by: Joi.string().hex().length(24).optional(),
+      is_automatically_graded: Joi.boolean().optional(),
     })
     .optional(),
   sort: Joi.object()

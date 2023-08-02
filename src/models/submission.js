@@ -25,6 +25,11 @@ const SubmissionSchema = mongoose.Schema(
       type: mongoose.Schema.Types.ObjectId,
       ref: 'User',
       required: false
+    },
+    is_automatically_graded: {
+      type: Boolean,
+      required: false,
+      default: false
     }
   },
   {
