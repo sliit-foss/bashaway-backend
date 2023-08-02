@@ -1,6 +1,12 @@
 import createError from 'http-errors';
 import { findQuestion, getMaxScore } from '@/repository/question';
-import { getSubmissionById, getSubmissions, insertGrade, insertSubmission } from '@/repository/submission';
+import {
+  getLeaderboardData,
+  getSubmissionById,
+  getSubmissions,
+  insertGrade,
+  insertSubmission
+} from '@/repository/submission';
 
 export const createSubmission = async ({ question, link }, { _id }) => {
   if (!(await findQuestion({ _id: question }))) throw new createError(422, 'Invalid question ID');
@@ -28,4 +34,9 @@ export const gradeSubmission = async (submissionId, { score }, { _id }) => {
   else if (maxScore < score)
     throw new createError(422, 'Score must be less than or equal to the max score for the question');
   await insertGrade(submissionId, score, _id);
+};
+
+export const getLeaderboard = async () => {
+  const result = await getLeaderboardData();
+  return result;
 };
