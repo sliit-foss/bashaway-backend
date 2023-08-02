@@ -59,11 +59,6 @@ export const getQuestionById = (id, user, filterFields = true) => {
   return query.exec();
 };
 
-export const getAllQuestionIds = async (filters = {}) => {
-  const questions = await Question.find(filters).select('_id').lean();
-  return questions.map((question) => question._id);
-};
-
 export const findAndUpdateQuestion = (filters, data) => {
   return Question.findOneAndUpdate(filters, data, { new: true });
 };

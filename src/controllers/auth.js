@@ -14,7 +14,8 @@ import { makeResponse, sendRefreshTokenResponse, sendTokenResponse } from '@/uti
 
 const fs = require('fs');
 
-const registrationEnd = new Date(2022, 8, 30, 8, 0, 0);
+// TODO: remove this and replace with value from database once it's ready
+const registrationEnd = new Date(2050, 8, 30, 8, 0, 0);
 
 export const register = async (req, res) => {
   if (Date.now() >= registrationEnd.getTime()) throw new createError(400, 'Registration closed');

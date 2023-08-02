@@ -48,20 +48,6 @@ export const insertGrade = async (submission, score, admin) => {
   await Submission.findOneAndUpdate(query, newData, { upsert: true });
 };
 
-export const getLatestScore = async ({ user, question }) => {
-  const filters = {
-    user,
-    question,
-    score: { $ne: null }
-  };
-  const sort = {
-    created_at: 'desc'
-  };
-  const result = await Submission.findOne(filters).setOptions({ sort }).lean();
-  if (result) return result.score;
-  return 0;
-};
-
 export const getSubmissionsByQuestion = () => {
   return Submission.aggregate([
     {

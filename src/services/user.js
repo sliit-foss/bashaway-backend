@@ -1,29 +1,7 @@
 import bcrypt from 'bcryptjs';
 import createError from 'http-errors';
-import { getAllQuestionIds } from '@/repository/question';
-import { getLatestScore } from '@/repository/submission';
-import {
-  createUser,
-  findOneAndRemoveUser,
-  findOneAndUpdateUser,
-  getAllUserIds,
-  getAllUsers,
-  getOneUser
-} from '@/repository/user';
+import { createUser, findOneAndRemoveUser, findOneAndUpdateUser, getAllUsers, getOneUser } from '@/repository/user';
 import { sendMail } from './email';
-
-export const updateScoreService = async (user) => {
-  const questions = await getAllQuestionIds();
-
-  const result = await Promise.all(
-    questions.map((question) => {
-      return getLatestScore({ user, question });
-    })
-  );
-  const scoreSum = result.reduce((acc, current) => current + acc, 0);
-
-  return findOneAndUpdateUser({ _id: user }, { score: scoreSum });
-};
 
 export const getUsers = (query) => {
   return getAllUsers(query);
@@ -33,25 +11,6 @@ export const getUserByID = async (id) => {
   const user = await getOneUser({ _id: id });
   if (!user) throw new createError(404, 'Invalid user ID');
   return user;
-};
-
-export const updateAllScoresService = async () => {
-  const users = await getAllUserIds({ role: 'GROUP' });
-  const questions = await getAllQuestionIds();
-
-  return Promise.all(
-    users.map(async (user) => {
-      let userSum = 0;
-      await Promise.all(
-        questions.map((question) => {
-          return getLatestScore({ user, question }).then((score) => {
-            userSum += score;
-          });
-        })
-      );
-      return findOneAndUpdateUser({ _id: user }, { score: userSum });
-    })
-  );
 };
 
 export const changePasswordService = async (user, oldPassword, newPassword) => {
