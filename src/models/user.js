@@ -47,10 +47,6 @@ const UserSchema = new mongoose.Schema(
       default: 'GROUP',
       required: true
     },
-    score: {
-      type: Number,
-      required: false
-    },
     members: {
       type: [
         {

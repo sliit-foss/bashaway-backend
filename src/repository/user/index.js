@@ -1,12 +1,13 @@
 import { moduleLogger } from '@sliit-foss/module-logger';
 import User from '@/models/user';
+import { computeScore } from './utils';
 
 const logger = moduleLogger('User-repository');
 
 export const createUser = async (user) => {
-  const userMade = (await new User(user).save()).toObject();
-  delete userMade.password;
-  return userMade;
+  const newUser = (await new User(user).save()).toObject();
+  delete newUser.password;
+  return newUser;
 };
 
 export const getAllUsers = ({ sort = {}, filter = {}, page, limit = 10 }) => {
@@ -30,6 +31,7 @@ export const getAllUsers = ({ sort = {}, filter = {}, page, limit = 10 }) => {
       {
         $match: filter
       },
+      ...computeScore,
       { $unset: ['password', 'verification_code'] }
     ]);
 
@@ -53,11 +55,6 @@ export const findOneAndUpdateUser = async (filters, data) => {
 
   delete user.password;
   return user;
-};
-
-export const getAllUserIds = async (filters = {}) => {
-  const users = await User.find(filters).select('_id').lean();
-  return users.map((user) => user._id);
 };
 
 export const getAllUniverstyUserGroups = () => {
