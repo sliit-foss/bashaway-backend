@@ -2,7 +2,7 @@
   "name": "bashaway-backend",
   "version": "1.0.0",
   "description": "Backend",
-  "main": "src/app.js",
+  "main": "dist/app.js",
   "scripts": {
     "build": "npm run clean && npm run build-babel && npm run copy",
     "build-babel": "babel -d ./dist ./src -s",
