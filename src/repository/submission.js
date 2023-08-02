@@ -1,5 +1,5 @@
 import { moduleLogger } from '@sliit-foss/module-logger';
-import Submission from '@/models/submission';
+import { Submission } from '@/models';
 
 const logger = moduleLogger('Submission-repository');
 
@@ -71,30 +71,4 @@ export const getSubmissionsByQuestion = () => {
 
 export const getSubmissionCount = async (questionId) => {
   return (await Submission.distinct('user', { question: questionId })).length;
-};
-
-export const getLeaderboardData = () => {
-  return Submission.aggregate([
-    {
-      $group: {
-        _id: '$user',
-        name: { $first: '$user.name' },
-        email: { $first: '$user.email' },
-        total_score: { $sum: '$score' }
-      }
-    },
-    {
-      $sort: {
-        total_score: -1
-      }
-    },
-    {
-      $project: {
-        _id: 0,
-        name: 1,
-        email: 1,
-        total_score: 1
-      }
-    }
-  ]);
 };

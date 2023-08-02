@@ -1,5 +1,5 @@
 import { moduleLogger } from '@sliit-foss/module-logger';
-import User from '@/models/user';
+import { User } from '@/models';
 import { computeScore } from './utils';
 
 const logger = moduleLogger('User-repository');
@@ -83,4 +83,28 @@ export const getAllUniverstyUserGroups = () => {
 
 export const findOneAndRemoveUser = (filters) => {
   return User.findOneAndRemove(filters);
+};
+
+export const getLeaderboardData = () => {
+  return User.aggregate([
+    {
+      $match: {
+        role: 'GROUP'
+      }
+    },
+    ...computeScore,
+    {
+      $sort: {
+        score: -1
+      }
+    },
+    {
+      $project: {
+        _id: 0,
+        name: 1,
+        email: 1,
+        score: 1
+      }
+    }
+  ]);
 };
