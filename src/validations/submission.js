@@ -4,6 +4,11 @@ export const submissionIdSchema = {
   id: Joi.string().hex().length(24).required()
 };
 
+export const submissionUpdateSchema = {
+  score: Joi.number().required(),
+  is_automatically_graded: Joi.boolean().required(),
+}
+
 export const submissionCreateSchema = {
   question: Joi.string().hex().length(24).required(),
   link: Joi.string().required()
@@ -25,5 +30,5 @@ export const submissionViewSchema = {
     })
     .optional(),
   page: Joi.number().optional(),
-  limit: Joi.number().optional()
+  limit: Joi.number().optional(),
 };
