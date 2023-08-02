@@ -14,7 +14,7 @@ const submissionRouter = express.Router();
 
 submissionRouter.post('/', celebrate({ [Segments.BODY]: submissionCreateSchema }), tracedAsyncHandler(create));
 submissionRouter.get('/', celebrate({ [Segments.QUERY]: submissionViewSchema }), tracedAsyncHandler(view));
-submissionRouter.put(
+submissionRouter.patch(
   '/:id',
   celebrate({
     [Segments.PARAMS]: submissionIdSchema,

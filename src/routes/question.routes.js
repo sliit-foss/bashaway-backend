@@ -25,7 +25,7 @@ questionRouter.get(
   celebrate({ [Segments.PARAMS]: questionIdSchema }),
   tracedAsyncHandler(getQuestionById)
 );
-questionRouter.put(
+questionRouter.patch(
   '/:question_id',
   celebrate({ [Segments.PARAMS]: questionIdSchema, [Segments.BODY]: updateQuestionSchema }),
   adminProtect,
