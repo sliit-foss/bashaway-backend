@@ -3,7 +3,7 @@ import { tracedAsyncHandler } from '@sliit-foss/functions';
 import { Segments, celebrate } from 'celebrate';
 import { create, grade, view } from '@/controllers/submission';
 import { adminProtect } from '@/middleware/auth';
-import { submissionCreateSchema, submissionIdSchema, submissionViewSchema } from '@/validations/submission';
+import { submissionCreateSchema, submissionIdSchema, submissionUpdateSchema, submissionViewSchema } from '@/validations/submission';
 
 const submissionRouter = express.Router();
 
@@ -11,7 +11,10 @@ submissionRouter.post('/', celebrate({ [Segments.BODY]: submissionCreateSchema }
 submissionRouter.get('/', celebrate({ [Segments.QUERY]: submissionViewSchema }), tracedAsyncHandler(view));
 submissionRouter.put(
   '/:id',
-  celebrate({ [Segments.PARAMS]: submissionIdSchema }),
+  celebrate({
+    [Segments.PARAMS]: submissionIdSchema,
+    [Segments.BODY]: submissionUpdateSchema 
+  }),
   adminProtect,
   tracedAsyncHandler(grade)
 );
