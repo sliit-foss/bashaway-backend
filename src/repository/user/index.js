@@ -84,3 +84,22 @@ export const getAllUniverstyUserGroups = () => {
 export const findOneAndRemoveUser = (filters) => {
   return User.findOneAndRemove(filters);
 };
+
+export const getLeaderboardData = () => {
+  return User.aggregate([
+    ...computeScore,
+    {
+      $sort: {
+        score: -1
+      }
+    },
+    {
+      $project: {
+        _id: 0,
+        name: 1,
+        email: 1,
+        score: 1
+      }
+    }
+  ]);
+};
