@@ -1,6 +1,5 @@
 import { moduleLogger } from '@sliit-foss/module-logger';
 import { User } from '@/models';
-import { computeScore } from './utils';
 
 const logger = moduleLogger('User-repository');
 
@@ -31,8 +30,30 @@ export const getAllUsers = ({ sort = {}, filter = {}, page, limit = 10 }) => {
       {
         $match: filter
       },
-      ...computeScore,
-      { $unset: ['password', 'verification_code'] }
+      {
+        $lookup: {
+          from: 'submissions',
+          localField: '_id',
+          foreignField: 'user',
+          as: 'submissions',
+          pipeline: [
+            {
+              $group: {
+                _id: '$question',
+                score: {
+                  $max: { $ifNull: ['$score', 0] }
+                }
+              }
+            }
+          ]
+        }
+      },
+      {
+        $addFields: {
+          score: { $sum: '$submissions.score' }
+        }
+      },
+      { $unset: ['password', 'verification_code', 'submissions'] }
     ]);
 
   return (page ? User.aggregatePaginate(aggregateQuery(), options) : aggregateQuery()).catch((err) => {
@@ -92,10 +113,46 @@ export const getLeaderboardData = () => {
         role: 'GROUP'
       }
     },
-    ...computeScore,
+    {
+      $lookup: {
+        from: 'submissions',
+        localField: '_id',
+        foreignField: 'user',
+        as: 'submissions',
+        pipeline: [
+          {
+            $sort: {
+              score: -1
+            }
+          },
+          {
+            $group: {
+              _id: '$question',
+              score: {
+                $first: {
+                  $ifNull: ['$score', 0]
+                }
+              },
+              created_at: {
+                $first: '$created_at'
+              }
+            }
+          }
+        ]
+      }
+    },
+    {
+      $addFields: {
+        score: { $sum: '$submissions.score' },
+        last_submission_time: {
+          $max: '$submissions.created_at'
+        }
+      }
+    },
     {
       $sort: {
-        score: -1
+        score: -1,
+        last_submission_time: 1
       }
     },
     {
