@@ -42,6 +42,10 @@ const QuestionSchema = new mongoose.Schema(
     codebase_url: {
       type: String,
       required: true
+    },
+    strict_inputs: {
+      type: Boolean,
+      default: false
     }
   },
   {
