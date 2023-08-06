@@ -43,12 +43,12 @@ export const verifyUser = async (req, res) => {
   const user = await updateVerificationStatus(req.params.verification_code);
   if (user) {
     res.writeHead(200, { 'Content-Type': 'text/html' });
-    fs.readFile('./src/html/verificationSuccessfull.html', null, function (error, data) {
+    fs.readFile('./src/html/verificationSuccessful.html', null, function (error, data) {
       if (error) {
         res.write('file not found');
         res.writeHead(404);
       } else {
-        res.write(data);
+        res.write(data.replace('{{VERIFY_URL_PLACEHOLDER}}', process.env.FRONTEND_DOMAIN));
       }
       res.end();
     });
