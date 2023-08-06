@@ -48,7 +48,7 @@ export const verifyUser = async (req, res) => {
         res.write('file not found');
         res.writeHead(404);
       } else {
-        res.write(data.replace('{{VERIFY_URL_PLACEHOLDER}}', process.env.FRONTEND_DOMAIN));
+        res.write(data.replace('{{eventPortalUrl}}', process.env.FRONTEND_DOMAIN));
       }
       res.end();
     });
