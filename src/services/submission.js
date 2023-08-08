@@ -1,10 +1,13 @@
 import createError from 'http-errors';
 import { findQuestion, getMaxScore } from '@/repository/question';
 import { getSubmissionById, getSubmissions, insertGrade, insertSubmission } from '@/repository/submission';
+import { triggerScorekeeper as initiateTesting } from './github';
 
-export const createSubmission = async ({ question, link }, { _id }) => {
-  if (!(await findQuestion({ _id: question }))) throw new createError(422, 'Invalid question ID');
-  await insertSubmission(_id, question, link);
+export const createSubmission = async ({ question: questionId, link }, user) => {
+  const question = await findQuestion({ _id: question });
+  if (!question) throw new createError(422, 'Invalid question ID');
+  const submission = await insertSubmission(user._id, questionId, link);
+  initiateTesting(user.email, submission._id, submission.link, question.codebase_url, question.strict_inputs);
 };
 
 export const viewSubmissions = (query, user) => {
