@@ -4,6 +4,7 @@ import { getOneUser } from '@/repository/user';
 import { decodeJwtToken, makeResponse } from '@/utils';
 
 export const protect = asyncHandler(async (req, res) => {
+  if (req.headers['x-api-key'] === process.env.API_ACCESS_KEY) return;
   const token = req.headers.authorization
     ? req.headers.authorization.startsWith('Bearer')
       ? req.headers.authorization.split(' ')[1]?.replace('null', '')?.replace('undefined', '')
@@ -20,6 +21,7 @@ export const protect = asyncHandler(async (req, res) => {
 });
 
 export const adminProtect = asyncHandler((req, res) => {
+  if (req.headers['x-api-key'] === process.env.API_ACCESS_KEY) return;
   if (req.user.role !== 'ADMIN')
     return makeResponse({ res, status: 403, message: 'You are not permitted to access this resource' });
 });

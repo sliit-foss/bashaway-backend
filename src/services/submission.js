@@ -15,7 +15,7 @@ export const viewSubmissions = (query, user) => {
   return getSubmissions(query);
 };
 
-export const gradeSubmission = async (submissionId, { score }, { _id }) => {
+export const gradeSubmission = async (submissionId, { score, automatically_graded: automated }, user) => {
   const submission = await getSubmissionById(submissionId);
   if (!submission) throw new createError(422, 'Invalid submission ID');
   const maxScore = await getMaxScore(submission.question.toString());
@@ -27,5 +27,5 @@ export const gradeSubmission = async (submissionId, { score }, { _id }) => {
   if (score < 0) throw new createError(422, 'Score must be greater than or equal to 0');
   else if (maxScore < score)
     throw new createError(422, 'Score must be less than or equal to the max score for the question');
-  await insertGrade(submissionId, score, _id);
+  await insertGrade(submissionId, score, !!automated, user?._id);
 };
