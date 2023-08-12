@@ -2,8 +2,8 @@ import express from 'express';
 import { tracedAsyncHandler } from '@sliit-foss/functions';
 import { getLeaderboard } from '@/controllers/leaderboard';
 
-const leaderboardRouter = express.Router();
+const leaderboard = express.Router();
 
-leaderboardRouter.get('/', tracedAsyncHandler(getLeaderboard));
+leaderboard.get('/', tracedAsyncHandler(getLeaderboard));
 
-export default leaderboardRouter;
+export default leaderboard;

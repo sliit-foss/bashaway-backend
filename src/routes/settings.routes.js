@@ -1,26 +1,19 @@
 import express from 'express';
-import { tracedAsyncHandler } from '@sliit-foss/functions/dist/async';
+import { tracedAsyncHandler } from '@sliit-foss/functions';
 import { Segments, celebrate } from 'celebrate';
+import { getSettings, updateSettings } from '@/controllers/settings';
 import { adminProtect } from '@/middleware';
-import { getSettings, updateSettings } from '@/repository/settings';
 import { updateSettingsSchema } from '@/validations/settings';
 
-const settingsRouter = express.Router();
+const settings = express.Router();
 
-settingsRouter.get('/', tracedAsyncHandler(getSettings));
+settings.get('/', tracedAsyncHandler(getSettings));
 
-settingsRouter.post(
-  '/',
-  celebrate({ [Segments.BODY]: updateSettingsSchema }),
-  adminProtect,
-  tracedAsyncHandler(updateSettings)
-);
-
-settingsRouter.put(
+settings.patch(
   '/',
   celebrate({ [Segments.PARAMS]: updateSettingsSchema, [Segments.BODY]: updateSettingsSchema }),
   adminProtect,
   tracedAsyncHandler(updateSettings)
 );
 
-export default settingsRouter;
+export default settings;

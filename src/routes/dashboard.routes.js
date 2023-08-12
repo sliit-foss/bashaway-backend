@@ -2,9 +2,9 @@ import express from 'express';
 import { tracedAsyncHandler } from '@sliit-foss/functions';
 import { getQuestionSubmission, getRegistrationInfo } from '@/controllers/dashboard';
 
-const dashboardRouter = express.Router();
+const dashboard = express.Router();
 
-dashboardRouter.get('/submissions', tracedAsyncHandler(getQuestionSubmission));
-dashboardRouter.get('/registrations', tracedAsyncHandler(getRegistrationInfo));
+dashboard.get('/submissions', tracedAsyncHandler(getQuestionSubmission));
+dashboard.get('/registrations', tracedAsyncHandler(getRegistrationInfo));
 
-export default dashboardRouter;
+export default dashboard;

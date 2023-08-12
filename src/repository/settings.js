@@ -1,9 +1,9 @@
-import Settings from '@/models/settings';
+import Setting from '@/models/setting';
 
-export const getSettings = (filters, options = {}) => {
-  return Settings.findOne(filters, options).lean();
+export const getSettingsDoc = () => {
+  return Setting.findOne().lean();
 };
 
-export const updateSettings = async (settings) => {
-  await Settings.findOneAndUpdate({}, settings, { new: true });
+export const updateSettingsDoc = async (settings) => {
+  await Setting.findOneAndUpdate({}, settings, { new: true, upsert: true });
 };
