@@ -8,7 +8,8 @@ export const addQuestionSchema = {
   max_score: Joi.number().required(),
   enabled: Joi.boolean().optional(),
   creator_lock: Joi.boolean().optional(),
-  codebase_url: Joi.string().required()
+  codebase_url: Joi.string().required(),
+  strict_inputs: Joi.boolean().optional()
 };
 
 export const updateQuestionSchema = {
@@ -19,7 +20,8 @@ export const updateQuestionSchema = {
   max_score: Joi.number().optional(),
   enabled: Joi.boolean().optional(),
   creator_lock: Joi.boolean().optional(),
-  codebase_url: Joi.string().optional()
+  codebase_url: Joi.string().optional(),
+  strict_inputs: Joi.boolean().optional()
 };
 
 export const questionIdSchema = {

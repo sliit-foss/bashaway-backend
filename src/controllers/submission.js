@@ -8,7 +8,7 @@ export const create = async (req, res) => {
     throw new createError(400, 'Submission period has expired');
   }
   await createSubmission(req.body, req.user);
-  return makeResponse({ res, status: 201, message: 'Submission added successfully ' });
+  return makeResponse({ res, status: 201, message: 'Submission added successfully' });
 };
 
 export const view = async (req, res) => {

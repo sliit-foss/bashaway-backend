@@ -42,10 +42,12 @@ export const getOneSubmission = (filters, options = {}) => {
   return Submission.findOne(filters, options).lean();
 };
 
-export const insertGrade = async (submission, score, admin) => {
-  const query = { _id: submission };
-  const newData = { score, graded_by: admin };
-  await Submission.findOneAndUpdate(query, newData, { upsert: true });
+export const insertGrade = async (submission, score, automated, userId) => {
+  await Submission.findOneAndUpdate(
+    { _id: submission },
+    { score, graded_by: userId, automatically_graded: automated },
+    { upsert: true }
+  );
 };
 
 export const getSubmissionsByQuestion = () => {
