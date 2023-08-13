@@ -46,7 +46,7 @@ export const verifyUser = async (req, res) => {
     try {
       res.writeHead(200, { 'Content-Type': 'text/html' });
       const data = await util.promisify(fs.readFile)('./src/views/verification-success.html', 'utf8');
-      res.end(data.replace('{{VERIFY_URL_PLACEHOLDER}}', process.env.FRONTEND_DOMAIN));
+      res.end(data.replace('{{eventPortalUrl}}', process.env.FRONTEND_DOMAIN));
     } catch (e) {
       res.writeHead(404);
       res.end('File not found!');
