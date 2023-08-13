@@ -11,31 +11,27 @@ import {
 import { adminProtect } from '@/middleware/auth';
 import { addQuestionSchema, questionIdSchema, updateQuestionSchema } from '@/validations/question';
 
-const questionRouter = express.Router();
+const questions = express.Router();
 
-questionRouter.get('/', tracedAsyncHandler(getAllQuestions));
-questionRouter.post(
+questions.get('/', tracedAsyncHandler(getAllQuestions));
+questions.post(
   '/',
   celebrate({ [Segments.BODY]: addQuestionSchema }),
   adminProtect,
   tracedAsyncHandler(createNewQuestion)
 );
-questionRouter.get(
-  '/:question_id',
-  celebrate({ [Segments.PARAMS]: questionIdSchema }),
-  tracedAsyncHandler(getQuestionById)
-);
-questionRouter.patch(
+questions.get('/:question_id', celebrate({ [Segments.PARAMS]: questionIdSchema }), tracedAsyncHandler(getQuestionById));
+questions.patch(
   '/:question_id',
   celebrate({ [Segments.PARAMS]: questionIdSchema, [Segments.BODY]: updateQuestionSchema }),
   adminProtect,
   tracedAsyncHandler(updateQuestion)
 );
-questionRouter.delete(
+questions.delete(
   '/:question_id',
   celebrate({ [Segments.PARAMS]: questionIdSchema }),
   adminProtect,
   tracedAsyncHandler(deleteOldQuestion)
 );
 
-export default questionRouter;
+export default questions;

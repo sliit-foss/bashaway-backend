@@ -10,11 +10,11 @@ import {
   submissionViewSchema
 } from '@/validations/submission';
 
-const submissionRouter = express.Router();
+const submissions = express.Router();
 
-submissionRouter.post('/', celebrate({ [Segments.BODY]: submissionCreateSchema }), tracedAsyncHandler(create));
-submissionRouter.get('/', celebrate({ [Segments.QUERY]: submissionViewSchema }), tracedAsyncHandler(view));
-submissionRouter.patch(
+submissions.post('/', celebrate({ [Segments.BODY]: submissionCreateSchema }), tracedAsyncHandler(create));
+submissions.get('/', celebrate({ [Segments.QUERY]: submissionViewSchema }), tracedAsyncHandler(view));
+submissions.patch(
   '/:id',
   celebrate({
     [Segments.PARAMS]: submissionIdSchema,
@@ -24,4 +24,4 @@ submissionRouter.patch(
   tracedAsyncHandler(grade)
 );
 
-export default submissionRouter;
+export default submissions;
