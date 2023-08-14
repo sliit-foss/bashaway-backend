@@ -1,5 +1,6 @@
 import util from 'util';
 import createError from 'http-errors';
+import { getRegistrationDeadline } from '@/repository/settings';
 import { blacklistToken } from '@/repository/token';
 import { getOneUser } from '@/repository/user';
 import {
@@ -15,11 +16,8 @@ import { makeResponse, sendRefreshTokenResponse, sendTokenResponse } from '@/uti
 
 const fs = require('fs');
 
-// TODO: remove this and replace with value from database once it's ready
-const registrationEnd = new Date(2050, 8, 30, 8, 0, 0);
-
 export const register = async (req, res) => {
-  if (Date.now() >= registrationEnd.getTime()) throw new createError(400, 'Registration closed');
+  if (new Date() >= new Date(await getRegistrationDeadline())) throw new createError(400, 'Registration closed');
   if (req.user) throw new createError(400, "You've already registered for an account.");
   await authRegister(req.body);
   return makeResponse({
