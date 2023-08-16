@@ -1,5 +1,6 @@
-import util from 'util';
-import createError from 'http-errors';
+import fs from 'fs';
+import path from 'path';
+import { default as createError } from 'http-errors';
 import { getRegistrationDeadline } from '@/repository/settings';
 import { blacklistToken } from '@/repository/token';
 import { getOneUser } from '@/repository/user';
@@ -13,8 +14,6 @@ import {
   updateVerificationStatus
 } from '@/services/auth';
 import { makeResponse, sendRefreshTokenResponse, sendTokenResponse } from '@/utils';
-
-const fs = require('fs');
 
 export const register = async (req, res) => {
   if (new Date() >= new Date(await getRegistrationDeadline())) throw new createError(400, 'Registration closed');
@@ -42,8 +41,8 @@ export const verifyUser = async (req, res) => {
   const user = await updateVerificationStatus(req.params.verification_code);
   if (user) {
     try {
+      const data = fs.readFileSync(path.join(__dirname, '../html/verificationSuccessful.html'), 'utf8');
       res.writeHead(200, { 'Content-Type': 'text/html' });
-      const data = await util.promisify(fs.readFile)('./src/views/verification-success.html', 'utf8');
       res.end(data.replace('{{eventPortalUrl}}', process.env.FRONTEND_DOMAIN));
     } catch (e) {
       res.writeHead(404);
