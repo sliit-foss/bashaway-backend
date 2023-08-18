@@ -1,7 +1,7 @@
 import { moduleLogger } from '@sliit-foss/module-logger';
 import { isCelebrateError } from 'celebrate';
-import { responseInterceptor } from './response';
 import { makeResponse } from '@/utils';
+import { responseInterceptor } from './response';
 
 const logger = moduleLogger('Error-handler');
 

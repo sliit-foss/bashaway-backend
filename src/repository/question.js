@@ -8,7 +8,7 @@ export const findAllQuestions = (user, query = {}) => {
     query.filter = {};
   }
   let filter;
-  if (user.role == 'ADMIN') {
+  if (user.role === 'ADMIN') {
     filter = {
       $or: [{ creator_lock: false }, { creator_lock: true, creator: user._id }],
       $and: [query.filter]
@@ -16,6 +16,7 @@ export const findAllQuestions = (user, query = {}) => {
   } else {
     query.filter.enabled = true;
   }
+
   filter = {
     $or: [{ creator_lock: false }, { creator_lock: true, creator: user._id }],
     $and: [query.filter]
@@ -43,18 +44,18 @@ export const insertQuestion = (data) => {
 };
 
 export const findQuestion = (filters) => {
-  return Question.findOne(filters);
+  return Question.findOne(filters).lean();
 };
 
 export const getQuestionById = (id, user, filterFields = true) => {
-  let query = Question.find({
-    $and: [
-      { _id: { $eq: new ObjectId(id) } },
-      {
-        $or: [{ creator_lock: false }, { creator_lock: true, creator: user._id }]
-      }
-    ]
-  }).lean();
+  const filters = {
+    _id: { $eq: new ObjectId(id) },
+    $or: [{ creator_lock: false }, { creator_lock: true, creator: user._id }]
+  };
+  if (user.role !== 'ADMIN') {
+    filters.enabled = true;
+  }
+  let query = Question.findOne(filters).lean();
   if (filterFields) query = query.select('-creator_lock');
   return query.exec();
 };

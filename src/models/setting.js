@@ -9,6 +9,10 @@ const SettingSchema = mongoose.Schema(
     registration_deadline: {
       type: Date,
       default: null
+    },
+    contest_start: {
+      type: Date,
+      default: null
     }
   },
   {

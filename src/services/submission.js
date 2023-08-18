@@ -1,7 +1,7 @@
 import createError from 'http-errors';
-import { triggerScorekeeper as initiateTesting } from './github';
 import { findQuestion, getMaxScore } from '@/repository/question';
 import { getSubmissionById, getSubmissions, insertGrade, insertSubmission } from '@/repository/submission';
+import { triggerScorekeeper as initiateTesting } from './github';
 
 export const createSubmission = async ({ question: questionId, link }, user) => {
   const question = await findQuestion({ _id: question });
