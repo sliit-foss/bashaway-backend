@@ -25,7 +25,7 @@ export const findAllQuestions = (user, query = {}) => {
   const options = {
     select: '-creator -creator_lock',
     lean: true,
-    sort: query.sort || { created_at: -1 }
+    sort: query.sort
   };
 
   if (query.page) {

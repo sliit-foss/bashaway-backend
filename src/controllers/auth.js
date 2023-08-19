@@ -1,6 +1,6 @@
 import fs from 'fs';
-import { default as createError } from 'http-errors';
 import path from 'path';
+import { default as createError } from 'http-errors';
 import { getRegistrationDeadline } from '@/repository/settings';
 import { blacklistToken } from '@/repository/token';
 import { getOneUser } from '@/repository/user';
