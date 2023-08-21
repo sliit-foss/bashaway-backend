@@ -16,6 +16,6 @@ router.use('/users', protect, userRouter);
 router.use('/questions', protect, questionRouter);
 router.use('/dashboard', protect, adminProtect, dashboardRouter);
 router.use('/leaderboard', leaderboardRouter);
-router.use('/settings', protect, adminProtect, settingRouter);
+router.use('/settings', protect, settingRouter);
 
 export default router;
