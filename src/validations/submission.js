@@ -20,6 +20,7 @@ export const submissionViewSchema = {
       question: Joi.string().hex().length(24).optional(),
       user: Joi.string().hex().length(24).optional(),
       graded_by: Joi.string().hex().length(24).optional(),
+      graded: Joi.boolean().optional(),
       automatically_graded: Joi.boolean().optional()
     })
     .optional(),
