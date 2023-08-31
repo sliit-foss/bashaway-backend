@@ -88,7 +88,8 @@ export const getAllUniverstyUserGroups = () => {
     {
       $group: {
         _id: '$university',
-        count: { $sum: 1 }
+        count: { $sum: 1 },
+        member_count: { $sum: { $size: '$members' } }
       }
     },
     { $sort: { count: -1 } },
@@ -96,7 +97,8 @@ export const getAllUniverstyUserGroups = () => {
       $project: {
         _id: 0,
         name: '$_id',
-        count: 1
+        count: 1,
+        member_count: 1
       }
     }
   ]);
