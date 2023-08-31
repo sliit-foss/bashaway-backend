@@ -63,3 +63,25 @@ export const insertGrade = async (submission, score, automated, userId) => {
 export const getSubmissionCount = async (questionId) => {
   return (await Submission.distinct('user', { question: questionId })).length;
 };
+
+export const getTeamSubmissions = () => {
+  return Submission.aggregate([
+    { $lookup: { from: 'users', localField: 'user', foreignField: '_id', as: 'user' } },
+    { $addFields: { user: { $arrayElemAt: ['$user', 0] } } },
+    {
+      $group: {
+        _id: '$user._id',
+        name: { $first: '$user.name' },
+        submission_count: { $sum: 1 }
+      }
+    },
+    {
+      $project: {
+        _id: 0,
+        name: 1,
+        submission_count: 1
+      }
+    },
+    { $sort: { submission_count: -1 } }
+  ]);
+};

@@ -1,8 +1,13 @@
 import { getQuestionSubmissions } from '@/repository/question';
+import { getTeamSubmissions } from '@/repository/submission';
 import { getAllUniverstyUserGroups } from '@/repository/user';
 
 export const getAllQuestionsSubmissions = (user) => {
   return getQuestionSubmissions(user);
+};
+
+export const getAllTeamSubmissions = () => {
+  return getTeamSubmissions();
 };
 
 export const getRegistrations = async () => {
