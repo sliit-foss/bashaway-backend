@@ -4,15 +4,12 @@ import { Submission } from '@/models';
 
 const logger = moduleLogger('Submission-repository');
 
-export const insertSubmission = async (userId, question, link) => {
-  const newSubmission = new Submission({
+export const insertSubmission = (userId, question, link) => {
+  return Submission.create({
     user: userId,
     question,
-    link,
-    score: null,
-    gradedBy: null
+    link
   });
-  await newSubmission.save();
 };
 
 export const getSubmissions = async ({ sort = {}, filter = {}, page, limit = 10 }) => {

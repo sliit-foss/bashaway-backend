@@ -10,7 +10,7 @@
       "^(.*express*(.*)$)",
       "^(.*@sliit-foss*(.*)$)",
       "<THIRD_PARTY_MODULES>",
-      "^(.*@/.*$)",
+      "^(.*@/*(.*)$)",
       "^[./]"
     ],
     "importOrderSeparation": false,
