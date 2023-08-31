@@ -5,6 +5,7 @@ import dashboardRouter from './dashboard.routes';
 import leaderboardRouter from './leaderboard.routes';
 import questionRouter from './question.routes';
 import settingRouter from './setting.routes';
+import storageRouter from './storage.routes';
 import submissionRouter from './submission.routes';
 import userRouter from './user.routes';
 
@@ -17,5 +18,6 @@ router.use('/questions', protect, questionRouter);
 router.use('/dashboard', protect, adminProtect, dashboardRouter);
 router.use('/leaderboard', leaderboardRouter);
 router.use('/settings', protect, settingRouter);
+router.use('/storage', protect, adminProtect, storageRouter);
 
 export default router;
