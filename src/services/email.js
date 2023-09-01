@@ -21,24 +21,7 @@ export const sendMail = (email, templateName, replacements, subject, attachments
     to: email,
     subject: subject,
     html: htmlToSend,
-    attachments: [
-      ...attachments,
-      {
-        filename: 'bashaway',
-        path: `${global.__basedir}/html/images/logos/bashaway.png`,
-        cid: 'bashaway'
-      },
-      {
-        filename: 'foss',
-        path: `${global.__basedir}/html/images/logos/foss.png`,
-        cid: 'foss'
-      },
-      {
-        filename: 'x',
-        path: `${global.__basedir}/html/images/icons/x.png`,
-        cid: 'x'
-      }
-    ]
+    attachments
   };
   return new Promise((resolve, reject) => {
     transport.sendMail(mailOptions, (error) => {
