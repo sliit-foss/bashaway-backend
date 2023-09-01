@@ -43,7 +43,7 @@ export const verifyMailTemplate = async (email, verification_code) => {
   const replacements = {
     verify_url: `${process.env.APP_DOMAIN}/api/auth/verify/${verification_code}`
   };
-  const subject = 'Welcome to the Bashaway';
+  const subject = 'Bashaway - Account Verification';
   await sendMail(email, 'verifyRegistration', replacements, subject);
   return true;
 };

@@ -88,6 +88,6 @@ const sendAdminPassword = (email, password) => {
     generatedPassword: password,
     loginLink: `${process.env.ADMIN_FRONTEND_DOMAIN || 'https://admin.bashaway.sliitfoss.org'}/login`
   };
-  const subject = 'Welcome to the Bashaway';
+  const subject = 'Bashaway - Admin Account Password';
   return sendMail(email, 'sendAdminPassword', replacements, subject);
 };
