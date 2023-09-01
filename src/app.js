@@ -27,7 +27,16 @@ const limiter = rateLimit({
 
 app.use(limiter);
 
-app.use(helmet());
+app.use(
+  helmet({
+    crossOriginEmbedderPolicy: false,
+    contentSecurityPolicy: {
+      directives: {
+        'img-src': ["'self'", 'https: data:']
+      }
+    }
+  })
+);
 
 app.use(compression());
 
@@ -49,7 +58,8 @@ app.use(
   httpLogger({
     loggable: ({ headers }) => ({
       ...pick(headers, ['x-user-email', 'user-agent'])
-    })
+    }),
+    whitelists: ['/']
   })
 );
 

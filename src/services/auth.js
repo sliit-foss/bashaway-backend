@@ -1,9 +1,9 @@
-import bcrypt from 'bcryptjs';
 import crypto from 'crypto';
+import bcrypt from 'bcryptjs';
 import createError from 'http-errors';
+import { sendMail } from './email';
 import { createUser, findOneAndUpdateUser, getOneUser } from '@/repository/user';
 import { decodeJwtToken, isFromAdmin } from '@/utils';
-import { sendMail } from './email';
 
 export const authRegister = async ({ name, email, password, university, members }) => {
   const encryptedPassword = await new Promise((resolve, reject) => {
@@ -43,20 +43,8 @@ export const verifyMailTemplate = async (email, verification_code) => {
   const replacements = {
     verify_url: `${process.env.APP_DOMAIN}/api/auth/verify/${verification_code}`
   };
-  const attachments = [
-    {
-      filename: 'bashawayLogo',
-      path: `${global.__basedir}/html/images/bashawayLogo.png`,
-      cid: 'bashawayLogo'
-    },
-    {
-      filename: 'fossLogo',
-      path: `${global.__basedir}/html/images/fossLogo.png`,
-      cid: 'fossLogo'
-    }
-  ];
   const subject = 'Welcome to the Bashaway';
-  await sendMail(email, 'verifyRegistration', replacements, subject, attachments);
+  await sendMail(email, 'verifyRegistration', replacements, subject);
   return true;
 };
 
@@ -82,20 +70,8 @@ export const resetPasswordMailTemplate = async (email, verification_code) => {
       'https://portal.bashaway.sliitfoss.org'
     }/reset-password/${verification_code}`
   };
-  const attachments = [
-    {
-      filename: 'bashawayLogo',
-      path: `${global.__basedir}/html/images/bashawayLogo.png`,
-      cid: 'bashawayLogo'
-    },
-    {
-      filename: 'fossLogo',
-      path: `${global.__basedir}/html/images/fossLogo.png`,
-      cid: 'fossLogo'
-    }
-  ];
   const subject = 'Bashaway - Reset Account Password';
-  await sendMail(email, 'resetPassword', replacements, subject, attachments);
+  await sendMail(email, 'resetPassword', replacements, subject);
   return true;
 };
 

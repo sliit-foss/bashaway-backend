@@ -43,7 +43,7 @@ export const verifyUser = async (req, res) => {
     try {
       const data = fs.readFileSync(path.join(__dirname, '../html/verificationSuccessful.html'), 'utf8');
       res.writeHead(200, { 'Content-Type': 'text/html' });
-      res.end(data.replace('{{eventPortalUrl}}', process.env.FRONTEND_DOMAIN));
+      res.end(data.replace('{{loginLink}}', `${process.env.FRONTEND_DOMAIN}/login`));
     } catch (e) {
       res.writeHead(404);
       res.end('File not found!');

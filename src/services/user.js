@@ -1,7 +1,7 @@
 import bcrypt from 'bcryptjs';
 import createError from 'http-errors';
-import { createUser, findOneAndRemoveUser, findOneAndUpdateUser, getAllUsers, getOneUser } from '@/repository/user';
 import { sendMail } from './email';
+import { createUser, findOneAndRemoveUser, findOneAndUpdateUser, getAllUsers, getOneUser } from '@/repository/user';
 
 export const getUsers = (query) => {
   return getAllUsers(query);
@@ -55,10 +55,10 @@ export const updateUserdetails = async (userId, user, userDetails) => {
 };
 
 export const addNewUser = async (userDetails) => {
-  const genaratedPassword = Math.random().toString(36).slice(-8);
+  const generatedPassword = Math.random().toString(36).slice(-8);
 
   const encryptedPassword = await new Promise((resolve, reject) => {
-    bcrypt.hash(genaratedPassword, parseInt(process.env.BCRYPT_SALT_ROUNDS), (err, hash) => {
+    bcrypt.hash(generatedPassword, parseInt(process.env.BCRYPT_SALT_ROUNDS), (err, hash) => {
       if (err) reject(err);
       resolve(hash);
     });
@@ -73,7 +73,7 @@ export const addNewUser = async (userDetails) => {
 
   let sendEmail;
 
-  if (newUser) sendEmail = await sendAdminPassword(userDetails.email, genaratedPassword);
+  if (newUser) sendEmail = await sendAdminPassword(userDetails.email, generatedPassword);
 
   if (!sendEmail) {
     await findOneAndRemoveUser({ email: userDetails.email });
@@ -85,8 +85,8 @@ export const addNewUser = async (userDetails) => {
 
 const sendAdminPassword = (email, password) => {
   const replacements = {
-    genaratedPassword: password,
-    adminFrontendDomain: process.env.ADMIN_FRONTEND_DOMAIN || 'https://admin.bashaway.sliitfoss.org'
+    generatedPassword: password,
+    loginLink: `${process.env.ADMIN_FRONTEND_DOMAIN || 'https://admin.bashaway.sliitfoss.org'}/login`
   };
   const subject = 'Welcome to the Bashaway';
   return sendMail(email, 'sendAdminPassword', replacements, subject);

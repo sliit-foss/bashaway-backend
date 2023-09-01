@@ -1,6 +1,6 @@
 import mongoose from 'mongoose';
-import Question from '@/models/question';
 import { questionFilters } from './util';
+import Question from '@/models/question';
 
 const ObjectId = mongoose.Types.ObjectId;
 
