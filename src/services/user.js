@@ -1,7 +1,7 @@
 import bcrypt from 'bcryptjs';
 import createError from 'http-errors';
-import { sendMail } from './email';
 import { createUser, findOneAndRemoveUser, findOneAndUpdateUser, getAllUsers, getOneUser } from '@/repository/user';
+import { sendMail } from './email';
 
 export const getUsers = (query) => {
   return getAllUsers(query);

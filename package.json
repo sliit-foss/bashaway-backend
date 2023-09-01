@@ -9,7 +9,7 @@
     "clean": "rm -rf dist && mkdir dist",
     "copy": "babel src --out-dir ./dist --copy-files",
     "dev": "nodemon --exec babel-node src/app.js",
-    "format": "prettier --write --cache \"**/*.{js,md}\"",
+    "format": "prettier --write --cache \"**/*.{js,md,html}\"",
     "lint": "eslint src --ext js,md --ignore-path .gitignore --fix --cache --report-unused-disable-directives",
     "prepare": "lefthook install",
     "start": "node dist/app.js",

@@ -7,8 +7,8 @@
     "trailingComma": "none",
     "plugins": ["@trivago/prettier-plugin-sort-imports"],
     "importOrder": [
-      "^(.*express*(.*)$)",
-      "^(.*@sliit-foss*(.*)$)",
+      "^(express*(.*)$)",
+      "^(@sliit-foss*(.*)$)",
       "<THIRD_PARTY_MODULES>",
       "^(.*@/*(.*)$)",
       "^[./]"
