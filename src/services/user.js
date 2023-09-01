@@ -85,9 +85,13 @@ export const addNewUser = async (userDetails) => {
 
 const sendAdminPassword = (email, password) => {
   const replacements = {
-    generatedPassword: password,
-    loginLink: `${process.env.ADMIN_FRONTEND_DOMAIN || 'https://admin.bashaway.sliitfoss.org'}/login`
+    header: 'Welcome To Bashaway!',
+    text: `Congratulations on being added as an admin to the Bashaway admin portal. To login to the system you
+    can use the following password - <span style="color: #ff0000">${password}</span>`,
+    action_link: `${process.env.ADMIN_FRONTEND_DOMAIN || 'https://admin.bashaway.sliitfoss.org'}/login`,
+    action_text: 'Login',
+    disclaimer_text: "You've received this email because you have been chosen as a member of Bashaway 2023."
   };
   const subject = 'Bashaway - Admin Account Password';
-  return sendMail(email, 'sendAdminPassword', replacements, subject);
+  return sendMail(email, 'call_to_action', replacements, subject);
 };

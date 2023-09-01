@@ -51,26 +51,13 @@
               <td style="padding-bottom: 20px">
                 <table style="max-width: 360px; margin-left: auto; margin-right: auto">
                   <td style="text-align: center">
-                    <img
-                      src="https://raw.githubusercontent.com/sliit-foss/bashaway-backend/main/src/html/images/logos/bashaway.png"
-                      alt="Bashaway Logo"
-                      loading="lazy"
-                      width="222"
-                      height="36" />
+                    <img src="{{bashaway_logo}}" alt="Bashaway Logo" loading="lazy" width="222" height="36" />
                   </td>
                   <td style="text-align: center; width: 100%; margin: 0px 10px">
-                    <img
-                      src="https://raw.githubusercontent.com/sliit-foss/bashaway-backend/main/src/html/images/icons/x.png"
-                      alt="X Icon"
-                      width="17"
-                      height="17" />
+                    <img src="{{x_icon}}" alt="X Icon" width="17" height="17" />
                   </td>
                   <td style="text-align: center">
-                    <img
-                      src="https://raw.githubusercontent.com/sliit-foss/bashaway-backend/main/src/html/images/logos/foss.png"
-                      alt="FOSS Logo"
-                      width="56"
-                      height="36" />
+                    <img src="{{foss_logo}}" alt="FOSS Logo" width="56" height="36" />
                   </td>
                 </table>
               </td>
@@ -82,14 +69,10 @@
             </tr>
             <tr>
               <td style="text-align: center; padding: 20px 0px">
-                <p style="font-size: 24px; font-weight: 700; padding-bottom: 5px; line-height: 32px">Hello!</p>
-                <p style="font-size: 20px; line-height: 32px; letter-spacing: -0.5px">
-                  We’ve received your request to change your password. Use the link below to set up a new password for
-                  your account. This link is only usable once! If you need to, you can reinitiate the password process
-                  at the login page.
-                </p>
+                <p style="font-size: 24px; font-weight: 700; padding-bottom: 5px; line-height: 32px">{{header}}</p>
+                <p style="font-size: 20px; line-height: 32px; letter-spacing: -0.5px">{{text}}</p>
                 <br />
-                <a href="{{reset_url}}"><button>Reset Password</button></a>
+                <a href="{{action_link}}"><button>{{action_text}}</button></a>
               </td>
             </tr>
             <tr>
@@ -99,8 +82,7 @@
                 </p>
                 <hr />
                 <p style="font-size: 14px; opacity: 0.4; padding: 10px 5%">
-                  You've received this email because you have opted to participate in Bashaway 2023. If you think this
-                  is a mistake, please contact us at
+                  {{disclaimer_text}} If you think this is a mistake, please contact us at
                   <a href="mailto:infosliitfoss@gmail.com" style="color: #000">infosliitfoss@gmail.com</a>
                 </p>
               </td>

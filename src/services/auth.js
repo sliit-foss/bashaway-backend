@@ -41,10 +41,15 @@ export const authLogin = async ({ email, password }) => {
 
 export const verifyMailTemplate = async (email, verification_code) => {
   const replacements = {
-    verify_url: `${process.env.APP_DOMAIN}/api/auth/verify/${verification_code}`
+    header: 'Welcome To Bashaway!',
+    text: `We are excited to have you here. To get started, you need to confirm your account. Just press the
+    button below.`,
+    action_link: `${process.env.APP_DOMAIN}/api/auth/verify/${verification_code}`,
+    action_text: 'Confirm',
+    disclaimer_text: "You've received this email because you have opted to participate in Bashaway 2023."
   };
   const subject = 'Bashaway - Account Verification';
-  await sendMail(email, 'verifyRegistration', replacements, subject);
+  await sendMail(email, 'call_to_action', replacements, subject);
   return true;
 };
 
@@ -65,13 +70,18 @@ export const authResendVerification = async (email) => {
 
 export const resetPasswordMailTemplate = async (email, verification_code) => {
   const replacements = {
-    reset_url: `${
-      (isFromAdmin() ? process.env.ADMIN_FRONTEND_DOMAIN : process.env.FRONTEND_DOMAIN) ||
-      'https://portal.bashaway.sliitfoss.org'
-    }/reset-password/${verification_code}`
+    header: 'Hello!',
+    text: `We’ve received your request to change your password. Use the link below to set up a new password for
+    your account. This link is only usable once! If you need to, you can reinitiate the password process
+    at the login page.`,
+    action_link: `${
+      isFromAdmin() ? process.env.ADMIN_FRONTEND_DOMAIN : process.env.FRONTEND_DOMAIN
+    }/reset-password/${verification_code}`,
+    action_text: 'Reset Password',
+    disclaimer_text: "You've received this email because you have opted to participate in Bashaway 2023."
   };
   const subject = 'Bashaway - Reset Account Password';
-  await sendMail(email, 'resetPassword', replacements, subject);
+  await sendMail(email, 'call_to_action', replacements, subject);
   return true;
 };
 
