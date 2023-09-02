@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="styles.css">
+    <title>Welcome to Bashaway</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+            padding: 0;
+            margin: auto;
+        }
+
+        .mainDiv {
+            max-width: 1280px;
+            height: 1169px;
+            background: linear-gradient(180deg, #FFFAFA 21.35%, #FFA3A3 100%);
+            padding-top: 221.91px;
+        }
+
+        .foss-confirm-btn {
+            top: 868px;
+            left: 496px;
+            display: block;
+            padding: 10px;
+            background-color: red;
+            width: 288px;
+            height: 69px;
+            text-align: center;
+            border-radius: 9px;
+            color: white !important;
+            font-size: 38px;
+            text-decoration: none;
+            font-family: Consolas;
+            font-style: normal;
+            font-weight: 700;
+            line-height: normal;
+            letter-spacing: 1.9px;
+        }
+
+        #slash {
+            top: 220px;
+            left: 371px;
+            padding-right: 25px;
+        }
+
+        #bashawayheading {
+            top: 221.91px;
+            left: 453.4px;
+        }
+
+        .subheading {
+            color: #a9a9a9;
+            font-size: 1.5rem;
+            font-weight: bold;
+        }
+
+        p {
+            font-size: 28px;
+            line-height: normal;
+            padding-left: 60px;
+            font-family: Consolas;
+            font-weight: 400;
+            text-align: justify;
+            color: black;
+        }
+
+        #fosstable {
+            width: 75%;
+        }
+
+        #redbubble {
+            width: 59.242px;
+            height: 59.242px;
+            margin-left: 10px;
+            top: 248px;
+            left: 298px;
+        }
+        
+        .fossLogo {
+            top: 729px;
+            left: 212px;
+        }
+
+        #para1 {
+            top: 490px;
+            left: 212px;
+        }
+
+        #para2 {
+            top: 583.09px;
+            left: 212px;
+        }
+ 
+    </style>
+</head>
+<body>
+    <div class="mainDiv">
+        <table id="fosstable"> <!-- SLIIT + icon + bashaway 2023 --> 
+            <tr>
+                <td>
+                    <div id="heading">
+                        <img id="redbubble" src="./images/2023/redbubble.svg" alt="redbubble.svg">
+                            <span id="slash"><img src="./images/2023/slash.svg"></span>
+                            <span id="bashawayheading"><img src="./images/2023/bashaway.svg"></span>
+                    </div>
+                    <br>
+                    <p id="para1">Welcome to Bashaway!</p>
+                    <br><br>
+                    <p id="para2">We are excited to have you get started. First, you need to confirm your account. Just press the button below.</p>
+                    <br><br>
+                    <img class="fossLogo" src="./images/2023/fosslogo.svg" alt="Logo" title="Logo" height="82px" width="129px"> <!--sliit foss logo -->
+                    <br><br>
+
+                    <a href="#" class="foss-confirm-btn">Confirm</a>  <!--Confirm button-->
+                </td>
+            </tr>
+        </table>
+    </div>
+</body>
+</html>
