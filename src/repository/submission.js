@@ -12,9 +12,8 @@ export const insertSubmission = (userId, question, link) => {
   });
 };
 
-export const getSubmissions = async ({ sort = {}, filter = {}, page, limit = 10 }) => {
+export const getSubmissions = ({ sort = {}, filter = {}, page, limit = 10 }) => {
   const populate = ['user', 'graded_by', 'question'];
-
   if (!isUndefined(filter.graded)) {
     if (filter.graded) {
       filter.$or = [{ graded_by: { $ne: null } }, { automatically_graded: true }];
@@ -23,7 +22,6 @@ export const getSubmissions = async ({ sort = {}, filter = {}, page, limit = 10 
       filter.automatically_graded = false;
     }
   }
-
   const options = {
     sort,
     page,
@@ -33,7 +31,7 @@ export const getSubmissions = async ({ sort = {}, filter = {}, page, limit = 10 
     },
     populate
   };
-  return (await page)
+  return page
     ? Submission.paginate(filter, options).catch((err) => {
         logger.error(`An error occurred when retrieving submissions - err: ${err.message}`);
         throw err;

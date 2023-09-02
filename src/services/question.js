@@ -8,7 +8,7 @@ import {
   getQuestionById,
   insertQuestion
 } from '@/repository/question';
-import { getOneSubmission, getSubmissions } from '@/repository/submission';
+import { getOneSubmission, getSubmissionCount } from '@/repository/submission';
 
 export const retrieveAllQuestions = async (user, query) => {
   const questions = await findAllQuestions(user, query);
@@ -40,11 +40,9 @@ export const updateQuestionById = async (question_id, data, user) => {
   }
   if (question.creator_lock && question.creator.toString() !== user._id.toString())
     throw new createError(403, 'You are not authorized to update this question');
-  if (data.max_score) {
-    const r = await getSubmissions({ filter: { question: question_id } }).then((res) => {
-      return res;
-    });
-    if (r.totalDocs > 0) throw new createError(400, 'Cannot update question with submissions');
+  if (data.max_score && data.max_score !== question.max_score) {
+    const submissionCount = await getSubmissionCount(question_id);
+    if (submissionCount > 0) throw new createError(400, 'Cannot update a question with submissions');
   }
   return findAndUpdateQuestion({ _id: question_id }, data);
 };

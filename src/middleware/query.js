@@ -11,7 +11,9 @@ export const queryMapper = (req, res, next) => {
   }
   if (req.query.sort) {
     Object.keys(req.query.sort).forEach((key) => {
-      req.query.sort[key] = parseInt(req.query.sort[key]);
+      if (!['asc', 'desc'].includes(req.query.sort[key])) {
+        req.query.sort[key] = parseInt(req.query.sort[key]);
+      }
     });
   }
   next();
