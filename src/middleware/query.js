@@ -2,7 +2,7 @@ export const queryMapper = (req, res, next) => {
   if (req.query.filter) {
     Object.keys(req.query.filter).forEach((key) => {
       if (isRegex(req.query.filter[key])) {
-        req.query.filter[key] = new RegExp(req.query.filter[key].slice(1, -1));
+        req.query.filter[key] = new RegExp(req.query.filter[key].slice(1, -1), 'i');
       }
       if (req.query.filter[key] === 'true' || req.query.filter[key] === 'false') {
         req.query.filter[key] = req.query.filter[key] === 'true';

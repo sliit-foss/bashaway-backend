@@ -15,7 +15,6 @@ export const getUserByID = async (id) => {
 
 export const changePasswordService = async (user, oldPassword, newPassword) => {
   user = await getOneUser({ _id: user._id }, true); // because req.user doesn't have the password
-
   const isPasswordMatch = await new Promise((resolve, reject) => {
     bcrypt.compare(oldPassword, user.password, (err, hash) => {
       if (err) reject(err);
@@ -23,7 +22,6 @@ export const changePasswordService = async (user, oldPassword, newPassword) => {
     });
   });
   if (!isPasswordMatch) throw new createError(400, 'Invalid current password');
-
   const encryptedPassword = await new Promise((resolve, reject) => {
     bcrypt.hash(newPassword, parseInt(process.env.BCRYPT_SALT_ROUNDS), (err, hash) => {
       if (err) reject(err);
@@ -55,10 +53,10 @@ export const updateUserdetails = async (userId, user, userDetails) => {
 };
 
 export const addNewUser = async (userDetails) => {
-  const genaratedPassword = Math.random().toString(36).slice(-8);
+  const generatedPassword = Math.random().toString(36).slice(-8);
 
   const encryptedPassword = await new Promise((resolve, reject) => {
-    bcrypt.hash(genaratedPassword, parseInt(process.env.BCRYPT_SALT_ROUNDS), (err, hash) => {
+    bcrypt.hash(generatedPassword, parseInt(process.env.BCRYPT_SALT_ROUNDS), (err, hash) => {
       if (err) reject(err);
       resolve(hash);
     });
@@ -71,23 +69,25 @@ export const addNewUser = async (userDetails) => {
     role: 'ADMIN'
   });
 
-  let sendEmail;
-
-  if (newUser) sendEmail = await sendAdminPassword(userDetails.email, genaratedPassword);
-
-  if (!sendEmail) {
-    await findOneAndRemoveUser({ email: userDetails.email });
-    return;
+  try {
+    await sendAdminPassword(userDetails.email, generatedPassword);
+    return newUser;
+  } catch (e) {
+    findOneAndRemoveUser({ email: userDetails.email }).exec();
+    throw e;
   }
-
-  return newUser;
 };
 
 const sendAdminPassword = (email, password) => {
   const replacements = {
-    genaratedPassword: password,
-    adminFrontendDomain: process.env.ADMIN_FRONTEND_DOMAIN || 'https://admin.bashaway.sliitfoss.org'
+    header: 'Welcome To Bashaway!',
+    text: `Congratulations on being added as an admin to the Bashaway admin portal. To login to the system you
+    can use the following password -`,
+    highlight_text: password,
+    action_link: `${process.env.ADMIN_FRONTEND_DOMAIN || 'https://admin.bashaway.sliitfoss.org'}/login`,
+    action_text: 'Login',
+    disclaimer_text: "You've received this email because you have been chosen as a member of Bashaway 2023."
   };
-  const subject = 'Welcome to the Bashaway';
-  return sendMail(email, 'sendAdminPassword', replacements, subject);
+  const subject = 'Bashaway - Admin Account Password';
+  return sendMail(email, 'call_to_action', replacements, subject);
 };

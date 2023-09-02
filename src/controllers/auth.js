@@ -1,4 +1,7 @@
-import createError from 'http-errors';
+import fs from 'fs';
+import { default as createError } from 'http-errors';
+import path from 'path';
+import { getRegistrationDeadline } from '@/repository/settings';
 import { blacklistToken } from '@/repository/token';
 import { getOneUser } from '@/repository/user';
 import {
@@ -12,13 +15,8 @@ import {
 } from '@/services/auth';
 import { makeResponse, sendRefreshTokenResponse, sendTokenResponse } from '@/utils';
 
-const fs = require('fs');
-
-// TODO: remove this and replace with value from database once it's ready
-const registrationEnd = new Date(2050, 8, 30, 8, 0, 0);
-
 export const register = async (req, res) => {
-  if (Date.now() >= registrationEnd.getTime()) throw new createError(400, 'Registration closed');
+  if (new Date() >= new Date(await getRegistrationDeadline())) throw new createError(400, 'Registration closed');
   if (req.user) throw new createError(400, "You've already registered for an account.");
   await authRegister(req.body);
   return makeResponse({
@@ -42,16 +40,14 @@ export const login = async (req, res) => {
 export const verifyUser = async (req, res) => {
   const user = await updateVerificationStatus(req.params.verification_code);
   if (user) {
-    res.writeHead(200, { 'Content-Type': 'text/html' });
-    fs.readFile('./src/html/verificationSuccessfull.html', null, function (error, data) {
-      if (error) {
-        res.write('file not found');
-        res.writeHead(404);
-      } else {
-        res.write(data);
-      }
-      res.end();
-    });
+    try {
+      const data = fs.readFileSync(path.join(__dirname, '../html/verification_success.html'), 'utf8');
+      res.writeHead(200, { 'Content-Type': 'text/html' });
+      res.end(data.replace('{{login_link}}', `${process.env.FRONTEND_DOMAIN}/login`));
+    } catch (e) {
+      res.writeHead(404);
+      res.end('File not found!');
+    }
   } else {
     throw new createError(400, 'Invalid verification code');
   }

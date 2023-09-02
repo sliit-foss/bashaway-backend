@@ -1,5 +1,6 @@
 import mongoose from 'mongoose';
 import Question from '@/models/question';
+import { questionFilters } from './util';
 
 const ObjectId = mongoose.Types.ObjectId;
 
@@ -7,24 +8,13 @@ export const findAllQuestions = (user, query = {}) => {
   if (!query.filter) {
     query.filter = {};
   }
-  let filter;
-  if (user.role == 'ADMIN') {
-    filter = {
-      $or: [{ creator_lock: false }, { creator_lock: true, creator: user._id }],
-      $and: [query.filter]
-    };
-  } else {
-    query.filter.enabled = true;
-  }
-  filter = {
-    $or: [{ creator_lock: false }, { creator_lock: true, creator: user._id }],
-    $and: [query.filter]
-  };
+
+  const filter = questionFilters(user, query.filter);
 
   const options = {
     select: '-creator -creator_lock',
     lean: true,
-    sort: query.sort || { created_at: -1 }
+    sort: query.sort
   };
 
   if (query.page) {
@@ -43,18 +33,18 @@ export const insertQuestion = (data) => {
 };
 
 export const findQuestion = (filters) => {
-  return Question.findOne(filters);
+  return Question.findOne(filters).lean();
 };
 
 export const getQuestionById = (id, user, filterFields = true) => {
-  let query = Question.find({
-    $and: [
-      { _id: { $eq: new ObjectId(id) } },
-      {
-        $or: [{ creator_lock: false }, { creator_lock: true, creator: user._id }]
-      }
-    ]
-  }).lean();
+  const filters = {
+    _id: { $eq: new ObjectId(id) },
+    $or: [{ creator_lock: false }, { creator_lock: true, creator: user._id }]
+  };
+  if (user.role !== 'ADMIN') {
+    filters.enabled = true;
+  }
+  let query = Question.findOne(filters).lean();
   if (filterFields) query = query.select('-creator_lock');
   return query.exec();
 };
@@ -69,4 +59,23 @@ export const deleteAQuestion = (filters) => {
 
 export const getMaxScore = async (questionId) => {
   return (await Question.findById(questionId).lean()).max_score;
+};
+
+export const getQuestionSubmissions = (user) => {
+  return Question.aggregate([
+    {
+      $match: questionFilters(user)
+    },
+    { $lookup: { from: 'submissions', localField: '_id', foreignField: 'question', as: 'submissions' } },
+    {
+      $project: {
+        _id: 0,
+        question: {
+          name: '$name'
+        },
+        submission_count: { $size: '$submissions' }
+      }
+    },
+    { $sort: { submission_count: -1 } }
+  ]);
 };

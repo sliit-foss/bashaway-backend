@@ -1,4 +1,3 @@
-import crypto from 'crypto';
 import express from 'express';
 import context from 'express-http-context';
 import rateLimit from 'express-rate-limit';
@@ -6,6 +5,7 @@ import httpLogger from '@sliit-foss/http-logger';
 import { moduleLogger } from '@sliit-foss/module-logger';
 import compression from 'compression';
 import cors from 'cors';
+import crypto from 'crypto';
 import helmet from 'helmet';
 import { pick } from 'lodash';
 import { default as connectDB } from '@/database';
@@ -27,7 +27,16 @@ const limiter = rateLimit({
 
 app.use(limiter);
 
-app.use(helmet());
+app.use(
+  helmet({
+    crossOriginEmbedderPolicy: false,
+    contentSecurityPolicy: {
+      directives: {
+        'img-src': ["'self'", 'https: data:']
+      }
+    }
+  })
+);
 
 app.use(compression());
 
@@ -41,6 +50,7 @@ app.use(context.middleware);
 
 app.use((req, _res, next) => {
   context.set('correlationId', req.headers['x-correlation-id'] ?? crypto.randomBytes(16).toString('hex'));
+  context.set('origin', req.headers['x-origin-application']);
   next();
 });
 
@@ -48,7 +58,8 @@ app.use(
   httpLogger({
     loggable: ({ headers }) => ({
       ...pick(headers, ['x-user-email', 'user-agent'])
-    })
+    }),
+    whitelists: ['/']
   })
 );
 

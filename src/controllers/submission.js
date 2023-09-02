@@ -1,14 +1,13 @@
 import createError from 'http-errors';
+import { getSubmissionDeadline } from '@/repository/settings';
 import { createSubmission, gradeSubmission, viewSubmissions } from '@/services/submission';
 import { makeResponse } from '@/utils/response';
 
 export const create = async (req, res) => {
-  const submissionsDisabled = Date.now() > 1664616600000; // 2022 October 1st 3:00 PM
-  if (submissionsDisabled) {
+  if (new Date() >= new Date(await getSubmissionDeadline()))
     throw new createError(400, 'Submission period has expired');
-  }
   await createSubmission(req.body, req.user);
-  return makeResponse({ res, status: 201, message: 'Submission added successfully ' });
+  return makeResponse({ res, status: 201, message: 'Submission added successfully' });
 };
 
 export const view = async (req, res) => {
