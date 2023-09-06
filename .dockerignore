@@ -1,0 +1,14 @@
+test
+node_modules
+logs
+
+commitlint.config.cjs
+README.md
+
+.github
+.eslintcache
+.eslintrc
+.gitignore
+.prettierignore
+.prettierrc
+.env.example

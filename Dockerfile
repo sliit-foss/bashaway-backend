@@ -6,7 +6,7 @@ COPY . .
 
 RUN npm i -g pnpm@8.0.0
 
-RUN pnpm install --ignore-scripts
+RUN pnpm install --ignore-scripts --fix-lockfile
 RUN pnpm build
 
 CMD ["node", "dist/app.js"]
