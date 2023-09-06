@@ -8,18 +8,18 @@ on:
   workflow_dispatch:
 
 jobs:
-  build:
-    name: Build
+  build-deploy:
+    name: Build & Deploy
     runs-on: ubuntu-latest
     environment:
       name: Production
       url: https://api.bashaway.sliitfoss.org
     steps:
       - name: Checkout repository 🛎️
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
 
       - name: Install pnpm 📦
-        uses: pnpm/action-setup@v3
+        uses: pnpm/action-setup@v2
         with:
           version: 8
 
