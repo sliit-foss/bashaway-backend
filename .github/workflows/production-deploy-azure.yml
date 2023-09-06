@@ -1,4 +1,4 @@
-name: CI Production deploy
+name: CI Azure Production deploy
 run-name: Deploy to Production
 
 on:
