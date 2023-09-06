@@ -1,0 +1,44 @@
+name: CI Production deploy
+run-name: Deploy to Production
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+jobs:
+  build:
+    name: Build
+    runs-on: ubuntu-latest
+    environment:
+      name: Production
+      url: https://api.bashaway.sliitfoss.org
+    steps:
+      - name: Checkout repository 🛎️
+        uses: actions/checkout@v2
+
+      - name: Install pnpm 📦
+        uses: pnpm/action-setup@v3
+        with:
+          version: 8
+
+      - name: Install Node.js 18 and setup dependency caching 📦
+        uses: actions/setup-node@v3
+        with:
+          node-version: 18.x
+          cache: 'pnpm'
+
+      - name: Install dependencies 📦  
+        run: pnpm install --ignore-scripts --fix-lockfile
+
+      - name: Build changes 🏗️
+        run: pnpm build
+
+      - name: Deploy 🚀
+        uses: azure/webapps-deploy@v2
+        with:
+          app-name: 'bashaway-backend'
+          slot-name: 'Production'
+          publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_C92DBFC61FBF41798582C26084AB4151 }}
+          package: .
