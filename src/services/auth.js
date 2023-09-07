@@ -56,7 +56,7 @@ export const verifyMailTemplate = async (email, verification_code) => {
 export const updateVerificationStatus = async (verificationCode) => {
   const user = await getOneUser({ verification_code: verificationCode });
   if (!user) return false;
-  return findOneAndUpdateUser({ email: user.email }, { is_verified: true });
+  return findOneAndUpdateUser({ email: user.email }, { is_verified: true, verification_code: null });
 };
 
 export const authResendVerification = async (email) => {
