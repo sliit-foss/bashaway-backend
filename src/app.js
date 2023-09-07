@@ -7,7 +7,7 @@ import compression from 'compression';
 import cors from 'cors';
 import crypto from 'crypto';
 import helmet from 'helmet';
-import { pick } from 'lodash';
+import { omit, pick } from 'lodash';
 import { default as connectDB } from '@/database';
 import { errorHandler, queryMapper, responseInterceptor } from '@/middleware';
 import { default as routes } from '@/routes/index.routes';
@@ -46,6 +46,8 @@ app.use(express.json({ limit: '1mb' }));
 
 app.use(express.urlencoded({ extended: true }));
 
+app.get('/', (_, res) => res.status(200).json({ message: 'Bashaway Server Up and Running' }));
+
 app.use(context.middleware);
 
 app.use((req, _res, next) => {
@@ -56,16 +58,14 @@ app.use((req, _res, next) => {
 
 app.use(
   httpLogger({
-    loggable: ({ headers }) => ({
-      ...pick(headers, ['x-user-email', 'user-agent'])
-    }),
-    whitelists: ['/']
+    loggable: ({ headers, body: payload }) => ({
+      headers: pick(headers, ['x-user-email', 'user-agent']),
+      payload: omit(payload, ['password', 'new_password', 'old_password'])
+    })
   })
 );
 
 app.use(queryMapper);
-
-app.get('/', (_, res) => res.status(200).json({ message: 'Bashaway Server Up and Running' }));
 
 app.use('/api', routes);
 
