@@ -25,7 +25,7 @@ export const createQuestion = (data, user) => {
 };
 
 export const retrieveQuestion = async (question_id, user) => {
-  const result = await getQuestionById(question_id, user._id);
+  const result = await getQuestionById(question_id, user);
   if (!result) throw new createError(404, "Question doesn't exist or you do not have permission to view this question");
   return attachSubmissionAttributesToQuestion(result);
 };
