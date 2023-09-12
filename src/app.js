@@ -79,6 +79,8 @@ global.__basedir = __dirname;
 
 const port = process.env.PORT || 3000;
 
-app.listen(port, () => {
-  logger.info(`Bashaway server successfully started on port ${port}`);
+app.listen(port, (err) => {
+  if (!err) {
+    logger.info(`Bashaway server successfully started on port ${port}`);
+  }
 });
