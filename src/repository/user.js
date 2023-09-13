@@ -112,7 +112,8 @@ export const getLeaderboardData = () => {
   return User.aggregate([
     {
       $match: {
-        role: 'GROUP'
+        role: 'GROUP',
+        is_verified: true
       }
     },
     {
