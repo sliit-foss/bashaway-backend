@@ -82,7 +82,8 @@ export const getAllUniverstyUserGroups = () => {
   return User.aggregate([
     {
       $match: {
-        role: 'GROUP'
+        role: 'GROUP',
+        is_verified: true
       }
     },
     {
