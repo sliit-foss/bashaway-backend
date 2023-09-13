@@ -19,7 +19,7 @@
 
 <br/>
 
-Bashaway is a competitive coding event where the participants must automate a given task using scripting. Partipants must form groups of 4 and solve the automation problems using bash and optionally, a given set of technologies
+Bashaway is a competitive coding event where the participants must automate a given task using scripting. The maximum allowed group size is 4 and the primary language to be used is Bash. Certain other languages may be permitted depended upon the context of the question.
 
 ## API Documentation
 
