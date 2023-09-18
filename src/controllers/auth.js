@@ -30,10 +30,7 @@ export const login = async (req, res) => {
   if (!user) throw new createError(401, 'Invalid email or password');
   if (!user.is_verified) throw new createError(401, 'Account not verified. Please check your email');
   if (!user.is_active)
-    throw new createError(
-      401,
-      'Your account has been deactivated. Please contact a bashaway administrator to resolve it'
-    );
+    throw new createError(401, 'Your account has been deactivated. Please contact an admin to resolve it');
   return sendTokenResponse(res, user, 'User logged in successfully');
 };
 

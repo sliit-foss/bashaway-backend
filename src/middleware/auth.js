@@ -17,6 +17,8 @@ export const protect = asyncHandler(async (req) => {
   const decodedUser = decodeJwtToken(token).data;
   const user = decodedUser ? await getOneUser({ _id: decodedUser._id }, false) : null;
   if (!user) throw new createError(401, 'Unauthorized');
+  if (!user.is_active)
+    throw new createError(401, 'Your account has been deactivated. Please contact an admin to resolve it');
   req.user_token = token;
   req.user = user;
 });
