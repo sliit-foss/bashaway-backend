@@ -25,38 +25,37 @@ export const getAllUsers = ({ sort = {}, filter = {}, page, limit = 10 }) => {
     delete filter.member_count;
   }
 
-  const aggregateQuery = () =>
-    User.aggregate([
-      {
-        $match: filter
-      },
-      {
-        $lookup: {
-          from: 'submissions',
-          localField: '_id',
-          foreignField: 'user',
-          as: 'submissions',
-          pipeline: [
-            {
-              $group: {
-                _id: '$question',
-                score: {
-                  $max: { $ifNull: ['$score', 0] }
-                }
+  const pipeline = User.aggregate([
+    {
+      $match: filter
+    },
+    {
+      $lookup: {
+        from: 'submissions',
+        localField: '_id',
+        foreignField: 'user',
+        as: 'submissions',
+        pipeline: [
+          {
+            $group: {
+              _id: '$question',
+              score: {
+                $max: { $ifNull: ['$score', 0] }
               }
             }
-          ]
-        }
-      },
-      {
-        $addFields: {
-          score: { $sum: '$submissions.score' }
-        }
-      },
-      { $unset: ['password', 'verification_code', 'submissions'] }
-    ]);
+          }
+        ]
+      }
+    },
+    {
+      $addFields: {
+        score: { $sum: '$submissions.score' }
+      }
+    },
+    { $unset: ['password', 'verification_code', 'submissions'] }
+  ]);
 
-  return (page ? User.aggregatePaginate(aggregateQuery(), options) : aggregateQuery()).catch((err) => {
+  return (page ? User.aggregatePaginate(pipeline, options) : pipeline).catch((err) => {
     logger.error(`An error occurred when retrieving users - err: ${err.message}`);
     throw err;
   });

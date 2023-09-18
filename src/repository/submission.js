@@ -55,8 +55,12 @@ export const insertGrade = async (submission, score, automated, userId) => {
   );
 };
 
-export const getSubmissionCount = async (questionId) => {
-  return (await Submission.distinct('user', { question: questionId })).length;
+export const getDistinctSubmissions = (questionId) => {
+  return Submission.aggregate([
+    { $match: { question: questionId } },
+    { $group: { _id: '$user' } },
+    { $project: { _id: 0, user: '$_id' } }
+  ]);
 };
 
 export const getTeamSubmissions = () => {

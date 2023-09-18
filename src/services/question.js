@@ -8,13 +8,13 @@ import {
   getQuestionById,
   insertQuestion
 } from '@/repository/question';
-import { getOneSubmission, getSubmissionCount } from '@/repository/submission';
+import { getDistinctSubmissions, getOneSubmission } from '@/repository/submission';
 
 export const retrieveAllQuestions = async (user, query) => {
   const questions = await findAllQuestions(user, query);
   await Promise.all(
     (query.page ? questions.docs : questions).map((question) => {
-      return attachSubmissionAttributesToQuestion(question);
+      return attachSubmissionAttributesToQuestion(question, user);
     })
   );
   return questions;
@@ -27,7 +27,7 @@ export const createQuestion = (data, user) => {
 export const retrieveQuestion = async (question_id, user) => {
   const result = await getQuestionById(question_id, user);
   if (!result) throw new createError(404, "Question doesn't exist or you do not have permission to view this question");
-  return attachSubmissionAttributesToQuestion(result);
+  return attachSubmissionAttributesToQuestion(result, user);
 };
 
 export const updateQuestionById = async (question_id, data, user) => {
@@ -41,7 +41,7 @@ export const updateQuestionById = async (question_id, data, user) => {
   if (question.creator_lock && question.creator.toString() !== user._id.toString())
     throw new createError(403, 'You are not authorized to update this question');
   if (data.max_score && data.max_score !== question.max_score) {
-    const submissionCount = await getSubmissionCount(question_id);
+    const submissionCount = (await getDistinctSubmissions(question_id)).length;
     if (submissionCount > 0) throw new createError(400, 'Cannot update a question with submissions');
   }
   return findAndUpdateQuestion({ _id: question_id }, data);
