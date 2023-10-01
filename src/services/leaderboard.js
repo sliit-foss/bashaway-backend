@@ -1,4 +1,3 @@
-import { startCase } from 'lodash';
 import { getLeaderboardSettings } from '@/repository/settings';
 import { getLeaderboardData } from '@/repository/user';
 import { faker } from '@faker-js/faker';
@@ -14,15 +13,15 @@ export const getLeaderboardRankings = async () => {
         break;
       }
       if (new Date() > freezeDate) {
-        let name = faker.science.chemicalElement().name;
-        while (names.has(name)) {
-          name = faker.science.chemicalElement().name;
-          names.add(name);
+        let element = faker.science.chemicalElement();
+        while (names.has(element.name)) {
+          element = faker.science.chemicalElement();
+          names.add(element.name);
         }
         records[i].score = '????';
-        records[i].name = name;
-        records[i].university = startCase(faker.science.chemicalElement().symbol.toUpperCase());
-        records[i].email = `${name.toLowerCase()}@bashaway.io`;
+        records[i].name = element.name;
+        records[i].university = element.symbol.toUpperCase();
+        records[i].email = `${element.name.toLowerCase()}@bashaway.io`;
       }
     }
   }
