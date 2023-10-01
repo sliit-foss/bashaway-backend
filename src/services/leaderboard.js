@@ -19,7 +19,6 @@ export const getLeaderboardRankings = async () => {
           name = faker.science.chemicalElement().name;
           names.add(name);
         }
-        records[i].name = name;
         records[i].score = '????';
         records[i].name = name;
         records[i].university = startCase(faker.science.chemicalElement().symbol.toUpperCase());
