@@ -1,5 +1,20 @@
 import mongoose from 'mongoose';
 
+const LeaderboardSchema = mongoose.Schema({
+  freezed: {
+    type: Boolean,
+    default: false
+  },
+  freeze_at: {
+    type: Date,
+    default: null
+  },
+  freeze_vanguard: {
+    type: Number,
+    default: 3
+  }
+});
+
 const SettingSchema = mongoose.Schema(
   {
     submission_deadline: {
@@ -12,6 +27,10 @@ const SettingSchema = mongoose.Schema(
     },
     contest_start: {
       type: Date,
+      default: null
+    },
+    leaderboard: {
+      type: LeaderboardSchema,
       default: null
     }
   },

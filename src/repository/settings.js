@@ -17,3 +17,8 @@ export const getSubmissionDeadline = async () => {
   const settings = await getSettingsDoc();
   return settings.submission_deadline;
 };
+
+export const getLeaderboardSettings = async () => {
+  const settings = await getSettingsDoc();
+  return settings.leaderboard;
+};

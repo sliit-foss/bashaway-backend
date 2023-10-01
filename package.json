@@ -26,6 +26,7 @@
   },
   "homepage": "https://github.com/sliit-foss/bashaway-backend#readme",
   "dependencies": {
+    "@faker-js/faker": "8.1.0",
     "@sliit-foss/functions": "2.2.3",
     "@sliit-foss/http-logger": "1.1.2",
     "@sliit-foss/module-logger": "1.1.5",
