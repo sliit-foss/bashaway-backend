@@ -27,7 +27,10 @@ export const getAllUsers = ({ sort = {}, filter = {}, page, limit = 10 }) => {
 
   const pipeline = User.aggregate([
     {
-      $match: filter
+      $match: {
+        is_verified: true,
+        ...filter
+      }
     },
     {
       $lookup: {
