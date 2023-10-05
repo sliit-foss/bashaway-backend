@@ -8,6 +8,7 @@ export const createSubmission = async ({ question: questionId, link }, user) => 
   if (!question) throw new createError(422, 'Invalid question ID');
   const submission = await insertSubmission(user._id, questionId, link);
   initiateTesting(
+    user.name,
     user.email,
     submission._id,
     submission.link,
