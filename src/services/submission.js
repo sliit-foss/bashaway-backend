@@ -7,7 +7,14 @@ export const createSubmission = async ({ question: questionId, link }, user) => 
   const question = await findQuestion({ _id: questionId });
   if (!question) throw new createError(422, 'Invalid question ID');
   const submission = await insertSubmission(user._id, questionId, link);
-  initiateTesting(user.email, submission._id, submission.link, question.codebase_url, question.strict_inputs);
+  initiateTesting(
+    user.email,
+    submission._id,
+    submission.link,
+    question.codebase_url,
+    question.name,
+    question.strict_inputs
+  );
 };
 
 export const viewSubmissions = (query, user) => {

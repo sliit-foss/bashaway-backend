@@ -8,7 +8,7 @@ const connector = serviceConnector({
   })
 });
 
-export const triggerScorekeeper = (email, submissionId, submissionLink, questionLink, strictInputs) => {
+export const triggerScorekeeper = (email, submissionId, submissionLink, questionLink, questionName, strictInputs) => {
   return connector.post(
     `/repos/${process.env.SCOREKEEPER_REPO_OWNER}/${process.env.SCOREKEEPER_REPO_NAME}/dispatches`,
     {
@@ -18,6 +18,7 @@ export const triggerScorekeeper = (email, submissionId, submissionLink, question
         submission_id: submissionId,
         submission_url: submissionLink,
         question_url: questionLink,
+        question_name: questionName,
         strict_inputs: strictInputs
       }
     }
