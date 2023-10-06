@@ -105,7 +105,7 @@ export const resetPasswordFromEmail = async (password, verificationCode) => {
   });
   const updatedUser = await findOneAndUpdateUser(
     { email: user.email },
-    { password: encryptedPassword, is_verified: true }
+    { password: encryptedPassword, is_verified: true, verification_code: null }
   );
   return updatedUser;
 };

@@ -116,7 +116,8 @@ export const getLeaderboardData = () => {
     {
       $match: {
         role: 'GROUP',
-        is_verified: true
+        is_verified: true,
+        is_active: true
       }
     },
     {
