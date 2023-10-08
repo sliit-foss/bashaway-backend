@@ -128,6 +128,11 @@ export const getLeaderboardData = () => {
         as: 'submissions',
         pipeline: [
           {
+            $match: {
+              score: { $gt: 0 }
+            }
+          },
+          {
             $sort: {
               score: -1
             }
