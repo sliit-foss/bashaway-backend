@@ -4,6 +4,7 @@ import { Segments, celebrate } from 'celebrate';
 import { create, grade, view } from '@/controllers/submission';
 import { adminProtect } from '@/middleware/auth';
 import {
+  submissionCreateQuerySchema,
   submissionCreateSchema,
   submissionIdSchema,
   submissionUpdateSchema,
@@ -12,7 +13,11 @@ import {
 
 const submissions = express.Router();
 
-submissions.post('/', celebrate({ [Segments.BODY]: submissionCreateSchema }), tracedAsyncHandler(create));
+submissions.post(
+  '/',
+  celebrate({ [Segments.BODY]: submissionCreateSchema, [Segments.QUERY]: submissionCreateQuerySchema }),
+  tracedAsyncHandler(create)
+);
 submissions.get('/', celebrate({ [Segments.QUERY]: submissionViewSchema }), tracedAsyncHandler(view));
 submissions.patch(
   '/:id',

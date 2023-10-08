@@ -47,6 +47,10 @@ export const getOneSubmission = (filters, options = {}) => {
   return Submission.findOne(filters, options).lean();
 };
 
+export const findSubmissionWithMaxScore = (questionId, userId, maxScore) => {
+  return Submission.findOne({ question: questionId, user: userId, score: maxScore }).lean();
+};
+
 export const insertGrade = async (submission, score, automated, userId) => {
   await Submission.findOneAndUpdate(
     { _id: submission },
