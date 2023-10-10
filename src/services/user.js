@@ -1,11 +1,18 @@
-import bcrypt from 'bcryptjs';
-import createError from 'http-errors';
-import { createUser, findOneAndRemoveUser, findOneAndUpdateUser, getAllUsers, getOneUser } from '@/repository/user';
+import { compareSync, hashSync } from 'bcryptjs';
+import { default as createError } from 'http-errors';
+import { getRoundBreakpoint } from '@/repository/settings';
+import {
+  createUser,
+  findAndUpdateUsers,
+  findOneAndRemoveUser,
+  findOneAndUpdateUser,
+  getAllUsers,
+  getLeaderboardData,
+  getOneUser
+} from '@/repository/user';
 import { sendMail } from './email';
 
-export const getUsers = (query) => {
-  return getAllUsers(query);
-};
+export const getUsers = (query) => getAllUsers(query);
 
 export const getUserByID = async (id) => {
   const user = await getOneUser({ _id: id });
@@ -15,65 +22,43 @@ export const getUserByID = async (id) => {
 
 export const changePasswordService = async (user, oldPassword, newPassword) => {
   user = await getOneUser({ _id: user._id }, true); // because req.user doesn't have the password
-  const isPasswordMatch = await new Promise((resolve, reject) => {
-    bcrypt.compare(oldPassword, user.password, (err, hash) => {
-      if (err) reject(err);
-      resolve(hash);
-    });
-  });
+  const isPasswordMatch = compareSync(oldPassword, user.password);
   if (!isPasswordMatch) throw new createError(400, 'Invalid current password');
-  const encryptedPassword = await new Promise((resolve, reject) => {
-    bcrypt.hash(newPassword, parseInt(process.env.BCRYPT_SALT_ROUNDS), (err, hash) => {
-      if (err) reject(err);
-      resolve(hash);
-    });
-  });
-  return findOneAndUpdateUser({ email: user.email }, { password: encryptedPassword });
+  const hashedPassword = hashSync(newPassword, +process.env.BCRYPT_SALT_ROUNDS);
+  return findOneAndUpdateUser({ email: user.email }, { password: hashedPassword });
 };
 
-export const updateUserdetails = async (userId, user, userDetails) => {
-  let userData;
-
+export const updateUserdetails = async (userId, user, payload) => {
   if (user.role !== 'ADMIN') {
-    if (userId.toString() !== user._id.toString()) {
+    if (userId !== user._id.toString()) {
       throw new createError(403, 'You are not authorized to update this user');
     }
-    delete userDetails.is_active;
+    delete payload.is_active;
+    delete payload.eliminated;
   }
-
-  if (userDetails.name) {
-    userData = await getOneUser({ name: userDetails.name }, false);
-    if (userData && userData?._id.toString() !== userId.toString()) throw new createError(422, 'Name is already taken');
+  if (payload.name) {
+    const existingUser = await getOneUser({ name: payload.name, _id: { $ne: userId } });
+    if (existingUser) throw new createError(422, 'Name is already taken');
   }
-
-  const updatedUser = await findOneAndUpdateUser({ _id: userId }, userDetails);
-  if (!updatedUser) throw new createError(422, 'Invalid user ID');
-
+  const updatedUser = await findOneAndUpdateUser({ _id: userId }, payload);
+  if (!updatedUser) throw new createError(404, 'Invalid user ID');
   return updatedUser;
 };
 
-export const addNewUser = async (userDetails) => {
+export const addNewUser = async (payload) => {
   const generatedPassword = Math.random().toString(36).slice(-8);
-
-  const encryptedPassword = await new Promise((resolve, reject) => {
-    bcrypt.hash(generatedPassword, parseInt(process.env.BCRYPT_SALT_ROUNDS), (err, hash) => {
-      if (err) reject(err);
-      resolve(hash);
-    });
-  });
-
+  const encryptedPassword = hashSync(generatedPassword, +process.env.BCRYPT_SALT_ROUNDS);
   const newUser = await createUser({
-    ...userDetails,
+    ...payload,
     password: encryptedPassword,
     is_verified: true,
     role: 'ADMIN'
   });
-
   try {
-    await sendAdminPassword(userDetails.email, generatedPassword);
+    await sendAdminPassword(payload.email, generatedPassword);
     return newUser;
   } catch (e) {
-    findOneAndRemoveUser({ email: userDetails.email }).exec();
+    findOneAndRemoveUser({ email: payload.email }).exec();
     throw e;
   }
 };
@@ -90,4 +75,14 @@ const sendAdminPassword = (email, password) => {
   };
   const subject = 'Bashaway - Admin Account Password';
   return sendMail(email, 'call_to_action', replacements, subject);
+};
+
+export const eliminateTeams = async (vanguard) => {
+  const roundBreakpoint = await getRoundBreakpoint();
+  const leaderboard = await getLeaderboardData({ created_at: { $lte: roundBreakpoint } });
+  const teams = leaderboard.slice(0, vanguard).map((team) => team.email);
+  await Promise.all([
+    findAndUpdateUsers({ email: { $in: teams } }, { eliminated: false }),
+    findAndUpdateUsers({ email: { $nin: teams } }, { eliminated: true })
+  ]);
 };

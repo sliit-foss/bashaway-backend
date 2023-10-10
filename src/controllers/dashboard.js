@@ -2,7 +2,7 @@ import { getAllQuestionsSubmissions, getAllTeamSubmissions, getRegistrations } f
 import { makeResponse } from '@/utils/response';
 
 export const getQuestionSubmissions = async (req, res) => {
-  const data = await getAllQuestionsSubmissions(req.user);
+  const data = await getAllQuestionsSubmissions(req.user, req.query.round, req.query.ghost_legion);
   return makeResponse({
     res,
     data,
@@ -10,8 +10,8 @@ export const getQuestionSubmissions = async (req, res) => {
   });
 };
 
-export const getTeamSubmissions = async (_, res) => {
-  const data = await getAllTeamSubmissions();
+export const getTeamSubmissions = async (req, res) => {
+  const data = await getAllTeamSubmissions(req.query.round, req.query.ghost_legion);
   return makeResponse({
     res,
     data,
@@ -20,7 +20,7 @@ export const getTeamSubmissions = async (_, res) => {
 };
 
 export const getRegistrationInfo = async (req, res) => {
-  const data = await getRegistrations();
+  const data = await getRegistrations(req.query.round, req.query.ghost_legion);
   return makeResponse({
     res,
     data,

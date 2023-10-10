@@ -1,4 +1,5 @@
 import { Joi } from 'celebrate';
+import { genders, mealPreferences } from '@/models/user';
 
 export const addUserSchema = {
   name: Joi.string().required(),
@@ -18,7 +19,15 @@ export const updateSchema = {
         name: Joi.string().required(),
         email: Joi.string().email().required(),
         phone: Joi.string().min(9).required(),
-        academic_year: Joi.number().required().min(1).max(4)
+        academic_year: Joi.number().required().min(1).max(4),
+        nic: Joi.string().optional(),
+        gender: Joi.string()
+          .valid(...genders)
+          .optional(),
+        meal_preference: Joi.string()
+          .valid(...mealPreferences)
+          .optional(),
+        student_id_url: Joi.string().optional()
       })
     )
     .min(1)
@@ -38,3 +47,7 @@ export const changePasswordSchema = Joi.object({
         'Password should have at least one lowercase letter, one uppercase letter, one number and one special character and should be at least 8 characters long'
     })
 });
+
+export const eliminateQuerySchema = {
+  vanguard: Joi.number().optional().default(100)
+};

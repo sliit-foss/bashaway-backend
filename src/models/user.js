@@ -1,6 +1,10 @@
 import mongoose from 'mongoose';
 import aggregatePaginate from 'mongoose-aggregate-paginate-v2';
 
+export const genders = ['M', 'F', 'O', '-'];
+
+export const mealPreferences = ['VEG', 'NON_VEG', '-'];
+
 const UserSchema = new mongoose.Schema(
   {
     name: {
@@ -29,6 +33,11 @@ const UserSchema = new mongoose.Schema(
     is_active: {
       type: Boolean,
       default: true
+    },
+    eliminated: {
+      type: Boolean,
+      default: false,
+      index: true
     },
     photo_url: {
       type: String
@@ -62,6 +71,20 @@ const UserSchema = new mongoose.Schema(
             required: true,
             min: [1, 'Academic year should be from 1 to 4'],
             max: [4, 'Academic year should be from 1 to 4']
+          },
+          nic: {
+            type: String
+          },
+          gender: {
+            type: String,
+            enum: genders
+          },
+          meal_preference: {
+            type: String,
+            enum: mealPreferences
+          },
+          student_id_url: {
+            type: String
           }
         }
       ]
