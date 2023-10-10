@@ -6,7 +6,7 @@ import { makeResponse } from '@/utils/response';
 export const create = async (req, res) => {
   if (new Date() >= new Date(await getSubmissionDeadline()))
     throw new createError(400, 'Submission period has expired');
-  await createSubmission(req.body, req.user, req.query.resubmit);
+  await createSubmission(req.body, req.user);
   return makeResponse({ res, status: 201, message: 'Submission added successfully' });
 };
 

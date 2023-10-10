@@ -9,10 +9,6 @@ export const submissionCreateSchema = {
   link: Joi.string().required()
 };
 
-export const submissionCreateQuerySchema = {
-  resubmit: Joi.boolean().optional().default(false)
-};
-
 export const submissionUpdateSchema = {
   score: Joi.number().optional(),
   automatically_graded: Joi.boolean().optional()
