@@ -80,10 +80,13 @@ export const findOneAndUpdateUser = async (filters, data) => {
   return user;
 };
 
-export const getAllUniverstyUserGroups = () => {
+export const findAndUpdateUsers = (filters, data) => User.updateMany(filters, data, { new: true }).lean();
+
+export const getAllUniverstyUserGroups = (filters = {}) => {
   return User.aggregate([
     {
       $match: {
+        ...filters,
         role: 'GROUP',
         is_verified: true
       }
@@ -111,10 +114,11 @@ export const findOneAndRemoveUser = (filters) => {
   return User.findOneAndRemove(filters);
 };
 
-export const getLeaderboardData = () => {
+export const getLeaderboardData = (filters = {}, submissionFilters = {}) => {
   return User.aggregate([
     {
       $match: {
+        ...filters,
         role: 'GROUP',
         is_verified: true,
         is_active: true
@@ -129,6 +133,7 @@ export const getLeaderboardData = () => {
         pipeline: [
           {
             $match: {
+              ...submissionFilters,
               score: { $gt: 0 }
             }
           },
@@ -172,7 +177,8 @@ export const getLeaderboardData = () => {
         name: 1,
         email: 1,
         university: 1,
-        score: 1
+        score: 1,
+        eliminated: 1
       }
     }
   ]);

@@ -1,4 +1,11 @@
-import { addNewUser, changePasswordService, getUserByID, getUsers, updateUserdetails } from '@/services/user';
+import {
+  addNewUser,
+  changePasswordService,
+  eliminateTeams as eliminate,
+  getUserByID,
+  getUsers,
+  updateUserdetails
+} from '@/services/user';
 import { makeResponse } from '@/utils/response';
 
 export const create = async (req, res) => {
@@ -24,4 +31,9 @@ export const update = async (req, res) => {
 export const changePassword = async (req, res) => {
   await changePasswordService(req.user, req.body.old_password, req.body.new_password);
   return makeResponse({ res, message: 'Password changed successfully' });
+};
+
+export const eliminateTeams = async (req, res) => {
+  await eliminate(req.query.vanguard);
+  return makeResponse({ res, message: `Eliminated all teams except the top ${req.query.vanguard}` });
 };

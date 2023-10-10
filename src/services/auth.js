@@ -1,22 +1,17 @@
-import bcrypt from 'bcryptjs';
-import crypto from 'crypto';
-import createError from 'http-errors';
+import { compareSync, hashSync } from 'bcryptjs';
+import { default as crypto } from 'crypto';
+import { default as createError } from 'http-errors';
 import { createUser, findOneAndUpdateUser, getOneUser } from '@/repository/user';
 import { decodeJwtToken, isFromAdmin } from '@/utils';
 import { sendMail } from './email';
 
 export const authRegister = async ({ name, email, password, university, members }) => {
-  const encryptedPassword = await new Promise((resolve, reject) => {
-    bcrypt.hash(password, parseInt(process.env.BCRYPT_SALT_ROUNDS), (err, hash) => {
-      if (err) reject(err);
-      resolve(hash);
-    });
-  });
+  password = hashSync(password, +process.env.BCRYPT_SALT_ROUNDS);
   const verification_code = crypto.randomUUID();
   const registeredUser = await createUser({
     name,
     email,
-    password: encryptedPassword,
+    password,
     verification_code: verification_code,
     university,
     members
@@ -28,12 +23,7 @@ export const authRegister = async ({ name, email, password, university, members 
 export const authLogin = async ({ email, password }) => {
   const user = await getOneUser({ email }, true);
   if (!user) return false;
-  const isPasswordMatch = await new Promise((resolve, reject) => {
-    bcrypt.compare(password, user.password, (err, hash) => {
-      if (err) reject(err);
-      resolve(hash);
-    });
-  });
+  const isPasswordMatch = compareSync(password, user.password);
   if (!isPasswordMatch) return false;
   delete user.password;
   return user;
@@ -97,15 +87,10 @@ export const forgotPasswordEmail = async (email) => {
 export const resetPasswordFromEmail = async (password, verificationCode) => {
   const user = await getOneUser({ verification_code: verificationCode });
   if (!user) throw new createError(400, 'Click the link we have sent to your email and try again.');
-  const encryptedPassword = await new Promise((resolve, reject) => {
-    bcrypt.hash(password, parseInt(process.env.BCRYPT_SALT_ROUNDS), (err, hash) => {
-      if (err) reject(err);
-      resolve(hash);
-    });
-  });
+  const hashedPassword = hashSync(password, +process.env.BCRYPT_SALT_ROUNDS);
   const updatedUser = await findOneAndUpdateUser(
     { email: user.email },
-    { password: encryptedPassword, is_verified: true, verification_code: null }
+    { password: hashedPassword, is_verified: true, verification_code: null }
   );
   return updatedUser;
 };

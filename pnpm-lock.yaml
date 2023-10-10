@@ -9,8 +9,8 @@ dependencies:
     specifier: 8.1.0
     version: 8.1.0
   '@sliit-foss/functions':
-    specifier: 2.2.3
-    version: 2.2.3
+    specifier: 2.2.4
+    version: 2.2.4
   '@sliit-foss/http-logger':
     specifier: 1.1.2
     version: 1.1.2
@@ -2198,8 +2198,8 @@ packages:
     resolution: {integrity: sha512-EERle7sDlqnAf4XcPfkMyki3gRvKSmzjIz6LzBH3IPdBwQACvhgye8oPcZ3bUe/d41z+5gLweMYCPEttYqjw4A==}
     dev: true
 
-  /@sliit-foss/functions@2.2.3:
-    resolution: {integrity: sha512-SH4ymghdrpBFQj6h/TkfG+uO/NG180PT0P7a/MYyeNBu4YYbIjkE6jQJ76RaXAoMwZjtPHsKLmW8FT8OJL8DLQ==}
+  /@sliit-foss/functions@2.2.4:
+    resolution: {integrity: sha512-Paf2cDYSYK45lxYW3vRV5n/PAVRQlc63Q50l/P5VaFAdVfvKWnEJ0nksgG+V839dTroMSkteLc65voxbQE27pQ==}
     dependencies:
       '@sliit-foss/module-logger': 1.1.5
       express-http-context: 1.2.4

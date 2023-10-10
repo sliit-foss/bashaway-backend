@@ -1,5 +1,6 @@
 import mongoose from 'mongoose';
 import Question from '@/models/question';
+import { prefixObjectKeys } from '@/utils';
 import { questionFilters } from './util';
 
 const ObjectId = mongoose.Types.ObjectId;
@@ -61,12 +62,43 @@ export const getMaxScore = async (questionId) => {
   return (await Question.findById(questionId).lean()).max_score;
 };
 
-export const getQuestionSubmissions = (user) => {
+export const getQuestionSubmissions = (user, teamFilters, submissionFilters) => {
   return Question.aggregate([
     {
       $match: questionFilters(user)
     },
-    { $lookup: { from: 'submissions', localField: '_id', foreignField: 'question', as: 'submissions' } },
+    {
+      $lookup: {
+        from: 'submissions',
+        localField: '_id',
+        foreignField: 'question',
+        as: 'submissions',
+        pipeline: [
+          {
+            $match: submissionFilters
+          },
+          {
+            $lookup: {
+              from: 'users',
+              localField: 'user',
+              foreignField: '_id',
+              as: 'user'
+            }
+          },
+          {
+            $addFields: {
+              user: { $first: '$user' }
+            }
+          },
+          {
+            $match: {
+              ...prefixObjectKeys(teamFilters, 'user.'),
+              role: 'GROUP'
+            }
+          }
+        ]
+      }
+    },
     {
       $project: {
         _id: 0,
