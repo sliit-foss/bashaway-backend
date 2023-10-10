@@ -134,7 +134,8 @@ export const getLeaderboardData = () => {
           },
           {
             $sort: {
-              score: -1
+              score: -1,
+              created_at: 1
             }
           },
           {
