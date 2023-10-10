@@ -142,9 +142,7 @@ export const getLeaderboardData = () => {
             $group: {
               _id: '$question',
               score: {
-                $first: {
-                  $ifNull: ['$score', 0]
-                }
+                $first: '$score'
               },
               created_at: {
                 $first: '$created_at'
