@@ -3,7 +3,7 @@ import aggregatePaginate from 'mongoose-aggregate-paginate-v2';
 
 export const genders = ['M', 'F', 'O', '-'];
 
-export const mealPreferences = ['VEG', 'NON_VEG', '-'];
+export const mealPreferences = ['VEG', 'NON_VEG'];
 
 const UserSchema = new mongoose.Schema(
   {
