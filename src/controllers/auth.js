@@ -1,4 +1,5 @@
 import fs from 'fs';
+import handlebars from 'handlebars';
 import { default as createError } from 'http-errors';
 import path from 'path';
 import { getRegistrationDeadline } from '@/repository/settings';
@@ -36,17 +37,18 @@ export const login = async (req, res) => {
 
 export const verifyUser = async (req, res) => {
   const user = await updateVerificationStatus(req.params.verification_code);
-  if (user) {
-    try {
-      const data = fs.readFileSync(path.join(__dirname, '../html/verification_success.html'), 'utf8');
-      res.writeHead(200, { 'Content-Type': 'text/html' });
-      res.end(data.replace('{{login_link}}', `${process.env.FRONTEND_DOMAIN}/login`));
-    } catch (e) {
-      res.writeHead(404);
-      res.end('File not found!');
-    }
-  } else {
-    throw new createError(400, 'Invalid verification code');
+  try {
+    const template = handlebars.compile(fs.readFileSync(path.join(__dirname, `../html/verification.html`), 'utf8'));
+    res.writeHead(200, { 'Content-Type': 'text/html' });
+    res.end(
+      template({
+        login_link: `${process.env.FRONTEND_DOMAIN}/login`,
+        verified: !!user
+      })
+    );
+  } catch (e) {
+    res.writeHead(404);
+    res.end('Failed to load html content!');
   }
 };
 
