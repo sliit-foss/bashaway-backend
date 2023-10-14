@@ -49,5 +49,5 @@ export const changePasswordSchema = Joi.object({
 });
 
 export const eliminateQuerySchema = {
-  vanguard: Joi.number().optional().default(100)
+  vanguard: Joi.number().optional().default(10)
 };
