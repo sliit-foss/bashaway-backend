@@ -93,7 +93,7 @@ export const getQuestionSubmissions = (user, teamFilters, submissionFilters) => 
           {
             $match: {
               ...prefixObjectKeys(teamFilters, 'user.'),
-              role: 'GROUP'
+              'user.role': 'GROUP'
             }
           }
         ]
