@@ -82,7 +82,7 @@ export const eliminateTeams = async (vanguard) => {
   const leaderboard = await getLeaderboardData({ created_at: { $lte: roundBreakpoint } });
   const teams = leaderboard.slice(0, vanguard).map((team) => team.email);
   await Promise.all([
-    findAndUpdateUsers({ email: { $in: teams } }, { eliminated: false }),
-    findAndUpdateUsers({ email: { $nin: teams } }, { eliminated: true })
+    findAndUpdateUsers({ role: 'GROUP', email: { $in: teams } }, { eliminated: false }),
+    findAndUpdateUsers({ role: 'GROUP', email: { $nin: teams } }, { eliminated: true })
   ]);
 };

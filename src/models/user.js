@@ -36,7 +36,6 @@ const UserSchema = new mongoose.Schema(
     },
     eliminated: {
       type: Boolean,
-      default: false,
       index: true
     },
     photo_url: {
