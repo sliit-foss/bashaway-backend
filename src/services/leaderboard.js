@@ -8,7 +8,7 @@ export const getLeaderboardRankings = async (round, ghostLegion) => {
     leaderboard: { freezed, freeze_at: freezeAt, freeze_vanguard: freezeVanguard } = {},
     round_breakpoint: roundBreakpoint
   } = await getSettingsDoc();
-  const { teamFilters, submissionFilters } = getAnalyticFilters(round, ghostLegion, roundBreakpoint);
+  const { teamFilters, submissionFilters } = await getAnalyticFilters(round, ghostLegion, roundBreakpoint);
   const records = await getLeaderboardData(teamFilters, submissionFilters);
   if (freezed) {
     const freezeDate = new Date(freezeAt);
