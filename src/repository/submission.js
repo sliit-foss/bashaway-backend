@@ -72,7 +72,7 @@ export const getTeamSubmissions = (filters = {}, userFilters = {}) => {
     {
       $match: {
         ...prefixObjectKeys(userFilters, 'user.'),
-        role: 'GROUP'
+        'user.role': 'GROUP'
       }
     },
     {
