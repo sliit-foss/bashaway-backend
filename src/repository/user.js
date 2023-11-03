@@ -3,13 +3,13 @@ import { User } from '@/models';
 
 const logger = moduleLogger('User-repository');
 
-export const createUser = async (user) => {
+export const create = async (user) => {
   const newUser = (await new User(user).save()).toObject();
   delete newUser.password;
   return newUser;
 };
 
-export const getAllUsers = ({ sort = {}, filter = {}, page, limit = 10 }) => {
+export const findAll = ({ sort = {}, filter = {}, page, limit = 10 }) => {
   const options = {
     page,
     limit,
@@ -41,7 +41,7 @@ export const getAllUsers = ({ sort = {}, filter = {}, page, limit = 10 }) => {
         pipeline: [
           {
             $group: {
-              _id: '$question',
+              _id: '$challenge',
               score: {
                 $max: { $ifNull: ['$score', 0] }
               }
@@ -64,7 +64,7 @@ export const getAllUsers = ({ sort = {}, filter = {}, page, limit = 10 }) => {
   });
 };
 
-export const getOneUser = async (filters, returnPassword = false) => {
+export const findOne = async (filters, returnPassword = false) => {
   const user = await User.findOne(filters).lean();
   if (!user) return null;
 
@@ -72,7 +72,7 @@ export const getOneUser = async (filters, returnPassword = false) => {
   return user;
 };
 
-export const findOneAndUpdateUser = async (filters, data) => {
+export const findOneAndUpdate = async (filters, data) => {
   const user = await User.findOneAndUpdate(filters, data, { new: true }).lean();
   if (!user) return null;
 
@@ -80,14 +80,14 @@ export const findOneAndUpdateUser = async (filters, data) => {
   return user;
 };
 
-export const findAndUpdateUsers = (filters, data) => User.updateMany(filters, data, { new: true }).lean();
+export const findAndUpdate = (filters, data) => User.updateMany(filters, data, { new: true }).lean();
 
 export const getAllUniverstyUserGroups = (filters = {}) => {
   return User.aggregate([
     {
       $match: {
         ...filters,
-        role: 'GROUP',
+        role: 'ATTENDEE',
         is_verified: true
       }
     },
@@ -110,16 +110,16 @@ export const getAllUniverstyUserGroups = (filters = {}) => {
   ]);
 };
 
-export const findOneAndRemoveUser = (filters) => {
+export const findOneAndRemove = (filters) => {
   return User.findOneAndRemove(filters);
 };
 
-export const getLeaderboardData = (filters = {}, submissionFilters = {}) => {
+export const getLeaderboard = (filters = {}, submissionFilters = {}) => {
   return User.aggregate([
     {
       $match: {
         ...filters,
-        role: 'GROUP',
+        role: 'ATTENDEE',
         is_verified: true,
         is_active: true
       }
@@ -145,7 +145,7 @@ export const getLeaderboardData = (filters = {}, submissionFilters = {}) => {
           },
           {
             $group: {
-              _id: '$question',
+              _id: '$challenge',
               score: {
                 $first: '$score'
               },

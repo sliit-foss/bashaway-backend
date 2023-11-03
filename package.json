@@ -1,6 +1,6 @@
 {
-  "name": "bashaway-backend",
-  "version": "2.1.0",
+  "name": "tech-events-api",
+  "version": "0.0.0",
   "description": "Backend",
   "main": "dist/app.js",
   "scripts": {
@@ -17,14 +17,14 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/sliit-foss/bashaway-backend.git"
+    "url": "git+https://github.com/gdgsrilanka/tech-events-api.git"
   },
-  "author": "SLIIT FOSS",
+  "author": "GDG Sri Lanka",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/sliit-foss/bashaway-backend/issues"
+    "url": "https://github.com/gdgsrilanka/tech-events-api/issues"
   },
-  "homepage": "https://github.com/sliit-foss/bashaway-backend#readme",
+  "homepage": "https://github.com/gdgsrilanka/tech-events-api#readme",
   "dependencies": {
     "@faker-js/faker": "8.1.0",
     "@sliit-foss/functions": "2.2.4",

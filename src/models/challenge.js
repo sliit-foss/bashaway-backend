@@ -1,7 +1,7 @@
 import mongoose from 'mongoose';
 import mongoosePaginate from 'mongoose-paginate-v2';
 
-const QuestionSchema = new mongoose.Schema(
+const ChallengeSchema = new mongoose.Schema(
   {
     name: {
       type: String,
@@ -54,12 +54,12 @@ const QuestionSchema = new mongoose.Schema(
   }
 );
 
-QuestionSchema.plugin(mongoosePaginate);
+ChallengeSchema.plugin(mongoosePaginate);
 
-QuestionSchema.index({ createdAt: 1 });
+ChallengeSchema.index({ createdAt: 1 });
 
-const Question = mongoose.model('Question', QuestionSchema);
+const Challenge = mongoose.model('Challenge', ChallengeSchema);
 
-Question.syncIndexes();
+Challenge.syncIndexes();
 
-export default Question;
+export default Challenge;

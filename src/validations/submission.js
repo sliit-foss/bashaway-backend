@@ -5,7 +5,7 @@ export const submissionIdSchema = {
 };
 
 export const submissionCreateSchema = {
-  question: Joi.string().hex().length(24).required(),
+  challenge: Joi.string().hex().length(24).required(),
   link: Joi.string().required()
 };
 
@@ -17,7 +17,7 @@ export const submissionUpdateSchema = {
 export const submissionViewSchema = {
   filter: Joi.object()
     .keys({
-      question: Joi.string().hex().length(24).optional(),
+      challenge: Joi.string().hex().length(24).optional(),
       user: Joi.string().hex().length(24).optional(),
       graded_by: Joi.string().hex().length(24).optional(),
       graded: Joi.boolean().optional(),

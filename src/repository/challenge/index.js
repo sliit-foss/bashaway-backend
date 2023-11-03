@@ -1,16 +1,16 @@
 import mongoose from 'mongoose';
-import Question from '@/models/question';
+import Challenge from '@/models/challenge';
 import { prefixObjectKeys } from '@/utils';
-import { questionFilters } from './util';
+import { challengeFilters } from './util';
 
 const ObjectId = mongoose.Types.ObjectId;
 
-export const findAllQuestions = (user, query = {}) => {
+export const findAll = (user, query = {}) => {
   if (!query.filter) {
     query.filter = {};
   }
 
-  const filter = questionFilters(user, query.filter);
+  const filter = challengeFilters(user, query.filter);
 
   const options = {
     select: '-creator -creator_lock',
@@ -26,18 +26,16 @@ export const findAllQuestions = (user, query = {}) => {
     options.limit = query.limit;
   }
 
-  return !query.page ? Question.find(filter).sort(options.sort).lean() : Question.paginate(filter, options);
+  return !query.page ? Challenge.find(filter).sort(options.sort).lean() : Challenge.paginate(filter, options);
 };
 
-export const insertQuestion = (data) => {
-  return new Question(data).save();
+export const insertOne = (data) => {
+  return new Challenge(data).save();
 };
 
-export const findQuestion = (filters) => {
-  return Question.findOne(filters).lean();
-};
+export const findOne = (filters) => Challenge.findOne(filters).lean();
 
-export const getQuestionById = (id, user, filterFields = true) => {
+export const findById = (id, user, filterFields = true) => {
   const filters = {
     _id: { $eq: new ObjectId(id) },
     $or: [{ creator_lock: false }, { creator_lock: true, creator: user._id }]
@@ -45,33 +43,33 @@ export const getQuestionById = (id, user, filterFields = true) => {
   if (user.role !== 'ADMIN') {
     filters.enabled = true;
   }
-  let query = Question.findOne(filters).lean();
+  let query = Challenge.findOne(filters).lean();
   if (filterFields) query = query.select('-creator_lock');
   return query.exec();
 };
 
-export const findAndUpdateQuestion = (filters, data) => {
-  return Question.findOneAndUpdate(filters, data, { new: true });
+export const findAndUpdate = (filters, data) => {
+  return Challenge.findOneAndUpdate(filters, data, { new: true });
 };
 
-export const deleteAQuestion = (filters) => {
-  return Question.deleteOne(filters);
+export const deleteById = (id) => {
+  return Challenge.deleteOne({ _id: id });
 };
 
-export const getMaxScore = async (questionId) => {
-  return (await Question.findById(questionId).lean()).max_score;
+export const getMaxScore = async (challengeId) => {
+  return (await Challenge.findById(challengeId).lean()).max_score;
 };
 
-export const getQuestionSubmissions = (user, teamFilters, submissionFilters) => {
-  return Question.aggregate([
+export const getSubmissions = (user, teamFilters, submissionFilters) => {
+  return Challenge.aggregate([
     {
-      $match: questionFilters(user)
+      $match: challengeFilters(user)
     },
     {
       $lookup: {
         from: 'submissions',
         localField: '_id',
-        foreignField: 'question',
+        foreignField: 'challenge',
         as: 'submissions',
         pipeline: [
           {
@@ -93,7 +91,7 @@ export const getQuestionSubmissions = (user, teamFilters, submissionFilters) => 
           {
             $match: {
               ...prefixObjectKeys(teamFilters, 'user.'),
-              'user.role': 'GROUP'
+              'user.role': 'ATTENDEE'
             }
           }
         ]
@@ -102,7 +100,7 @@ export const getQuestionSubmissions = (user, teamFilters, submissionFilters) => 
     {
       $project: {
         _id: 0,
-        question: {
+        challenge: {
           name: '$name'
         },
         submission_count: { $size: '$submissions' }

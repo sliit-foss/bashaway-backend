@@ -1,11 +1,11 @@
 import { getAnalyticFilters, getAnalyticTeamFilters } from '@/helpers';
-import { getQuestionSubmissions } from '@/repository/question';
+import { getSubmissions as getChallengeSubmissions } from '@/repository/challenge';
 import { getTeamSubmissions } from '@/repository/submission';
 import { getAllUniverstyUserGroups } from '@/repository/user';
 
-export const getAllQuestionsSubmissions = async (user, round, ghostLegion) => {
+export const getAllChallengeSubmissions = async (user, round, ghostLegion) => {
   const { teamFilters, submissionFilters } = await getAnalyticFilters(round, ghostLegion);
-  return getQuestionSubmissions(user, teamFilters, submissionFilters);
+  return getChallengeSubmissions(user, teamFilters, submissionFilters);
 };
 
 export const getAllTeamSubmissions = async (round, ghostLegion) => {

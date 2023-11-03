@@ -1,17 +1,17 @@
-import { getAllQuestionsSubmissions, getAllTeamSubmissions, getRegistrations } from '@/services/dashboard';
+import * as dashboardService from '@/services/dashboard';
 import { makeResponse } from '@/utils/response';
 
-export const getQuestionSubmissions = async (req, res) => {
-  const data = await getAllQuestionsSubmissions(req.user, req.query.round, req.query.ghost_legion);
+export const getChallengeSubmissions = async (req, res) => {
+  const data = await dashboardService.getAllChallengeSubmissions(req.user, req.query.round, req.query.ghost_legion);
   return makeResponse({
     res,
     data,
-    message: 'Question submissions retrieved successfully'
+    message: 'Challenge submissions retrieved successfully'
   });
 };
 
 export const getTeamSubmissions = async (req, res) => {
-  const data = await getAllTeamSubmissions(req.query.round, req.query.ghost_legion);
+  const data = await dashboardService.getAllTeamSubmissions(req.query.round, req.query.ghost_legion);
   return makeResponse({
     res,
     data,
@@ -20,7 +20,7 @@ export const getTeamSubmissions = async (req, res) => {
 };
 
 export const getRegistrationInfo = async (req, res) => {
-  const data = await getRegistrations(req.query.round, req.query.ghost_legion);
+  const data = await dashboardService.getRegistrations(req.query.round, req.query.ghost_legion);
   return makeResponse({
     res,
     data,

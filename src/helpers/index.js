@@ -1,2 +1,2 @@
 export * from './analytics';
-export * from './question';
+export * from './challenge';

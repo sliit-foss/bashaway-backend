@@ -11,6 +11,7 @@ import { omit, pick } from 'lodash';
 import { default as connectDB } from '@/database';
 import { errorHandler, queryMapper, responseInterceptor } from '@/middleware';
 import { default as routes } from '@/routes/index.routes';
+import { APPLICATION } from './constants';
 
 require('dotenv').config();
 
@@ -46,7 +47,7 @@ app.use(express.json({ limit: '1mb' }));
 
 app.use(express.urlencoded({ extended: true }));
 
-app.get('/', (_, res) => res.status(200).json({ message: 'Bashaway Server Up and Running' }));
+app.get('/', (_, res) => res.status(200).json({ message: `${APPLICATION} Server Up and Running` }));
 
 app.use(context.middleware);
 
@@ -81,6 +82,6 @@ const port = process.env.PORT || 3000;
 
 app.listen(port, (err) => {
   if (!err) {
-    logger.info(`Bashaway server successfully started on port ${port}`);
+    logger.info(`${APPLICATION} server successfully started on port ${port}`);
   }
 });

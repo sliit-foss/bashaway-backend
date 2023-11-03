@@ -1,6 +1,6 @@
 import { Joi } from 'celebrate';
 
-export const addQuestionSchema = {
+export const addChallengeSchema = {
   name: Joi.string().required(),
   description: Joi.string().required(),
   difficulty: Joi.string().valid('EASY', 'MEDIUM', 'HARD', 'EXTREME').required(),
@@ -12,7 +12,7 @@ export const addQuestionSchema = {
   strict_inputs: Joi.boolean().optional()
 };
 
-export const updateQuestionSchema = {
+export const updateChallengeSchema = {
   name: Joi.string().optional(),
   description: Joi.string().optional(),
   difficulty: Joi.string().valid('EASY', 'MEDIUM', 'HARD', 'EXTREME').optional(),
@@ -24,6 +24,6 @@ export const updateQuestionSchema = {
   strict_inputs: Joi.boolean().optional()
 };
 
-export const questionIdSchema = {
-  question_id: Joi.string().hex().length(24).required()
+export const challengeIdSchema = {
+  challenge_id: Joi.string().hex().length(24).required()
 };

@@ -1,6 +1,6 @@
 const blacklistedTokens = [];
 
-export const blacklistToken = (token) => {
+export const blacklist = (token) => {
   blacklistedTokens.push(token);
 };
 

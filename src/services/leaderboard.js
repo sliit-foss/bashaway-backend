@@ -1,15 +1,15 @@
 import { getAnalyticFilters } from '@/helpers';
-import { getSettingsDoc } from '@/repository/settings';
-import { getLeaderboardData } from '@/repository/user';
+import * as settingRepository from '@/repository/settings';
+import * as userRepository from '@/repository/user';
 import { faker } from '@faker-js/faker';
 
-export const getLeaderboardRankings = async (round, ghostLegion) => {
+export const getLeaderboard = async (round, ghostLegion) => {
   const {
     leaderboard: { freezed, freeze_at: freezeAt, freeze_vanguard: freezeVanguard } = {},
     round_breakpoint: roundBreakpoint
-  } = await getSettingsDoc();
+  } = await settingRepository.getDoc();
   const { teamFilters, submissionFilters } = await getAnalyticFilters(round, ghostLegion, roundBreakpoint);
-  const records = await getLeaderboardData(teamFilters, submissionFilters);
+  const records = await userRepository.getLeaderboard(teamFilters, submissionFilters);
   if (freezed) {
     const freezeDate = new Date(freezeAt);
     const names = new Set();

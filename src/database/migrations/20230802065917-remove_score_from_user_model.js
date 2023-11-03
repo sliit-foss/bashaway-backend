@@ -4,6 +4,6 @@ module.exports = {
   },
 
   async down(db) {
-    await db.collection('users').updateMany({ role: 'GROUP' }, { $set: { score: 0 } });
+    await db.collection('users').updateMany({ role: 'ATTENDEE' }, { $set: { score: 0 } });
   }
 };

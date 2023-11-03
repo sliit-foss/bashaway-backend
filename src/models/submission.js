@@ -8,9 +8,9 @@ const SubmissionSchema = mongoose.Schema(
       ref: 'User',
       required: true
     },
-    question: {
+    challenge: {
       type: mongoose.Schema.Types.ObjectId,
-      ref: 'Question',
+      ref: 'Challenge',
       required: true
     },
     link: {

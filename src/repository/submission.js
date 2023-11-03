@@ -5,16 +5,16 @@ import { prefixObjectKeys } from '@/utils';
 
 const logger = moduleLogger('Submission-repository');
 
-export const insertSubmission = (userId, question, link) => {
+export const create = (userId, challenge, link) => {
   return Submission.create({
     user: userId,
-    question,
+    challenge,
     link
   });
 };
 
-export const getSubmissions = ({ sort = {}, filter = {}, page, limit = 10 }) => {
-  const populate = ['user', 'graded_by', 'question'];
+export const findAll = ({ sort = {}, filter = {}, page, limit = 10 }) => {
+  const populate = ['user', 'graded_by', 'challenge'];
   if (!isUndefined(filter.graded)) {
     if (filter.graded) {
       filter.$or = [{ graded_by: { $ne: null } }, { automatically_graded: true }];
@@ -40,7 +40,7 @@ export const getSubmissions = ({ sort = {}, filter = {}, page, limit = 10 }) => 
     : Submission.find(filter).sort(sort).populate(populate).lean();
 };
 
-export const getSubmissionById = (id) => {
+export const findById = (id) => {
   return Submission.findById(id).lean();
 };
 
@@ -56,9 +56,9 @@ export const insertGrade = async (submission, score, automated, userId) => {
   );
 };
 
-export const getDistinctSubmissions = (questionId) => {
+export const getDistinctSubmissions = (challengeId) => {
   return Submission.aggregate([
-    { $match: { question: questionId } },
+    { $match: { challenge: challengeId } },
     { $group: { _id: '$user' } },
     { $project: { _id: 0, user: '$_id' } }
   ]);
@@ -72,7 +72,7 @@ export const getTeamSubmissions = (filters = {}, userFilters = {}) => {
     {
       $match: {
         ...prefixObjectKeys(userFilters, 'user.'),
-        'user.role': 'GROUP'
+        'user.role': 'ATTENDEE'
       }
     },
     {

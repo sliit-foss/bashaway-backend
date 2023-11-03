@@ -1,4 +1,4 @@
-export const questionFilters = (user, baseFilters = {}) => {
+export const challengeFilters = (user, baseFilters = {}) => {
   let filter;
   if (user.role === 'ADMIN') {
     filter = {

@@ -13,8 +13,8 @@ export const triggerScorekeeper = (
   email,
   submissionId,
   submissionLink,
-  questionLink,
-  questionName,
+  challengeLink,
+  challengeName,
   strictInputs
 ) => {
   return connector.post(
@@ -26,8 +26,8 @@ export const triggerScorekeeper = (
         email,
         submission_id: submissionId,
         submission_url: submissionLink,
-        question_url: questionLink,
-        question_name: questionName,
+        challenge_url: challengeLink,
+        challenge_name: challengeName,
         strict_inputs: strictInputs
       }
     }
