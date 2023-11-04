@@ -2,7 +2,7 @@ import { APPLICATION } from '@/constants';
 import { isFromAdmin } from '@/utils';
 import { sendMail } from '../email';
 
-export const sendVerificationMail = async (email, verification_code) => {
+export const sendVerificationEmail = async (email, verification_code) => {
   const replacements = {
     header: `Welcome To ${APPLICATION}!`,
     text: `We are excited to have you here. To get started, you need to confirm your account. Just press the

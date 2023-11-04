@@ -2,7 +2,7 @@ import * as dashboardService from '@/services/dashboard';
 import { makeResponse } from '@/utils/response';
 
 export const getChallengeSubmissions = async (req, res) => {
-  const data = await dashboardService.getAllChallengeSubmissions(req.user, req.query.round, req.query.ghost_legion);
+  const data = await dashboardService.getAllChallengeSubmissions(req.user);
   return makeResponse({
     res,
     data,
@@ -10,8 +10,8 @@ export const getChallengeSubmissions = async (req, res) => {
   });
 };
 
-export const getTeamSubmissions = async (req, res) => {
-  const data = await dashboardService.getAllTeamSubmissions(req.query.round, req.query.ghost_legion);
+export const getTeamSubmissions = async (_, res) => {
+  const data = await dashboardService.getAllTeamSubmissions();
   return makeResponse({
     res,
     data,
@@ -19,8 +19,8 @@ export const getTeamSubmissions = async (req, res) => {
   });
 };
 
-export const getRegistrationInfo = async (req, res) => {
-  const data = await dashboardService.getRegistrations(req.query.round, req.query.ghost_legion);
+export const getRegistrationInfo = async (_, res) => {
+  const data = await dashboardService.getRegistrations();
   return makeResponse({
     res,
     data,

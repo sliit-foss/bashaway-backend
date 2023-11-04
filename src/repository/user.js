@@ -1,5 +1,6 @@
 import { moduleLogger } from '@sliit-foss/module-logger';
 import { User } from '@/models';
+import { roles } from '@/models/user';
 
 const logger = moduleLogger('User-repository');
 
@@ -19,11 +20,6 @@ export const findAll = ({ sort = {}, filter = {}, page, limit = 10 }) => {
   };
 
   if (Object.keys(sort).length > 0) options.sort = sort;
-
-  if (filter.member_count) {
-    filter.members = { $size: Number(filter.member_count) };
-    delete filter.member_count;
-  }
 
   const pipeline = User.aggregate([
     {
@@ -82,20 +78,18 @@ export const findOneAndUpdate = async (filters, data) => {
 
 export const findAndUpdate = (filters, data) => User.updateMany(filters, data, { new: true }).lean();
 
-export const getAllUniverstyUserGroups = (filters = {}) => {
+export const getAllUserGroups = () => {
   return User.aggregate([
     {
       $match: {
-        ...filters,
-        role: 'ATTENDEE',
+        role: roles.entrant,
         is_verified: true
       }
     },
     {
       $group: {
         _id: '$university',
-        count: { $sum: 1 },
-        member_count: { $sum: { $size: '$members' } }
+        count: { $sum: 1 }
       }
     },
     { $sort: { count: -1 } },
@@ -103,8 +97,7 @@ export const getAllUniverstyUserGroups = (filters = {}) => {
       $project: {
         _id: 0,
         name: '$_id',
-        count: 1,
-        member_count: 1
+        count: 1
       }
     }
   ]);
@@ -114,12 +107,11 @@ export const findOneAndRemove = (filters) => {
   return User.findOneAndRemove(filters);
 };
 
-export const getLeaderboard = (filters = {}, submissionFilters = {}) => {
+export const getLeaderboard = () => {
   return User.aggregate([
     {
       $match: {
-        ...filters,
-        role: 'ATTENDEE',
+        role: roles.entrant,
         is_verified: true,
         is_active: true
       }
@@ -133,7 +125,6 @@ export const getLeaderboard = (filters = {}, submissionFilters = {}) => {
         pipeline: [
           {
             $match: {
-              ...submissionFilters,
               score: { $gt: 0 }
             }
           },

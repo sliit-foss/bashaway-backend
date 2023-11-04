@@ -1,5 +1,6 @@
 import { asyncHandler } from '@sliit-foss/functions';
 import { default as createError } from 'http-errors';
+import { roles } from '@/models/user';
 import { isBlacklistedToken } from '@/repository/token';
 import { findOne } from '@/repository/user';
 import { decodeJwtToken } from '@/utils';
@@ -25,5 +26,5 @@ export const protect = asyncHandler(async (req) => {
 
 export const adminProtect = asyncHandler((req) => {
   if (req.headers['x-api-key'] === process.env.API_ACCESS_KEY) return;
-  if (req.user.role !== 'ADMIN') throw new createError(403, 'You are not permitted to access this resource');
+  if (req.user.role !== roles.superadmin) throw new createError(403, 'You are not permitted to access this resource');
 });

@@ -1,4 +1,5 @@
 import { Joi } from 'celebrate';
+import { domains, genders, mealPreferences } from '@/models/user';
 
 export const loginSchema = Joi.object({
   email: Joi.string().email().required(),
@@ -19,22 +20,17 @@ export const registerSchema = Joi.object({
       'string.pattern.base':
         'Password should have at least one lowercase letter, one uppercase letter, one number and one special character and should be at least 8 characters long'
     }),
-  university: Joi.string().required(),
-  members: Joi.array()
-    .items(
-      Joi.object({
-        name: Joi.string().required(),
-        email: Joi.string().email().required(),
-        phone: Joi.string().min(9).required(),
-        academic_year: Joi.number().required().min(1).max(4)
-      })
-    )
-    .max(4)
+  domain: Joi.string()
+    .valid(...domains)
+    .required(),
+  phone: Joi.string().min(9).required(),
+  nic: Joi.string().required(),
+  gender: Joi.string()
+    .valid(...genders)
+    .required(),
+  meal_preference: Joi.string()
+    .valid(...mealPreferences)
     .required()
-    .unique((a, b) => a.email === b.email)
-    .unique((a, b) => a.phone === b.phone)
-    .messages({ 'array.unique': 'Member details should be unique' })
-    .min(1)
 });
 
 export const resendVerifyMailSchema = Joi.object({
@@ -53,10 +49,6 @@ export const resetPasswordSchema = {
       'string.pattern.base':
         'Password should have at least one lowercase letter, one uppercase letter, one number and one special character and should be at least 8 characters long'
     })
-};
-
-export const validUserResetPasswordSchema = {
-  verification_code: Joi.string().required()
 };
 
 export const verifySchema = Joi.object({

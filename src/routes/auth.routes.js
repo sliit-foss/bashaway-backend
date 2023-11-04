@@ -21,7 +21,6 @@ import {
   registerSchema,
   resendVerifyMailSchema,
   resetPasswordSchema,
-  validUserResetPasswordSchema,
   verifySchema
 } from '@/validations/auth';
 
@@ -47,7 +46,7 @@ auth.get('/verify/:verification_code', celebrate({ [Segments.PARAMS]: verifySche
 auth.post('/forgot_password', celebrate({ [Segments.BODY]: forgotPasswordSchema }), tracedAsyncHandler(forgotPassword));
 auth.post(
   '/reset_password/:verification_code',
-  celebrate({ [Segments.PARAMS]: validUserResetPasswordSchema, [Segments.BODY]: resetPasswordSchema }),
+  celebrate({ [Segments.PARAMS]: verifySchema, [Segments.BODY]: resetPasswordSchema }),
   tracedAsyncHandler(resetPassword)
 );
 auth.post('/refresh', celebrate({ [Segments.BODY]: refreshTokenSchema }), tracedAsyncHandler(refresh));

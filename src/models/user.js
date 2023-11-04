@@ -1,9 +1,23 @@
 import mongoose from 'mongoose';
 import aggregatePaginate from 'mongoose-aggregate-paginate-v2';
 
-export const genders = ['M', 'F', 'O', '-'];
+export const genders = ['Male', 'Female', 'Other', 'Prefer not to say'];
 
-export const mealPreferences = ['VEG', 'NON_VEG'];
+export const mealPreferences = ['Vegetarian', 'Vegan', 'Non-Vegetarian'];
+
+export const domains = [
+  'High School Student',
+  'Undergraduate',
+  'Postgraduate',
+  'Industry Professional',
+  'Researcher',
+  'Other'
+];
+
+export const roles = {
+  superadmin: 'Super Admin',
+  entrant: 'Entrant'
+};
 
 const UserSchema = new mongoose.Schema(
   {
@@ -33,59 +47,33 @@ const UserSchema = new mongoose.Schema(
       type: Boolean,
       default: true
     },
-    eliminated: {
-      type: Boolean,
-      index: true
-    },
     photo_url: {
       type: String
     },
-    university: {
+    phone: {
+      type: String,
+      required: true
+    },
+    nic: {
       type: String
+    },
+    gender: {
+      type: String,
+      enum: genders
+    },
+    meal_preference: {
+      type: String,
+      enum: mealPreferences
+    },
+    domain: {
+      type: String,
+      enum: domains,
+      required: true
     },
     role: {
       type: String,
-      enum: ['ADMIN', 'ATTENDEE'],
-      default: 'ATTENDEE'
-    },
-    members: {
-      type: [
-        {
-          _id: false,
-          name: {
-            type: String,
-            required: true
-          },
-          email: {
-            type: String,
-            required: true
-          },
-          phone: {
-            type: String,
-            required: true
-          },
-          academic_year: {
-            type: Number,
-            required: true,
-            min: [1, 'Academic year should be from 1 to 4'],
-            max: [4, 'Academic year should be from 1 to 4']
-          },
-          nic: {
-            type: String
-          },
-          gender: {
-            type: String,
-            enum: genders
-          },
-          meal_preference: {
-            type: String,
-            enum: mealPreferences
-          },
-          student_id_url: {
-            type: String
-          }
-        }
-      ]
+      enum: Object.values(roles),
+      default: roles.guest
     }
   },
   {

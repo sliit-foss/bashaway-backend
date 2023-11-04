@@ -25,7 +25,7 @@ export const login = async (req, res) => {
   if (!user.is_verified) throw new createError(401, 'Account not verified. Please check your email');
   if (!user.is_active)
     throw new createError(401, 'Your account has been deactivated. Please contact an admin to resolve it');
-  return sendTokenResponse(res, user, 'User logged in successfully');
+  return sendTokenResponse(res, user, 'Logged in successfully');
 };
 
 export const verifyUser = async (req, res) => {

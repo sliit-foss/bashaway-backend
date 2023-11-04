@@ -1,23 +1,15 @@
-import { getAnalyticFilters, getAnalyticTeamFilters } from '@/helpers';
 import { getSubmissions as getChallengeSubmissions } from '@/repository/challenge';
 import { getTeamSubmissions } from '@/repository/submission';
-import { getAllUniverstyUserGroups } from '@/repository/user';
+import { getAllUserGroups } from '@/repository/user';
 
-export const getAllChallengeSubmissions = async (user, round, ghostLegion) => {
-  const { teamFilters, submissionFilters } = await getAnalyticFilters(round, ghostLegion);
-  return getChallengeSubmissions(user, teamFilters, submissionFilters);
-};
+export const getAllChallengeSubmissions = (user) => getChallengeSubmissions(user);
 
-export const getAllTeamSubmissions = async (round, ghostLegion) => {
-  const { teamFilters, submissionFilters } = await getAnalyticFilters(round, ghostLegion);
-  return getTeamSubmissions(submissionFilters, teamFilters);
-};
+export const getAllTeamSubmissions = () => getTeamSubmissions();
 
-export const getRegistrations = async (round, ghostLegion) => {
-  const userGroups = await getAllUniverstyUserGroups(getAnalyticTeamFilters(round, ghostLegion));
+export const getRegistrations = async () => {
+  const userGroups = await getAllUserGroups();
   return {
-    university_counts: userGroups,
-    total_registrations: userGroups.reduce((acc, curr) => acc + curr.count, 0),
-    total_members: userGroups.reduce((acc, curr) => acc + curr.member_count, 0)
+    domain_counts: userGroups,
+    total_registrations: userGroups.reduce((acc, curr) => acc + curr.count, 0)
   };
 };

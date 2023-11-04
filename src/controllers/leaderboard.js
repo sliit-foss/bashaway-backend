@@ -1,8 +1,8 @@
 import * as leaderboardService from '@/services/leaderboard';
 import { makeResponse } from '@/utils/response';
 
-export const getLeaderboard = async (req, res) => {
-  const rankings = await leaderboardService.getLeaderboard(req.query.round, req.query.ghost_legion);
+export const getLeaderboard = async (_, res) => {
+  const rankings = await leaderboardService.getLeaderboard();
   return makeResponse({
     res,
     data: rankings,

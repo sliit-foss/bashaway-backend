@@ -1,6 +1,6 @@
 import mongoose from 'mongoose';
 import Challenge from '@/models/challenge';
-import { prefixObjectKeys } from '@/utils';
+import { roles } from '@/models/user';
 import { challengeFilters } from './util';
 
 const ObjectId = mongoose.Types.ObjectId;
@@ -40,7 +40,7 @@ export const findById = (id, user, filterFields = true) => {
     _id: { $eq: new ObjectId(id) },
     $or: [{ creator_lock: false }, { creator_lock: true, creator: user._id }]
   };
-  if (user.role !== 'ADMIN') {
+  if (user.role !== roles.superadmin) {
     filters.enabled = true;
   }
   let query = Challenge.findOne(filters).lean();
@@ -60,7 +60,7 @@ export const getMaxScore = async (challengeId) => {
   return (await Challenge.findById(challengeId).lean()).max_score;
 };
 
-export const getSubmissions = (user, teamFilters, submissionFilters) => {
+export const getSubmissions = (user) => {
   return Challenge.aggregate([
     {
       $match: challengeFilters(user)
@@ -72,9 +72,6 @@ export const getSubmissions = (user, teamFilters, submissionFilters) => {
         foreignField: 'challenge',
         as: 'submissions',
         pipeline: [
-          {
-            $match: submissionFilters
-          },
           {
             $lookup: {
               from: 'users',
@@ -90,8 +87,7 @@ export const getSubmissions = (user, teamFilters, submissionFilters) => {
           },
           {
             $match: {
-              ...prefixObjectKeys(teamFilters, 'user.'),
-              'user.role': 'ATTENDEE'
+              'user.role': roles.entrant
             }
           }
         ]

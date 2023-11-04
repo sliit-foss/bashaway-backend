@@ -18,11 +18,6 @@ export const getSubmissionDeadline = async () => {
   return settings.submission_deadline;
 };
 
-export const getRoundBreakpoint = async () => {
-  const settings = await getDoc();
-  return settings.round_breakpoint;
-};
-
 export const getLeaderboardSettings = async () => {
   const settings = await getDoc();
   return settings.leaderboard;

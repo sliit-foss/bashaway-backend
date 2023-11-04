@@ -1,5 +1,6 @@
 import { compareSync, hashSync } from 'bcryptjs';
 import { default as createError } from 'http-errors';
+import { roles } from '@/models/user';
 import { getRoundBreakpoint } from '@/repository/settings';
 import * as userRepository from '@/repository/user';
 import { sendAdminPasswordEmail } from './util';
@@ -16,12 +17,12 @@ export const changePassword = async (user, oldPassword, newPassword) => {
   user = await userRepository.findOne({ _id: user._id }, true);
   const isPasswordMatch = compareSync(oldPassword, user.password);
   if (!isPasswordMatch) throw new createError(400, 'Invalid current password');
-  const hashedPassword = hashSync(newPassword, +process.env.BCRYPT_SALT_ROUNDS);
+  const hashedPassword = hashSync(newPassword);
   return userRepository.findOneAndUpdate({ email: user.email }, { password: hashedPassword });
 };
 
 export const update = async (userId, user, payload) => {
-  if (user.role !== 'ADMIN') {
+  if (user.role !== 'SuperAdmin') {
     if (userId !== user._id.toString()) {
       throw new createError(403, 'You are not authorized to update this user');
     }
@@ -39,12 +40,12 @@ export const update = async (userId, user, payload) => {
 
 export const create = async (payload) => {
   const generatedPassword = Math.random().toString(36).slice(-8);
-  const encryptedPassword = hashSync(generatedPassword, +process.env.BCRYPT_SALT_ROUNDS);
+  const encryptedPassword = hashSync(generatedPassword);
   const newUser = await userRepository.create({
     ...payload,
     password: encryptedPassword,
     is_verified: true,
-    role: 'ADMIN'
+    role: 'SuperAdmin'
   });
   try {
     await sendAdminPasswordEmail(payload.email, generatedPassword);
@@ -60,7 +61,7 @@ export const eliminateTeams = async (vanguard) => {
   const leaderboard = await userRepository.getLeaderboard({ created_at: { $lte: roundBreakpoint } });
   const teams = leaderboard.slice(0, vanguard).map((team) => team.email);
   await Promise.all([
-    userRepository.findAndUpdate({ role: 'ATTENDEE', email: { $in: teams } }, { eliminated: false }),
-    userRepository.findAndUpdate({ role: 'ATTENDEE', email: { $nin: teams } }, { eliminated: true })
+    userRepository.findAndUpdate({ role: roles.entrant, email: { $in: teams } }, { eliminated: false }),
+    userRepository.findAndUpdate({ role: roles.entrant, email: { $nin: teams } }, { eliminated: true })
   ]);
 };

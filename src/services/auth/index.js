@@ -3,21 +3,16 @@ import { default as crypto } from 'crypto';
 import { default as createError } from 'http-errors';
 import * as userRepository from '@/repository/user';
 import { decodeJwtToken } from '@/utils';
-import {
-  resetPasswordMailTemplate as sendResetPasswordEmail,
-  sendVerificationMail as sendVerificationEmail
-} from './util';
+import { sendResetPasswordEmail, sendVerificationEmail } from './util';
 
-export const register = async ({ name, email, password, university, members }) => {
-  password = hashSync(password, +process.env.BCRYPT_SALT_ROUNDS);
+export const register = async ({ email, password, ...payload }) => {
+  password = hashSync(password);
   const verification_code = crypto.randomUUID();
   const registeredUser = await userRepository.create({
-    name,
     email,
     password,
     verification_code: verification_code,
-    university,
-    members
+    ...payload
   });
   await sendVerificationEmail(email, verification_code);
   return registeredUser;
@@ -59,7 +54,7 @@ export const sendForgotPasswordEmail = async (email) => {
 export const resetPassword = async (password, verificationCode) => {
   const user = await userRepository.findOne({ verification_code: verificationCode });
   if (!user) throw new createError(400, 'Click the link we have sent to your email and try again.');
-  const hashedPassword = hashSync(password, +process.env.BCRYPT_SALT_ROUNDS);
+  const hashedPassword = hashSync(password);
   const updatedUser = await userRepository.findOneAndUpdate(
     { email: user.email },
     { password: hashedPassword, is_verified: true, verification_code: null }

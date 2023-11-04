@@ -20,7 +20,7 @@ export const create = async ({ challenge: challengeId, link }, user) => {
 };
 
 export const retrieveAll = (query, user) => {
-  if (user.role != 'ADMIN') {
+  if (user.role != 'SuperAdmin') {
     if (!query.filter) query.filter = {};
     query.filter.user = user._id;
   }

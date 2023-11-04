@@ -1,25 +1,11 @@
 import express from 'express';
 import { tracedAsyncHandler } from '@sliit-foss/functions';
-import { Segments, celebrate } from 'celebrate';
 import { getChallengeSubmissions, getRegistrationInfo, getTeamSubmissions } from '@/controllers/dashboard';
-import { analyticsQuerySchema } from '@/validations/analytics';
 
 const dashboard = express.Router();
 
-dashboard.get(
-  '/submissions',
-  celebrate({ [Segments.QUERY]: analyticsQuerySchema }),
-  tracedAsyncHandler(getChallengeSubmissions)
-);
-dashboard.get(
-  '/submissions/team',
-  celebrate({ [Segments.QUERY]: analyticsQuerySchema }),
-  tracedAsyncHandler(getTeamSubmissions)
-);
-dashboard.get(
-  '/registrations',
-  celebrate({ [Segments.QUERY]: analyticsQuerySchema }),
-  tracedAsyncHandler(getRegistrationInfo)
-);
+dashboard.get('/submissions', tracedAsyncHandler(getChallengeSubmissions));
+dashboard.get('/submissions/team', tracedAsyncHandler(getTeamSubmissions));
+dashboard.get('/registrations', tracedAsyncHandler(getRegistrationInfo));
 
 export default dashboard;

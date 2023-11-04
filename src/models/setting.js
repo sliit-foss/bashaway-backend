@@ -29,10 +29,6 @@ const SettingSchema = mongoose.Schema(
       type: Date,
       default: null
     },
-    round_breakpoint: {
-      type: Date,
-      default: null
-    },
     leaderboard: {
       type: LeaderboardSchema,
       default: null
