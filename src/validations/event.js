@@ -1,0 +1,62 @@
+import { Joi } from 'celebrate';
+
+const optionals = {
+  photo_url: Joi.string().optional(),
+  faqs: Joi.array()
+    .items(
+      Joi.object({
+        question: Joi.string().required(),
+        answer: Joi.string().required()
+      })
+    )
+    .optional(),
+  speakers: Joi.array().items(Joi.string().hex().length(24)).optional(),
+  survey: Joi.array().items(Joi.string()).optional(),
+  creator_lock: Joi.boolean().optional(),
+  settings: Joi.object({
+    enabled: Joi.boolean().optional(),
+    automatic_approval: Joi.boolean().optional(),
+    registration_start: Joi.date().required(),
+    registration_end: Joi.date().required(),
+    payments: Joi.object({
+      enabled: Joi.boolean().optional(),
+      ticket_cost: Joi.number().optional(),
+      allow_coupons: Joi.boolean().optional(),
+      speaker_discount: Joi.number().optional(),
+      early_bird_discount: Joi.object({
+        enabled: Joi.boolean().optional(),
+        deadline: Joi.date().optional(),
+        percentage: Joi.number().optional()
+      }).optional()
+    }).optional()
+  })
+};
+
+export const addEventSchema = {
+  ...optionals,
+  name: Joi.string().required(),
+  description: Joi.string().required(),
+  capacity: Joi.number().required(),
+  event_date: Joi.date().required().greater('now'),
+  settings: optionals.settings.required()
+};
+
+export const updateEventSchema = {
+  ...optionals,
+  name: Joi.string().optional(),
+  description: Joi.string().optional(),
+  capacity: Joi.number().optional(),
+  event_date: Joi.date().optional(),
+  settings: optionals.settings
+    .concat(
+      Joi.object({
+        registration_start: Joi.date().optional(),
+        registration_end: Joi.date().optional()
+      })
+    )
+    .optional()
+};
+
+export const eventIdSchema = {
+  event_id: Joi.string().hex().length(24).required()
+};

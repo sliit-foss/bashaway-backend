@@ -17,18 +17,6 @@ const LeaderboardSchema = mongoose.Schema({
 
 const SettingSchema = mongoose.Schema(
   {
-    submission_deadline: {
-      type: Date,
-      default: null
-    },
-    registration_deadline: {
-      type: Date,
-      default: null
-    },
-    contest_start: {
-      type: Date,
-      default: null
-    },
     leaderboard: {
       type: LeaderboardSchema,
       default: null

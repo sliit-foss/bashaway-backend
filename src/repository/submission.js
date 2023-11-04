@@ -44,7 +44,7 @@ export const findById = (id) => {
   return Submission.findById(id).lean();
 };
 
-export const getOneSubmission = (filters, options = {}) => {
+export const findOne = (filters, options = {}) => {
   return Submission.findOne(filters, options).lean();
 };
 

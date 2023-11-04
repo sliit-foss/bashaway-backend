@@ -2,7 +2,7 @@ import { asyncHandler } from '@sliit-foss/functions';
 import { default as createError } from 'http-errors';
 import { roles } from '@/models/user';
 import { isBlacklistedToken } from '@/repository/token';
-import { findOne } from '@/repository/user';
+import * as userRepository from '@/repository/user';
 import { decodeJwtToken } from '@/utils';
 
 export const protect = asyncHandler(async (req) => {
@@ -16,7 +16,7 @@ export const protect = asyncHandler(async (req) => {
   const isBackListedToken = isBlacklistedToken(token);
   if (isBackListedToken) throw new createError(401, 'Unauthorized');
   const decodedUser = decodeJwtToken(token).data;
-  const user = decodedUser ? await findOne({ _id: decodedUser._id }, false) : null;
+  const user = decodedUser ? await userRepository.findOne({ _id: decodedUser._id }, false) : null;
   if (!user) throw new createError(401, 'Unauthorized');
   if (!user.is_active)
     throw new createError(401, 'Your account has been deactivated. Please contact an admin to resolve it');

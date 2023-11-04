@@ -2,15 +2,12 @@ import fs from 'fs';
 import handlebars from 'handlebars';
 import { default as createError } from 'http-errors';
 import { default as path } from 'path';
-import * as settingRepository from '@/repository/settings';
 import * as tokenRepository from '@/repository/token';
 import * as userRepository from '@/repository/user';
 import * as authService from '@/services/auth';
 import { makeResponse, sendRefreshTokenResponse, sendTokenResponse } from '@/utils';
 
 export const register = async (req, res) => {
-  if (new Date() >= new Date(await settingRepository.getRegistrationDeadline()))
-    throw new createError(400, 'Registration closed');
   if (req.user) throw new createError(400, "You've already registered for an account.");
   await authService.register(req.body);
   return makeResponse({

@@ -73,7 +73,7 @@ const UserSchema = new mongoose.Schema(
     role: {
       type: String,
       enum: Object.values(roles),
-      default: roles.guest
+      default: roles.entrant
     }
   },
   {

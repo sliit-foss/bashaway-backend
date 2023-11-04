@@ -1,41 +1,44 @@
-import Challenge from '@/models/challenge';
+import { dot } from 'dot-object';
+import { Event } from '@/models';
 import { roles } from '@/models/user';
-import { challengeFilters } from './util';
+import { eventFilters } from './util';
 
 export const findAll = (user, query = {}) => {
-  const filter = challengeFilters(user, query.filter);
+  const filter = eventFilters(user, query.filter);
+  const populate = [{ path: 'speakers', select: '-created_at -updated_at -__v' }];
   const options = {
     select: '-creator -creator_lock',
     lean: true,
     sort: query.sort,
     page: query.page,
-    limit: query.limit
+    limit: query.limit,
+    populate
   };
-  return !query.page ? Challenge.find(filter).sort(options.sort).lean() : Challenge.paginate(filter, options);
+  return !query.page
+    ? Event.find(filter).sort(options.sort).populate(populate).lean()
+    : Event.paginate(filter, options);
 };
 
-export const insertOne = (data) => Challenge.create(data);
+export const insertOne = (data) => Event.create(data);
 
-export const findOne = (filters) => Challenge.findOne(filters).lean();
+export const findOne = (filters) => Event.findOne(filters).lean();
 
 export const findById = (id, user, filterFields = true) => {
-  let query = Challenge.findOne(challengeFilters(user, { _id: id })).lean();
+  let query = Event.findOne(eventFilters(user, { _id: id })).lean();
   if (filterFields) query = query.select('-creator_lock');
   return query.exec();
 };
 
-export const findOneAndUpdate = (filters, data) => Challenge.findOneAndUpdate(filters, data, { new: true });
+export const findOneAndUpdate = (filters, data) => Event.findOneAndUpdate(filters, dot(data), { new: true });
 
-export const deleteById = (id) => Challenge.deleteOne({ _id: id });
+export const updateById = (id, data) => findOneAndUpdate({ _id: id }, data);
 
-export const getMaxScore = async (challengeId) => {
-  return (await Challenge.findById(challengeId).lean()).max_score;
-};
+export const deleteById = (id) => Event.deleteOne({ _id: id });
 
 export const getSubmissions = (user) => {
-  return Challenge.aggregate([
+  return Event.aggregate([
     {
-      $match: challengeFilters(user)
+      $match: eventFilters(user)
     },
     {
       $lookup: {

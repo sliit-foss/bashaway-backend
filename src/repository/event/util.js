@@ -1,8 +1,8 @@
 import { roles } from '@/models/user';
 
-export const challengeFilters = (user, baseFilters = {}) => {
+export const eventFilters = (user, baseFilters = {}) => {
   if (user.role !== roles.superadmin) {
-    baseFilters.enabled = true;
+    baseFilters.settings.enabled = true;
   }
   return {
     $or: [{ creator_lock: false }, { creator_lock: true, creator: user._id }],

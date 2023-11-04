@@ -7,21 +7,21 @@ export const getAllEvents = async (req, res) => {
 };
 
 export const createEvent = async (req, res) => {
-  await eventService.create(req.body, req.user);
-  return makeResponse({ res, message: 'Event added successfully' });
+  const data = await eventService.create(req.body, req.user);
+  return makeResponse({ res, status: 201, data, message: 'Event added successfully' });
 };
 
 export const getEventById = async (req, res) => {
-  const result = await eventService.retrieve(req.params.challenge_id, req.user);
+  const result = await eventService.retrieve(req.params.event_id, req.user);
   return makeResponse({ res, data: result, message: 'Event retrieved successfully' });
 };
 
 export const updateEvent = async (req, res) => {
-  await eventService.update(req.params.challenge_id, req.body, req.user);
-  return makeResponse({ res, message: 'Event updated successfully' });
+  const result = await eventService.update(req.params.event_id, req.body, req.user);
+  return makeResponse({ res, data: result, message: 'Event updated successfully' });
 };
 
 export const deleteEvent = async (req, res) => {
-  await eventService.deleteOne(req.params.challenge_id, req.user);
+  await eventService.deleteOne(req.params.event_id, req.user);
   return makeResponse({ res, message: 'Event deleted successfully' });
 };
