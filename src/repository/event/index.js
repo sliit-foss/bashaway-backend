@@ -24,7 +24,8 @@ export const insertOne = (data) => Event.create(data);
 export const findOne = (filters) => Event.findOne(filters).lean();
 
 export const findById = (id, user, filterFields = true) => {
-  let query = Event.findOne(eventFilters(user, { _id: id })).lean();
+  const baseFilters = { _id: id };
+  let query = Event.findOne(user ? eventFilters(user, baseFilters) : baseFilters).lean();
   if (filterFields) query = query.select('-creator_lock');
   return query.exec();
 };

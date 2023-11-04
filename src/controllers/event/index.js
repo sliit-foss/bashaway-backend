@@ -1,6 +1,8 @@
 import * as eventService from '@/services/event';
 import { makeResponse } from '@/utils/response';
 
+export * from './ticket';
+
 export const getAllEvents = async (req, res) => {
   const data = await eventService.retrieveAll(req.user, req.query);
   return makeResponse({ res, data, message: 'Events retrieved successfully' });

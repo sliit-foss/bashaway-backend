@@ -1,3 +1,4 @@
+import createError from 'http-errors';
 import * as speakerRepository from '@/repository/speaker';
 import { makeResponse } from '@/utils/response';
 
@@ -12,12 +13,14 @@ export const createSpeaker = async (req, res) => {
 };
 
 export const getSpeakerById = async (req, res) => {
-  const result = await speakerRepository.findById(req.params.speaker_id);
-  return makeResponse({ res, data: result, message: 'Speaker retrieved successfully' });
+  const speaker = await speakerRepository.findById(req.params.speaker_id);
+  if (!speaker) throw new createError(404, 'Speaker not found');
+  return makeResponse({ res, data: speaker, message: 'Speaker retrieved successfully' });
 };
 
 export const updateSpeaker = async (req, res) => {
   const speaker = await speakerRepository.updateById(req.params.speaker_id, req.body);
+  if (!speaker) throw new createError(404, 'Speaker not found');
   return makeResponse({ res, data: speaker, message: 'Speaker updated successfully' });
 };
 

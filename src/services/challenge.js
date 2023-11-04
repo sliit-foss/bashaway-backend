@@ -18,7 +18,7 @@ export const create = (data, user) => challengeRepository.insertOne({ ...data, c
 export const retrieve = async (challenge_id, user) => {
   const result = await challengeRepository.findById(challenge_id, user);
   if (!result)
-    throw new createError(404, "Challenge doesn't exist or you do not have permission to view this challenge");
+    throw new createError(404, "Challenge doesn't exist or you do not have permission to access this challenge");
   return attachSubmissionAttributesToChallenge(result, user);
 };
 
