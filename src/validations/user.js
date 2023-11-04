@@ -1,5 +1,5 @@
 import { Joi } from 'celebrate';
-import { domains, genders, mealPreferences } from '@/models/user';
+import { domains, genders, mealPreferences, tshirtSizes } from '@/models/user';
 
 export const addUserSchema = {
   name: Joi.string().required(),
@@ -22,6 +22,9 @@ export const updateSchema = {
     .optional(),
   meal_preference: Joi.string()
     .valid(...mealPreferences)
+    .optional(),
+  tshirt_size: Joi.string()
+    .valid(...tshirtSizes)
     .optional(),
   photo_url: Joi.string().optional(),
   is_active: Joi.boolean().optional()

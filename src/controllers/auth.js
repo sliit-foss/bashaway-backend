@@ -2,6 +2,7 @@ import fs from 'fs';
 import handlebars from 'handlebars';
 import { default as createError } from 'http-errors';
 import { default as path } from 'path';
+import { FRONTEND_DOMAIN } from '@/config';
 import * as tokenRepository from '@/repository/token';
 import * as userRepository from '@/repository/user';
 import * as authService from '@/services/auth';
@@ -32,7 +33,7 @@ export const verifyUser = async (req, res) => {
     res.writeHead(200, { 'Content-Type': 'text/html' });
     res.end(
       template({
-        login_link: `${process.env.FRONTEND_DOMAIN}/login`,
+        login_link: `${FRONTEND_DOMAIN}/login`,
         verified: !!user
       })
     );

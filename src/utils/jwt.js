@@ -1,4 +1,5 @@
 import jwt from 'jsonwebtoken';
+import { JWT } from '@/config';
 
 export const sendTokenResponse = (res, user, message) => {
   const accessToken = generateToken(user);
@@ -10,13 +11,13 @@ export const sendTokenResponse = (res, user, message) => {
 };
 
 export const generateToken = (user) => {
-  return jwt.sign({ data: user }, process.env.JWT_SECRET, {
-    expiresIn: `${process.env.JWT_EXPIRE}m`
+  return jwt.sign({ data: user }, JWT.SECRET, {
+    expiresIn: `${JWT.EXPIRE}m`
   });
 };
 
 export const decodeJwtToken = (token) => {
-  return jwt.verify(token, process.env.JWT_SECRET);
+  return jwt.verify(token, JWT.SECRET);
 };
 
 export const sendRefreshTokenResponse = (res, user, message) => {
@@ -28,7 +29,7 @@ export const sendRefreshTokenResponse = (res, user, message) => {
 };
 
 export const generateRefreshToken = (user) => {
-  return jwt.sign({ data: user }, process.env.JWT_SECRET, {
-    expiresIn: `${process.env.JWT_REFRESH_EXPIRE}d`
+  return jwt.sign({ data: user }, JWT.SECRET, {
+    expiresIn: `${JWT.REFRESH_EXPIRE}d`
   });
 };

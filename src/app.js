@@ -11,6 +11,7 @@ import { omit, pick } from 'lodash';
 import { default as connectDB } from '@/database';
 import { errorHandler, queryMapper, responseInterceptor } from '@/middleware';
 import { default as routes } from '@/routes/index.routes';
+import { PORT } from './config';
 import { APPLICATION } from './constants';
 
 require('dotenv').config();
@@ -78,10 +79,8 @@ connectDB();
 
 global.__basedir = __dirname;
 
-const port = process.env.PORT || 3000;
-
-app.listen(port, (err) => {
+app.listen(PORT, (err) => {
   if (!err) {
-    logger.info(`${APPLICATION} server successfully started on port ${port}`);
+    logger.info(`${APPLICATION} server successfully started on port ${PORT}`);
   }
 });

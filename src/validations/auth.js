@@ -1,5 +1,5 @@
 import { Joi } from 'celebrate';
-import { domains, genders, mealPreferences } from '@/models/user';
+import { domains, genders, mealPreferences, tshirtSizes } from '@/models/user';
 
 export const loginSchema = Joi.object({
   email: Joi.string().email().required(),
@@ -30,6 +30,9 @@ export const registerSchema = Joi.object({
     .required(),
   meal_preference: Joi.string()
     .valid(...mealPreferences)
+    .required(),
+  tshirt_size: Joi.string()
+    .valid(...tshirtSizes)
     .required()
 });
 

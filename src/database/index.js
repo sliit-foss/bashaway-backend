@@ -1,10 +1,11 @@
 import { moduleLogger } from '@sliit-foss/module-logger';
 import mongoose from 'mongoose';
+import { MONGO_URI } from '@/config';
 
 const logger = moduleLogger('Database-connection');
 
 const connectDB = () => {
-  mongoose.connect(process.env.MONGO_URI, { keepAlive: true, connectTimeoutMS: 3000 }).catch((error) => {
+  mongoose.connect(MONGO_URI, { keepAlive: true, connectTimeoutMS: 3000 }).catch((error) => {
     logger.error(`Error connecting to MongoDB: ${error}`);
   });
   mongoose.connection.on('connected', () => {

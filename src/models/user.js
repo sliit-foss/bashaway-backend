@@ -5,6 +5,8 @@ export const genders = ['Male', 'Female', 'Other', 'Prefer not to say'];
 
 export const mealPreferences = ['Vegetarian', 'Vegan', 'Non-Vegetarian'];
 
+export const tshirtSizes = ['XS', 'S', 'M', 'L', 'XL', 'XXL'];
+
 export const domains = [
   'High School Student',
   'Undergraduate',
@@ -23,8 +25,7 @@ const UserSchema = new mongoose.Schema(
   {
     name: {
       type: String,
-      required: true,
-      unique: true
+      required: true
     },
     email: {
       type: String,
@@ -47,16 +48,9 @@ const UserSchema = new mongoose.Schema(
       type: Boolean,
       default: true
     },
-    photo_url: {
-      type: String
-    },
-    phone: {
-      type: String,
-      required: true
-    },
-    nic: {
-      type: String
-    },
+    photo_url: String,
+    phone: String,
+    nic: String,
     gender: {
       type: String,
       enum: genders
@@ -65,10 +59,13 @@ const UserSchema = new mongoose.Schema(
       type: String,
       enum: mealPreferences
     },
+    tshirt_size: {
+      type: String,
+      enum: tshirtSizes
+    },
     domain: {
       type: String,
-      enum: domains,
-      required: true
+      enum: domains
     },
     role: {
       type: String,
