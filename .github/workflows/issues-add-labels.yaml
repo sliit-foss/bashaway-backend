@@ -1,7 +1,7 @@
 name: Add Labels
 
 on:
-  pull_request:
+  issues:
     types: opened
 
 jobs:
