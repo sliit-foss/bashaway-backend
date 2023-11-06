@@ -13,7 +13,7 @@ jobs:
 
       - name: add labels
         uses: actions-ecosystem/action-add-labels@v1
-        if: ${{ startsWith(github.event.comment.body, '/add-labels') }}
+        # if: ${{ startsWith(github.event.comment.body, '/add-labels') }}
         with:
           labels: |
             Backend
