@@ -2,6 +2,7 @@
 
 <br/>
 
+<!-- 
 <p align="center">
   <img src="https://github.com/sliit-foss/bashaway-official/assets/73662613/c15f7a94-592b-410f-b581-c98d25a9ca42" width="420" alt="Bashaway Logo"/>
 </p>
@@ -20,6 +21,11 @@
 <br/>
 
 Bashaway is a competitive coding event where the participants must automate a given task using scripting. The maximum allowed group size is 4 and the primary language to be used is Bash. Certain other languages may be permitted depended upon the context of the challenge.
+
+-->
+
+
+# TechEvents API
 
 ## API Documentation
 
