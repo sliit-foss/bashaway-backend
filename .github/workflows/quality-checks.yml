@@ -24,7 +24,7 @@ jobs:
         uses: actions/checkout@v3
 
       - name: Run commitlint 🟩
-        uses: sliit-foss/actions/quality-checks/commitlint@main
+        uses: gdg-srilanka/actions/quality-checks/commitlint@main
 
   lint:
     name: Enforce ESLint rules
@@ -34,7 +34,7 @@ jobs:
         uses: actions/checkout@v3
 
       - name: Run linter 📢
-        uses: sliit-foss/actions/quality-checks/linter@main
+        uses: gdg-srilanka/actions/quality-checks/linter@main
 
   format:
     name: Format code
@@ -44,4 +44,4 @@ jobs:
         uses: actions/checkout@v3
 
       - name: Run formatter 🧹
-        uses: sliit-foss/actions/quality-checks/formatter@main
+        uses: gdg-srilanka/actions/quality-checks/formatter@main
