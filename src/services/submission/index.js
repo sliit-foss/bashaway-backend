@@ -1,5 +1,6 @@
 import crypto from 'crypto';
 import createError from 'http-errors';
+import { discountPercentages } from '@/models/coupon';
 import * as challengeRepository from '@/repository/challenge';
 import * as couponRepository from '@/repository/coupon';
 import * as submissionRepository from '@/repository/submission';
@@ -44,28 +45,29 @@ export const grade = async (submissionId, { score, automatically_graded: automat
 
   const updateScore = () => submissionRepository.updateScore(submissionId, score, !!automated, user?._id);
 
-  if (existingCoupon) {
-    return updateScore();
-  }
+  if (existingCoupon) return updateScore();
 
   const scorePercentage = (score / submission.challenge.max_score) * 100;
 
-  const discountPercentage = [100, 75, 50, 25, 0].filter((threshold) => scorePercentage >= threshold)[0];
-
-  const couponCode = crypto.randomUUID();
-
-  await Promise.all([
-    updateScore(),
-    couponRepository
-      .insertOne({ discount_percentage: discountPercentage, code: couponCode, challenge: submission.challenge })
-      .then(() => {
-        sendCouponEmail(
-          submission.user.email,
-          submission.user.name,
-          couponCode,
-          discountPercentage,
-          submission.challenge.event
-        );
-      })
-  ]);
+  if (scorePercentage >= 50) {
+    const couponCode = crypto.randomUUID();
+    await Promise.all([
+      updateScore(),
+      couponRepository
+        .insertOne({
+          discount_percentage: discountPercentages[submission.challenge.difficulty],
+          code: couponCode,
+          challenge: submission.challenge._id
+        })
+        .then(() => {
+          sendCouponEmail(
+            submission.user.email,
+            submission.user.name,
+            couponCode,
+            discountPercentages[submission.challenge.difficulty],
+            submission.challenge.event
+          );
+        })
+    ]);
+  }
 };
