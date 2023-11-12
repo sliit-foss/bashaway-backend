@@ -1,10 +1,5 @@
-import { getSubmissions as getChallengeSubmissions } from '@/repository/challenge';
-import { getTeamSubmissions } from '@/repository/submission';
+import { getTicketStats } from '@/repository/ticket';
 import { getAllUserGroups } from '@/repository/user';
-
-export const getAllChallengeSubmissions = (user) => getChallengeSubmissions(user);
-
-export const getAllTeamSubmissions = () => getTeamSubmissions();
 
 export const getRegistrations = async () => {
   const userGroups = await getAllUserGroups();
@@ -13,3 +8,5 @@ export const getRegistrations = async () => {
     total_registrations: userGroups.reduce((acc, curr) => acc + curr.count, 0)
   };
 };
+
+export const getTicketInfo = (eventId) => getTicketStats(eventId);

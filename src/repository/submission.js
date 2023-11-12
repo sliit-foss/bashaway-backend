@@ -1,7 +1,6 @@
 import { moduleLogger } from '@sliit-foss/module-logger';
 import { isUndefined } from 'lodash';
 import { Submission } from '@/models';
-import { roles } from '@/models/user';
 
 const logger = moduleLogger('Submission-repository');
 
@@ -70,32 +69,5 @@ export const getDistinctSubmissions = (challengeId) => {
     { $match: { challenge: challengeId } },
     { $group: { _id: '$user' } },
     { $project: { _id: 0, user: '$_id' } }
-  ]);
-};
-
-export const getTeamSubmissions = () => {
-  return Submission.aggregate([
-    { $lookup: { from: 'users', localField: 'user', foreignField: '_id', as: 'user' } },
-    { $addFields: { user: { $arrayElemAt: ['$user', 0] } } },
-    {
-      $match: {
-        'user.role': roles.entrant
-      }
-    },
-    {
-      $group: {
-        _id: '$user._id',
-        name: { $first: '$user.name' },
-        submission_count: { $sum: 1 }
-      }
-    },
-    {
-      $project: {
-        _id: 0,
-        name: 1,
-        submission_count: 1
-      }
-    },
-    { $sort: { submission_count: -1 } }
   ]);
 };

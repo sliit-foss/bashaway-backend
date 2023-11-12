@@ -1,4 +1,6 @@
-import Ticket from '@/models/ticket';
+import { omit } from 'lodash';
+import mongoose from 'mongoose';
+import Ticket, { payments } from '@/models/ticket';
 
 export const findAll = (user, query = {}) => {
   const options = {
@@ -28,3 +30,36 @@ export const findOneAndUpdate = (filters, data) => Ticket.findOneAndUpdate(filte
 export const updateById = (id, data) => findOneAndUpdate({ _id: id }, data);
 
 export const deleteById = (id) => Ticket.deleteOne({ _id: id });
+
+export const getTicketStats = async (eventId) => {
+  const pipeline = [
+    {
+      $group: {
+        _id: '1',
+        total: { $sum: 1 },
+        approved_count: { $sum: { $cond: [{ $eq: ['$approved', true] }, 1, 0] } },
+        transferred_count: { $sum: { $cond: [{ $eq: ['$transferred', true] }, 1, 0] } },
+        utilized_count: { $sum: { $cond: [{ $eq: ['$utilized', true] }, 1, 0] } },
+        unpaid: {
+          $sum: {
+            $cond: [{ $and: [{ $eq: ['$approved', true] }, { $eq: ['$payment_status', payments.pending] }] }, 1, 0]
+          }
+        },
+        successfully_paid: {
+          $sum: {
+            $cond: [{ $and: [{ $eq: ['$approved', true] }, { $eq: ['$payment_status', payments.success] }] }, 1, 0]
+          }
+        },
+        failed_to_pay: {
+          $sum: {
+            $cond: [{ $and: [{ $eq: ['$approved', true] }, { $eq: ['$payment_status', payments.failed] }] }, 1, 0]
+          }
+        },
+        processed_monetary_value: { $sum: { $cond: [{ $eq: ['$payment_status', payments.success] }, '$cost', 0] } }
+      }
+    }
+  ];
+  if (eventId) pipeline.unshift({ $match: { event: mongoose.Types.ObjectId(eventId) } });
+  const results = await Ticket.aggregate(pipeline);
+  return omit(results[0], ['_id']);
+};
