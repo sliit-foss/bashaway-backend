@@ -14,7 +14,11 @@ const SpeakerSchema = new mongoose.Schema(
     },
     photo_url: String,
     organization: String,
-    designation: String
+    designation: String,
+    social_links: {
+      github: String,
+      linkedin: String
+    }
   },
   {
     versionKey: '__v',
