@@ -2,6 +2,7 @@ import { Joi } from 'celebrate';
 
 const optionals = {
   photo_url: Joi.string().optional(),
+  tags: Joi.array().items(Joi.string()).optional().default([]),
   faqs: Joi.array()
     .items(
       Joi.object({
@@ -28,6 +29,9 @@ const optionals = {
         deadline: Joi.date().optional(),
         percentage: Joi.number().optional()
       }).optional()
+    }).optional(),
+    visuals: Joi.object({
+      color_code: Joi.string().optional()
     }).optional()
   })
 };

@@ -34,6 +34,14 @@ const PaymentSettingsSchema = new mongoose.Schema({
   }
 });
 
+const VisualSettingsSchema = new mongoose.Schema({
+  _id: false,
+  color_code: {
+    type: String,
+    default: '#000000'
+  }
+});
+
 const SettingSchema = new mongoose.Schema({
   _id: false,
   enabled: {
@@ -54,6 +62,10 @@ const SettingSchema = new mongoose.Schema({
   },
   payments: {
     type: PaymentSettingsSchema,
+    default: {}
+  },
+  visuals: {
+    type: VisualSettingsSchema,
     default: {}
   }
 });
