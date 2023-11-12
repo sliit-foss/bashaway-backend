@@ -5,7 +5,7 @@ export * from './ticket';
 
 export const retrieveAll = (user, query) => eventRepository.findAll(user, query);
 
-export const create = (data, user) => eventRepository.insertOne({ ...data, creator: user._id });
+export const create = (data, user) => eventRepository.insertOne({ ...data, creator: user?._id });
 
 export const retrieve = async (event_id, user) => {
   const result = await eventRepository.findById(event_id, user);

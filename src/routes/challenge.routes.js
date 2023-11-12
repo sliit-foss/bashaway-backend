@@ -8,7 +8,7 @@ import {
   getChallengeById,
   updateChallenge
 } from '@/controllers/challenge';
-import { adminProtect } from '@/middleware/auth';
+import { adminProtect, protect } from '@/middleware/auth';
 import { addChallengeSchema, challengeIdSchema, updateChallengeSchema } from '@/validations/challenge';
 
 const challenges = express.Router();
@@ -16,8 +16,9 @@ const challenges = express.Router();
 challenges.get('/', tracedAsyncHandler(getAllChallenges));
 challenges.post(
   '/',
-  celebrate({ [Segments.BODY]: addChallengeSchema }),
+  protect,
   adminProtect,
+  celebrate({ [Segments.BODY]: addChallengeSchema }),
   tracedAsyncHandler(createChallenge)
 );
 challenges.get(
@@ -27,14 +28,16 @@ challenges.get(
 );
 challenges.patch(
   '/:challenge_id',
-  celebrate({ [Segments.PARAMS]: challengeIdSchema, [Segments.BODY]: updateChallengeSchema }),
+  protect,
   adminProtect,
+  celebrate({ [Segments.PARAMS]: challengeIdSchema, [Segments.BODY]: updateChallengeSchema }),
   tracedAsyncHandler(updateChallenge)
 );
 challenges.delete(
   '/:challenge_id',
-  celebrate({ [Segments.PARAMS]: challengeIdSchema }),
+  protect,
   adminProtect,
+  celebrate({ [Segments.PARAMS]: challengeIdSchema }),
   tracedAsyncHandler(deleteChallenge)
 );
 

@@ -30,7 +30,7 @@ export const retrieveAll = (query, user) => {
 export const grade = async (submissionId, { score, automatically_graded: automated }, user) => {
   const submission = await submissionRepository.findById(submissionId);
   if (!submission) throw new createError(422, 'Invalid submission ID');
-  const maxScore = await challengeRepository.getMaxScore(submission.challenge.toString());
+  const maxScore = await challengeRepository.getMaxScore(submission.challenge);
 
   score ??= maxScore;
 

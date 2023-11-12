@@ -1,6 +1,5 @@
 import { dot } from 'dot-object';
 import { Event } from '@/models';
-import { roles } from '@/models/user';
 import { eventFilters } from './util';
 
 export const findAll = (user, query = {}) => {
@@ -25,7 +24,7 @@ export const findOne = (filters) => Event.findOne(filters).lean();
 
 export const findById = (id, user, filterFields = true) => {
   const baseFilters = { _id: id };
-  let query = Event.findOne(user ? eventFilters(user, baseFilters) : baseFilters).lean();
+  let query = Event.findOne(eventFilters(user, baseFilters)).lean();
   if (filterFields) query = query.select('-creator_lock');
   return query.exec();
 };
@@ -35,49 +34,3 @@ export const findOneAndUpdate = (filters, data) => Event.findOneAndUpdate(filter
 export const updateById = (id, data) => findOneAndUpdate({ _id: id }, data);
 
 export const deleteById = (id) => Event.deleteOne({ _id: id });
-
-export const getSubmissions = (user) => {
-  return Event.aggregate([
-    {
-      $match: eventFilters(user)
-    },
-    {
-      $lookup: {
-        from: 'submissions',
-        localField: '_id',
-        foreignField: 'challenge',
-        as: 'submissions',
-        pipeline: [
-          {
-            $lookup: {
-              from: 'users',
-              localField: 'user',
-              foreignField: '_id',
-              as: 'user'
-            }
-          },
-          {
-            $addFields: {
-              user: { $first: '$user' }
-            }
-          },
-          {
-            $match: {
-              'user.role': roles.entrant
-            }
-          }
-        ]
-      }
-    },
-    {
-      $project: {
-        _id: 0,
-        challenge: {
-          name: '$name'
-        },
-        submission_count: { $size: '$submissions' }
-      }
-    },
-    { $sort: { submission_count: -1 } }
-  ]);
-};
