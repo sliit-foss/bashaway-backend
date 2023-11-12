@@ -9,7 +9,8 @@ export const addChallengeSchema = {
   enabled: Joi.boolean().optional(),
   creator_lock: Joi.boolean().optional(),
   codebase_url: Joi.string().required(),
-  strict_inputs: Joi.boolean().optional()
+  strict_inputs: Joi.boolean().optional(),
+  event: Joi.string().hex().length(24).required()
 };
 
 export const updateChallengeSchema = {

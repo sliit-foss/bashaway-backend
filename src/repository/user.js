@@ -88,7 +88,7 @@ export const getAllUserGroups = () => {
     },
     {
       $group: {
-        _id: '$university',
+        _id: '$domain',
         count: { $sum: 1 }
       }
     },

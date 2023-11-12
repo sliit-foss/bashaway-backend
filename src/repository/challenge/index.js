@@ -28,10 +28,6 @@ export const findOneAndUpdate = (filters, data) => Challenge.findOneAndUpdate(fi
 
 export const deleteById = (id) => Challenge.deleteOne({ _id: id });
 
-export const getMaxScore = async (challengeId) => {
-  return (await Challenge.findById(challengeId).lean()).max_score;
-};
-
 export const getSubmissions = (user) => {
   return Challenge.aggregate([
     {

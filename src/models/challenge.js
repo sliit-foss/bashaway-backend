@@ -30,6 +30,10 @@ const ChallengeSchema = new mongoose.Schema(
       type: Boolean,
       default: true
     },
+    event: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'Event'
+    },
     creator: {
       type: mongoose.Schema.Types.ObjectId,
       ref: 'User',

@@ -40,15 +40,24 @@ export const findAll = ({ sort = {}, filter = {}, page, limit = 10 }) => {
     : Submission.find(filter).sort(sort).populate(populate).lean();
 };
 
-export const findById = (id) => {
-  return Submission.findById(id).lean();
-};
+export const findById = (id) => Submission.findById(id).lean();
+
+export const findWithUserAndChallenge = (id) =>
+  Submission.findById(id)
+    .populate([
+      'user',
+      {
+        path: 'challenge',
+        populate: ['event']
+      }
+    ])
+    .lean();
 
 export const findOne = (filters, options = {}) => {
   return Submission.findOne(filters, options).lean();
 };
 
-export const insertGrade = async (submission, score, automated, userId) => {
+export const updateScore = async (submission, score, automated, userId) => {
   await Submission.findOneAndUpdate(
     { _id: submission },
     { score, graded_by: userId, automatically_graded: automated },

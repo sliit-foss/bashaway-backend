@@ -24,14 +24,8 @@ export const getUserTicket = async (user) => {
 };
 
 export const approveTicket = async (ticket_id, user) => {
-  const ticket = await ticketRepository.findWithApprovedUser(ticket_id);
+  const ticket = await ticketRepository.findById(ticket_id);
   if (!ticket) throw new createError(404, "Ticket doesn't exist");
-  if (ticket.approved_by)
-    throw new createError(
-      400,
-      `This ticket is already approved by ${
-        user._id.toString() === ticket.approved_by._id.toString() ? 'you' : ticket.approved_by.name
-      }`
-    );
+  if (ticket.approved) throw new createError(400, `This ticket is already approved`);
   return ticketRepository.updateById(ticket_id, { approved: true, approved_by: user._id });
 };

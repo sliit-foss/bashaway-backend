@@ -1,7 +1,10 @@
+import crypto from 'crypto';
 import createError from 'http-errors';
 import * as challengeRepository from '@/repository/challenge';
+import * as couponRepository from '@/repository/coupon';
 import * as submissionRepository from '@/repository/submission';
-import { triggerScorekeeper as initiateTesting } from './github';
+import { triggerScorekeeper as initiateTesting } from '../github';
+import { sendCouponEmail } from './util';
 
 export const create = async ({ challenge: challengeId, link }, user) => {
   const challenge = await challengeRepository.findOne({ _id: challengeId });
@@ -28,14 +31,41 @@ export const retrieveAll = (query, user) => {
 };
 
 export const grade = async (submissionId, { score, automatically_graded: automated }, user) => {
-  const submission = await submissionRepository.findById(submissionId);
+  const submission = await submissionRepository.findWithUserAndChallenge(submissionId);
   if (!submission) throw new createError(422, 'Invalid submission ID');
-  const maxScore = await challengeRepository.getMaxScore(submission.challenge);
 
-  score ??= maxScore;
+  score ??= submission.challenge.max_score;
 
   if (score < 0) throw new createError(422, 'Score must be greater than or equal to 0');
-  else if (maxScore < score)
+  else if (submission.challenge.max_score < score)
     throw new createError(422, 'Score must be less than or equal to the max score for the challenge');
-  await submissionRepository.insertGrade(submissionId, score, !!automated, user?._id);
+
+  const existingCoupon = await couponRepository.findOne({ challenge: submission.challenge._id });
+
+  const updateScore = () => submissionRepository.updateScore(submissionId, score, !!automated, user?._id);
+
+  if (existingCoupon) {
+    return updateScore();
+  }
+
+  const scorePercentage = (score / submission.challenge.max_score) * 100;
+
+  const discountPercentage = [100, 75, 50, 25, 0].filter((threshold) => scorePercentage >= threshold)[0];
+
+  const couponCode = crypto.randomUUID();
+
+  await Promise.all([
+    updateScore(),
+    couponRepository
+      .insertOne({ discount_percentage: discountPercentage, code: couponCode, challenge: submission.challenge })
+      .then(() => {
+        sendCouponEmail(
+          submission.user.email,
+          submission.user.name,
+          couponCode,
+          discountPercentage,
+          submission.challenge.event
+        );
+      })
+  ]);
 };
