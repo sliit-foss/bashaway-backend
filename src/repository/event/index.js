@@ -1,12 +1,13 @@
 import { dot } from 'dot-object';
-import mongoose from 'mongoose';
+import { compact } from 'lodash';
+import { default as mongoose } from 'mongoose';
 import { Event } from '@/models';
 import { roles } from '@/models/user';
 import { eventFilters } from './util';
 
 export const findAll = (user, query = {}) => {
   const filter = eventFilters(user, query.filter);
-  const pipeline = [
+  const pipeline = compact([
     {
       $match: filter
     },
@@ -60,7 +61,7 @@ export const findAll = (user, query = {}) => {
           }
         ]
       : []),
-    {
+    query.sort && {
       $sort: query.sort
     },
     {
@@ -69,7 +70,7 @@ export const findAll = (user, query = {}) => {
         creator_lock: 0
       }
     }
-  ];
+  ]);
   const aggregate = Event.aggregate(pipeline);
   return !query.page
     ? aggregate

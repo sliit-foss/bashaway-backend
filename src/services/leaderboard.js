@@ -24,8 +24,6 @@ export const getLeaderboard = async () => {
         }
         records[i].score = '????';
         records[i].name = element.name;
-        records[i].university = element.symbol.toUpperCase();
-        records[i].email = `${element.name.toLowerCase()}@bashaway.io`;
       }
     }
   }

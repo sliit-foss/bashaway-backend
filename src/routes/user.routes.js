@@ -1,22 +1,9 @@
 import express from 'express';
 import { tracedAsyncHandler } from '@sliit-foss/functions';
 import { Segments, celebrate } from 'celebrate';
-import {
-  changeUserPassword,
-  createUser,
-  eliminateTeams,
-  getAllUsers,
-  getUserById,
-  updateUser
-} from '@/controllers/user';
+import { changeUserPassword, createUser, getAllUsers, getUserById, updateUser } from '@/controllers/user';
 import { adminProtect } from '@/middleware/auth';
-import {
-  addUserSchema,
-  changePasswordSchema,
-  eliminateQuerySchema,
-  updateSchema,
-  userIdSchema
-} from '@/validations/user';
+import { addUserSchema, changePasswordSchema, updateSchema, userIdSchema } from '@/validations/user';
 
 const users = express.Router();
 
@@ -27,12 +14,6 @@ users.patch(
   '/change_password',
   celebrate({ [Segments.BODY]: changePasswordSchema }),
   tracedAsyncHandler(changeUserPassword)
-);
-users.patch(
-  '/eliminate',
-  adminProtect,
-  celebrate({ [Segments.QUERY]: eliminateQuerySchema }),
-  tracedAsyncHandler(eliminateTeams)
 );
 users.patch(
   '/:id',

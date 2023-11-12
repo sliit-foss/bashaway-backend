@@ -49,7 +49,3 @@ export const changePasswordSchema = Joi.object({
         'Password should have at least one lowercase letter, one uppercase letter, one number and one special character and should be at least 8 characters long'
     })
 });
-
-export const eliminateQuerySchema = {
-  vanguard: Joi.number().optional().default(10)
-};
