@@ -6,13 +6,29 @@ import { isBlacklistedToken } from '@/repository/token';
 import * as userRepository from '@/repository/user';
 import { decodeJwtToken } from '@/utils';
 
-export const protect = asyncHandler(async (req) => {
-  if (req.headers['x-api-key'] === API_ACCESS_KEY) return;
-  const token = req.headers.authorization
+const extractToken = (req) => {
+  return req.headers.authorization
     ? req.headers.authorization.startsWith('Bearer')
       ? req.headers.authorization.split(' ')[1]?.replace('null', '')?.replace('undefined', '')
       : null
     : null;
+};
+
+export const identify = asyncHandler(async (req) => {
+  const token = extractToken(req);
+  if (token && !isBlacklistedToken(token)) {
+    const decodedUser = decodeJwtToken(token).data;
+    const user = decodedUser ? await userRepository.findOne({ _id: decodedUser._id }, false) : null;
+    if (user && user.is_active) {
+      req.user_token = token;
+      req.user = user;
+    }
+  }
+});
+
+export const protect = asyncHandler(async (req) => {
+  if (req.headers['x-api-key'] === API_ACCESS_KEY) return;
+  const token = extractToken(req);
   if (!token) throw new createError(401, 'Unauthorized');
   const isBackListedToken = isBlacklistedToken(token);
   if (isBackListedToken) throw new createError(401, 'Unauthorized');

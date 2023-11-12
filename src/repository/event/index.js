@@ -1,21 +1,82 @@
 import { dot } from 'dot-object';
+import mongoose from 'mongoose';
 import { Event } from '@/models';
+import { roles } from '@/models/user';
 import { eventFilters } from './util';
 
 export const findAll = (user, query = {}) => {
   const filter = eventFilters(user, query.filter);
-  const populate = [{ path: 'speakers', select: '-created_at -updated_at -__v' }];
-  const options = {
-    select: '-creator -creator_lock',
-    lean: true,
-    sort: query.sort,
-    page: query.page,
-    limit: query.limit,
-    populate
-  };
+  const pipeline = [
+    {
+      $match: filter
+    },
+    {
+      $lookup: {
+        from: 'speakers',
+        localField: 'speakers',
+        foreignField: '_id',
+        as: 'speakers',
+        pipeline: [
+          {
+            $project: {
+              created_at: 0,
+              updated_at: 0,
+              __v: 0
+            }
+          }
+        ]
+      }
+    },
+    ...(user?.role === roles.entrant
+      ? [
+          {
+            $lookup: {
+              from: 'tickets',
+              localField: '_id',
+              foreignField: 'event',
+              as: 'ticket',
+              pipeline: [
+                {
+                  $match: {
+                    owner: mongoose.Types.ObjectId(user?._id)
+                  }
+                },
+                {
+                  $project: {
+                    _id: 1,
+                    approved: 1,
+                    utilized: 1
+                  }
+                }
+              ]
+            }
+          },
+          {
+            $addFields: {
+              ticket: {
+                $arrayElemAt: ['$ticket', 0]
+              }
+            }
+          }
+        ]
+      : []),
+    {
+      $sort: query.sort
+    },
+    {
+      $project: {
+        creator: 0,
+        creator_lock: 0
+      }
+    }
+  ];
+  const aggregate = Event.aggregate(pipeline);
   return !query.page
-    ? Event.find(filter).sort(options.sort).populate(populate).lean()
-    : Event.paginate(filter, options);
+    ? aggregate
+    : Event.aggregatePaginate(aggregate, {
+        page: query.page,
+        limit: query.limit
+      });
 };
 
 export const insertOne = (data) => Event.create(data);

@@ -1,4 +1,5 @@
 import mongoose from 'mongoose';
+import aggregatePaginate from 'mongoose-aggregate-paginate-v2';
 import mongoosePaginate from 'mongoose-paginate-v2';
 import SettingSchema from './setting';
 
@@ -74,6 +75,8 @@ const EventSchema = new mongoose.Schema(
 );
 
 EventSchema.plugin(mongoosePaginate);
+
+EventSchema.plugin(aggregatePaginate);
 
 EventSchema.index({ createdAt: 1 });
 

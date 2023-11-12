@@ -31,8 +31,7 @@ const TicketSchema = new mongoose.Schema(
     },
     approved_by: {
       type: mongoose.Schema.Types.ObjectId,
-      ref: 'User',
-      required: true
+      ref: 'User'
     },
     event: {
       type: mongoose.Schema.Types.ObjectId,

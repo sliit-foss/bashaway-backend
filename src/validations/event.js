@@ -2,7 +2,7 @@ import { Joi } from 'celebrate';
 
 const optionals = {
   photo_url: Joi.string().optional(),
-  tags: Joi.array().items(Joi.string()).min(2),
+  tags: Joi.array().items(Joi.string()).min(2).max(3),
   faqs: Joi.array()
     .items(
       Joi.object({

@@ -1,9 +1,6 @@
-import { moduleLogger } from '@sliit-foss/module-logger';
 import { dot } from 'dot-object';
 import { User } from '@/models';
 import { roles } from '@/models/user';
-
-const logger = moduleLogger('User-repository');
 
 export const create = async (user) => {
   const newUser = (await new User(user).save()).toObject();
@@ -22,7 +19,7 @@ export const findAll = ({ sort = {}, filter = {}, page, limit = 10 }) => {
 
   if (Object.keys(sort).length > 0) options.sort = sort;
 
-  const pipeline = User.aggregate([
+  const aggregate = User.aggregate([
     {
       $match: {
         is_verified: true,
@@ -54,11 +51,7 @@ export const findAll = ({ sort = {}, filter = {}, page, limit = 10 }) => {
     },
     { $unset: ['password', 'verification_code', 'submissions'] }
   ]);
-
-  return (page ? User.aggregatePaginate(pipeline, options) : pipeline).catch((err) => {
-    logger.error(`An error occurred when retrieving users - err: ${err.message}`);
-    throw err;
-  });
+  return page ? User.aggregatePaginate(aggregate, options) : aggregate;
 };
 
 export const findOne = async (filters, returnPassword = false) => {

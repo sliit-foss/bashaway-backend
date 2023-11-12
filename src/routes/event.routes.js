@@ -11,7 +11,7 @@ import {
   requestEventTicket,
   updateEvent
 } from '@/controllers/event';
-import { adminProtect, protect } from '@/middleware/auth';
+import { adminProtect, identify, protect } from '@/middleware/auth';
 import {
   addEventSchema,
   eventIdSchema,
@@ -22,7 +22,7 @@ import {
 
 const events = express.Router();
 
-events.get('/', tracedAsyncHandler(getAllEvents));
+events.get('/', identify, tracedAsyncHandler(getAllEvents));
 events.post(
   '/',
   celebrate({ [Segments.BODY]: addEventSchema }),
@@ -30,7 +30,7 @@ events.post(
   adminProtect,
   tracedAsyncHandler(createEvent)
 );
-events.get('/:event_id', celebrate({ [Segments.PARAMS]: eventIdSchema }), tracedAsyncHandler(getEventById));
+events.get('/:event_id', identify, celebrate({ [Segments.PARAMS]: eventIdSchema }), tracedAsyncHandler(getEventById));
 events.patch(
   '/:event_id',
   celebrate({ [Segments.PARAMS]: eventIdSchema, [Segments.BODY]: updateEventSchema }),
