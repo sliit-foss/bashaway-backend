@@ -18,7 +18,14 @@ const EventSchema = new mongoose.Schema(
       type: Number,
       required: true
     },
-    photo_url: String,
+    photo_urls: {
+      'default': String,
+      'sm': String,
+      'md': String,
+      'lg': String,
+      'xl': String,
+      '2xl': String
+    },
     event_date: {
       type: Date,
       required: true

@@ -1,7 +1,14 @@
 import { Joi } from 'celebrate';
 
 const optionals = {
-  photo_url: Joi.string().optional(),
+  photo_urls: Joi.object({
+    'default': Joi.string().optional(),
+    'sm': Joi.string().optional(),
+    'md': Joi.string().optional(),
+    'lg': Joi.string().optional(),
+    'xl': Joi.string().optional(),
+    '2xl': Joi.string().optional()
+  }).optional(),
   tags: Joi.array().items(Joi.string()).min(2).max(2),
   faqs: Joi.array()
     .items(
