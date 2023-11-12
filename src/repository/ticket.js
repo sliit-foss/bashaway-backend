@@ -13,10 +13,18 @@ export const findAll = (user, query = {}) => {
 
 export const insertOne = (data) => Ticket.create(data);
 
-export const findOne = (filters) => Ticket.findOne(filters).lean();
+export const findOne = (filters, filterFields = false) => {
+  let query = Ticket.findOne(filters).lean();
+  if (filterFields) query = query.select('-approved_by');
+  return query.exec();
+};
 
 export const findById = (id) => Ticket.findById(id).lean();
 
+export const findWithApprovedUser = (id) => Ticket.findById(id).populate('approved_by').lean();
+
 export const findOneAndUpdate = (filters, data) => Ticket.findOneAndUpdate(filters, data, { new: true });
+
+export const updateById = (id, data) => findOneAndUpdate({ _id: id }, data);
 
 export const deleteById = (id) => Ticket.deleteOne({ _id: id });

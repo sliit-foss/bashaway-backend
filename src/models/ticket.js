@@ -21,13 +21,18 @@ const TicketSchema = new mongoose.Schema(
       type: Number,
       required: true
     },
+    transferred: {
+      type: Boolean,
+      default: false
+    },
     approved: {
       type: Boolean,
       default: false
     },
-    transferred: {
-      type: Boolean,
-      default: false
+    approved_by: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'User',
+      required: true
     },
     event: {
       type: mongoose.Schema.Types.ObjectId,

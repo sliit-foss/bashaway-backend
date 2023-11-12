@@ -2,7 +2,6 @@
 
 <br/>
 
-
 <!-- <p align="center">
   <img src="https://github.com/sliit-foss/bashaway-official/assets/73662613/c15f7a94-592b-410f-b581-c98d25a9ca42" width="420" alt="Tech Events Logo"/>
 </p> -->
@@ -11,7 +10,7 @@
 
 <p align="center">
   <a aria-label="GDG Sri Lanka Logo" href="https://gdg.community.dev/gdg-sri-lanka/">
-    <img src="https://img.shields.io/badge/Made_by_GDG_Sri_Lanka">
+    <img src="https://img.shields.io/badge/Made_by_GDG_Sri_Lanka-blue">
   </a>
   <a aria-label="License" href="https://github.com/gdgsrilanka/techevents-api/blob/main/LICENSE">
     <img alt="" src="https://img.shields.io/badge/License-MIT-yellow.svg">
@@ -21,9 +20,6 @@
 <br/>
 
 An all in one platform for tech events within Sri Lanka. This repository contains the backend API for the Tech Events platform.
-
-
-# TechEvents API
 
 ## API Documentation
 

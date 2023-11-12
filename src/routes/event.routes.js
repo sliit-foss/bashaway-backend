@@ -2,6 +2,7 @@ import express from 'express';
 import { tracedAsyncHandler } from '@sliit-foss/functions';
 import { Segments, celebrate } from 'celebrate';
 import {
+  approveUserTicket,
   createEvent,
   deleteEvent,
   getAllEvents,
@@ -11,7 +12,13 @@ import {
   updateEvent
 } from '@/controllers/event';
 import { adminProtect, protect } from '@/middleware/auth';
-import { addEventSchema, eventIdSchema, requestTicketSchema, updateEventSchema } from '@/validations/event';
+import {
+  addEventSchema,
+  eventIdSchema,
+  eventTicketIdSchema,
+  requestTicketSchema,
+  updateEventSchema
+} from '@/validations/event';
 
 const events = express.Router();
 
@@ -49,6 +56,13 @@ events.get(
   protect,
   celebrate({ [Segments.PARAMS]: eventIdSchema }),
   tracedAsyncHandler(getUserEventTicket)
+);
+events.patch(
+  '/:event_id/tickets/:ticket_id/approve',
+  protect,
+  adminProtect,
+  celebrate({ [Segments.PARAMS]: eventTicketIdSchema }),
+  tracedAsyncHandler(approveUserTicket)
 );
 
 export default events;

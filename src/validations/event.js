@@ -61,6 +61,11 @@ export const eventIdSchema = {
   event_id: Joi.string().hex().length(24).required()
 };
 
+export const eventTicketIdSchema = {
+  ...eventIdSchema,
+  ticket_id: Joi.string().hex().length(24).required()
+};
+
 export const requestTicketSchema = {
   survey_answers: Joi.array().items(Joi.string()).default([])
 };
