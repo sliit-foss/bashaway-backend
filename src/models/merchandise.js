@@ -29,7 +29,8 @@ const MerchandiseSchema = new mongoose.Schema(
   {
     versionKey: '__v',
     timestamps: { createdAt: 'created_at', updatedAt: 'updated_at' },
-    minimize: false
+    minimize: false,
+    collection: 'merchandise'
   }
 );
 

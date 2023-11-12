@@ -2,7 +2,7 @@ import { Joi } from 'celebrate';
 
 const optionals = {
   photo_url: Joi.string().optional(),
-  tags: Joi.array().items(Joi.string()).optional().default([]),
+  tags: Joi.array().items(Joi.string()).min(2),
   faqs: Joi.array()
     .items(
       Joi.object({
@@ -42,6 +42,7 @@ export const addEventSchema = {
   description: Joi.string().required(),
   capacity: Joi.number().required(),
   event_date: Joi.date().required().greater('now'),
+  tags: optionals.tags.required(),
   settings: optionals.settings.required()
 };
 
