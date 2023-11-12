@@ -45,4 +45,4 @@ An all in one platform for tech events within Sri Lanka. This repository contain
 
 - This project is bootstrapped with [Lefthook](https://evilmartians.com/opensource/lefthook), [Eslint](https://eslint.org/) and [Prettier](https://prettier.io/). Please make good use of them.
 
-<br/>
+
