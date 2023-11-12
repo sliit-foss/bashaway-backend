@@ -1,4 +1,5 @@
 import { moduleLogger } from '@sliit-foss/module-logger';
+import { dot } from 'dot-object';
 import { User } from '@/models';
 import { roles } from '@/models/user';
 
@@ -69,7 +70,7 @@ export const findOne = async (filters, returnPassword = false) => {
 };
 
 export const findOneAndUpdate = async (filters, data) => {
-  const user = await User.findOneAndUpdate(filters, data, { new: true }).lean();
+  const user = await User.findOneAndUpdate(filters, dot(data), { new: true }).lean();
   if (!user) return null;
 
   delete user.password;

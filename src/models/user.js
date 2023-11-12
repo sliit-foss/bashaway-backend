@@ -67,6 +67,15 @@ const UserSchema = new mongoose.Schema(
       type: String,
       enum: domains
     },
+    professional_details: {
+      company: String,
+      designation: String,
+      years_of_experience: Number
+    },
+    social_links: {
+      github: String,
+      linkedin: String
+    },
     role: {
       type: String,
       enum: Object.values(roles),

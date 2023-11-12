@@ -23,6 +23,15 @@ export const registerSchema = Joi.object({
   domain: Joi.string()
     .valid(...domains)
     .required(),
+  professional_details: Joi.object({
+    company: Joi.string().optional(),
+    designation: Joi.string().optional(),
+    years_of_experience: Joi.number().optional()
+  }).optional(),
+  social_links: Joi.object({
+    linkedin: Joi.string().optional(),
+    github: Joi.string().optional()
+  }).optional(),
   phone: Joi.string().min(9).required(),
   nic: Joi.string().required(),
   gender: Joi.string()

@@ -16,6 +16,15 @@ export const updateSchema = {
   domain: Joi.string()
     .valid(...domains)
     .optional(),
+  professional_details: Joi.object({
+    company: Joi.string().optional(),
+    designation: Joi.string().optional(),
+    years_of_experience: Joi.number().optional()
+  }).optional(),
+  social_links: Joi.object({
+    linkedin: Joi.string().optional(),
+    github: Joi.string().optional()
+  }).optional(),
   nic: Joi.string().optional(),
   gender: Joi.string()
     .valid(...genders)
