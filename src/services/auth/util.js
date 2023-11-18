@@ -10,7 +10,7 @@ export const sendVerificationEmail = async (email, verification_code) => {
     button below.`,
     action_link: `${APP_DOMAIN}/api/auth/verify/${verification_code}`,
     action_text: 'Confirm',
-    disclaimer_text: `You've received this email because you have opted to participate in ${APPLICATION} 2023.`
+    disclaimer_text: `You've received this email because you have opted to register for ${APPLICATION} 2023.`
   };
   const subject = `${APPLICATION} - Account Verification`;
   await sendMail(email, 'call_to_action', replacements, subject);
@@ -25,7 +25,7 @@ export const sendResetPasswordEmail = async (email, verification_code) => {
     at the login page.`,
     action_link: `${isFromAdmin() ? ADMIN_FRONTEND_DOMAIN : FRONTEND_DOMAIN}/reset-password/${verification_code}`,
     action_text: 'Reset Password',
-    disclaimer_text: `You've received this email because you have opted to participate in ${APPLICATION} 2023.`
+    disclaimer_text: `You've received this email because you have opted to register for ${APPLICATION} 2023.`
   };
   const subject = `${APPLICATION} - Reset Account Password`;
   await sendMail(email, 'call_to_action', replacements, subject);
