@@ -18,8 +18,8 @@ export const sendMail = (email, templateName, replacements, subject, attachments
   const template = handlebars.compile(html);
   const htmlToSend = template({
     ...replacements,
-    platform_logo: `${RAW_REPO_URL}/src/html/images/logos/bashaway.png`,
-    gdg_logo: `${RAW_REPO_URL}/src/html/images/logos/foss.png`,
+    platform_logo: `${RAW_REPO_URL}/src/html/images/logos/techevents.png`,
+    gdg_logo: `${RAW_REPO_URL}/src/html/images/logos/gdg.png`,
     x_icon: `${RAW_REPO_URL}/src/html/images/icons/x.png`
   });
   const mailOptions = {

@@ -20,6 +20,7 @@ const optionals = {
     .optional(),
   speakers: Joi.array().items(Joi.string().hex().length(24)).optional(),
   survey: Joi.array().items(Joi.string()).optional(),
+  coverage: Joi.array().items(Joi.string()).optional(),
   creator_lock: Joi.boolean().optional(),
   settings: Joi.object({
     enabled: Joi.boolean().optional(),
