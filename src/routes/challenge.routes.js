@@ -8,12 +8,12 @@ import {
   getChallengeById,
   updateChallenge
 } from '@/controllers/challenge';
-import { adminProtect, protect } from '@/middleware/auth';
+import { adminProtect, identify, protect } from '@/middleware/auth';
 import { addChallengeSchema, challengeIdSchema, updateChallengeSchema } from '@/validations/challenge';
 
 const challenges = express.Router();
 
-challenges.get('/', tracedAsyncHandler(getAllChallenges));
+challenges.get('/', identify, tracedAsyncHandler(getAllChallenges));
 challenges.post(
   '/',
   protect,
@@ -23,6 +23,7 @@ challenges.post(
 );
 challenges.get(
   '/:challenge_id',
+  identify,
   celebrate({ [Segments.PARAMS]: challengeIdSchema }),
   tracedAsyncHandler(getChallengeById)
 );

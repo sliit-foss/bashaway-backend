@@ -1,4 +1,5 @@
 import mongoose from 'mongoose';
+import aggregatePaginate from 'mongoose-aggregate-paginate-v2';
 import mongoosePaginate from 'mongoose-paginate-v2';
 import SettingSchema from './setting';
 
@@ -17,11 +18,19 @@ const EventSchema = new mongoose.Schema(
       type: Number,
       required: true
     },
-    photo_url: String,
+    photo_urls: {
+      'default': String,
+      'sm': String,
+      'md': String,
+      'lg': String,
+      'xl': String,
+      '2xl': String
+    },
     event_date: {
       type: Date,
       required: true
     },
+    tags: [String],
     settings: {
       type: SettingSchema,
       default: {}
@@ -55,6 +64,10 @@ const EventSchema = new mongoose.Schema(
       type: [String],
       default: []
     },
+    coverage: {
+      type: [String],
+      default: []
+    },
     creator: {
       type: mongoose.Schema.Types.ObjectId,
       ref: 'User',
@@ -73,6 +86,8 @@ const EventSchema = new mongoose.Schema(
 );
 
 EventSchema.plugin(mongoosePaginate);
+
+EventSchema.plugin(aggregatePaginate);
 
 EventSchema.index({ createdAt: 1 });
 

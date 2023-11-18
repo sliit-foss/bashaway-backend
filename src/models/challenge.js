@@ -1,6 +1,13 @@
 import mongoose from 'mongoose';
 import mongoosePaginate from 'mongoose-paginate-v2';
 
+export const challengeDifficulties = {
+  easy: 'EASY',
+  medium: 'MEDIUM',
+  hard: 'HARD',
+  extreme: 'EXTREME'
+};
+
 const ChallengeSchema = new mongoose.Schema(
   {
     name: {
@@ -14,7 +21,7 @@ const ChallengeSchema = new mongoose.Schema(
     },
     difficulty: {
       type: String,
-      enum: ['EASY', 'MEDIUM', 'HARD', 'EXTREME'],
+      enum: Object.values(challengeDifficulties),
       required: true
     },
     constraints: [
@@ -29,6 +36,11 @@ const ChallengeSchema = new mongoose.Schema(
     enabled: {
       type: Boolean,
       default: true
+    },
+    event: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'Event',
+      required: true
     },
     creator: {
       type: mongoose.Schema.Types.ObjectId,

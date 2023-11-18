@@ -2,7 +2,7 @@ import mongoose from 'mongoose';
 import aggregatePaginate from 'mongoose-aggregate-paginate-v2';
 import mongoosePaginate from 'mongoose-paginate-v2';
 
-const payments = {
+export const payments = {
   success: 'Success',
   failed: 'Failed',
   cancelled: 'Cancelled',
@@ -21,13 +21,17 @@ const TicketSchema = new mongoose.Schema(
       type: Number,
       required: true
     },
+    transferred: {
+      type: Boolean,
+      default: false
+    },
     approved: {
       type: Boolean,
       default: false
     },
-    transferred: {
-      type: Boolean,
-      default: false
+    approved_by: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'User'
     },
     event: {
       type: mongoose.Schema.Types.ObjectId,

@@ -1,5 +1,4 @@
 import Challenge from '@/models/challenge';
-import { roles } from '@/models/user';
 import { challengeFilters } from './util';
 
 export const findAll = (user, query = {}) => {
@@ -27,53 +26,3 @@ export const findById = (id, user, filterFields = true) => {
 export const findOneAndUpdate = (filters, data) => Challenge.findOneAndUpdate(filters, data, { new: true });
 
 export const deleteById = (id) => Challenge.deleteOne({ _id: id });
-
-export const getMaxScore = async (challengeId) => {
-  return (await Challenge.findById(challengeId).lean()).max_score;
-};
-
-export const getSubmissions = (user) => {
-  return Challenge.aggregate([
-    {
-      $match: challengeFilters(user)
-    },
-    {
-      $lookup: {
-        from: 'submissions',
-        localField: '_id',
-        foreignField: 'challenge',
-        as: 'submissions',
-        pipeline: [
-          {
-            $lookup: {
-              from: 'users',
-              localField: 'user',
-              foreignField: '_id',
-              as: 'user'
-            }
-          },
-          {
-            $addFields: {
-              user: { $first: '$user' }
-            }
-          },
-          {
-            $match: {
-              'user.role': roles.entrant
-            }
-          }
-        ]
-      }
-    },
-    {
-      $project: {
-        _id: 0,
-        challenge: {
-          name: '$name'
-        },
-        submission_count: { $size: '$submissions' }
-      }
-    },
-    { $sort: { submission_count: -1 } }
-  ]);
-};

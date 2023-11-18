@@ -1,6 +1,14 @@
 import mongoose from 'mongoose';
 import aggregatePaginate from 'mongoose-aggregate-paginate-v2';
 import mongoosePaginate from 'mongoose-paginate-v2';
+import { challengeDifficulties } from './challenge';
+
+export const discountPercentages = {
+  [challengeDifficulties.easy]: 25,
+  [challengeDifficulties.medium]: 50,
+  [challengeDifficulties.hard]: 75,
+  [challengeDifficulties.extreme]: 100
+};
 
 const CouponSchema = new mongoose.Schema(
   {
@@ -10,7 +18,7 @@ const CouponSchema = new mongoose.Schema(
     },
     discount_percentage: {
       type: Number,
-      enum: [25, 50, 75, 100],
+      enum: Object.values(discountPercentages),
       default: 100
     },
     ticket: {

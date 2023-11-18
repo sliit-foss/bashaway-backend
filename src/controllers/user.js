@@ -25,8 +25,3 @@ export const changeUserPassword = async (req, res) => {
   await userService.changePassword(req.user, req.body.old_password, req.body.new_password);
   return makeResponse({ res, message: 'Password changed successfully' });
 };
-
-export const eliminateTeams = async (req, res) => {
-  await userService.eliminateTeams(req.query.vanguard);
-  return makeResponse({ res, message: `Eliminated all teams except the top ${req.query.vanguard}` });
-};

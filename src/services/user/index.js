@@ -1,7 +1,5 @@
 import { compareSync, hashSync } from 'bcryptjs';
 import { default as createError } from 'http-errors';
-import { roles } from '@/models/user';
-import { getRoundBreakpoint } from '@/repository/settings';
 import * as userRepository from '@/repository/user';
 import { sendAdminPasswordEmail } from './util';
 
@@ -27,7 +25,6 @@ export const update = async (userId, user, payload) => {
       throw new createError(403, 'You are not authorized to update this user');
     }
     delete payload.is_active;
-    delete payload.eliminated;
   }
   if (payload.name) {
     const existingUser = await userRepository.findOne({ name: payload.name, _id: { $ne: userId } });
@@ -54,14 +51,4 @@ export const create = async (payload) => {
     userRepository.findOneAndRemove({ email: payload.email }).exec();
     throw e;
   }
-};
-
-export const eliminateTeams = async (vanguard) => {
-  const roundBreakpoint = await getRoundBreakpoint();
-  const leaderboard = await userRepository.getLeaderboard({ created_at: { $lte: roundBreakpoint } });
-  const teams = leaderboard.slice(0, vanguard).map((team) => team.email);
-  await Promise.all([
-    userRepository.findAndUpdate({ role: roles.entrant, email: { $in: teams } }, { eliminated: false }),
-    userRepository.findAndUpdate({ role: roles.entrant, email: { $nin: teams } }, { eliminated: true })
-  ]);
 };

@@ -19,7 +19,7 @@ export const update = async (event_id, data, user) => {
     const check = await eventRepository.findOne({ name: data.name, _id: { $ne: event_id } });
     if (check) throw new createError(400, 'Event name is already taken');
   }
-  if (event.creator_lock && event.creator !== user._id)
+  if (event.creator_lock && event.creator.toString() !== user._id.toString())
     throw new createError(403, 'You are not authorized to update this event');
   return eventRepository.updateById(event_id, data);
 };
@@ -29,7 +29,7 @@ export const deleteOne = async (event_id, user) => {
   if (event.settings.enabled) {
     throw new createError(400, 'Failed to delete event as it is active');
   }
-  if (event.creator_lock && event.creator !== user._id)
+  if (event.creator_lock && event.creator.toString() !== user._id.toString())
     throw new createError(403, 'You are not authorized to delete this event');
   return eventRepository.deleteById(event_id);
 };

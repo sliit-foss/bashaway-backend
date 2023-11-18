@@ -1,7 +1,6 @@
 import { moduleLogger } from '@sliit-foss/module-logger';
 import { isUndefined } from 'lodash';
 import { Submission } from '@/models';
-import { roles } from '@/models/user';
 
 const logger = moduleLogger('Submission-repository');
 
@@ -40,15 +39,24 @@ export const findAll = ({ sort = {}, filter = {}, page, limit = 10 }) => {
     : Submission.find(filter).sort(sort).populate(populate).lean();
 };
 
-export const findById = (id) => {
-  return Submission.findById(id).lean();
-};
+export const findById = (id) => Submission.findById(id).lean();
+
+export const findWithUserAndChallenge = (id) =>
+  Submission.findById(id)
+    .populate([
+      'user',
+      {
+        path: 'challenge',
+        populate: ['event']
+      }
+    ])
+    .lean();
 
 export const findOne = (filters, options = {}) => {
   return Submission.findOne(filters, options).lean();
 };
 
-export const insertGrade = async (submission, score, automated, userId) => {
+export const updateScore = async (submission, score, automated, userId) => {
   await Submission.findOneAndUpdate(
     { _id: submission },
     { score, graded_by: userId, automatically_graded: automated },
@@ -61,32 +69,5 @@ export const getDistinctSubmissions = (challengeId) => {
     { $match: { challenge: challengeId } },
     { $group: { _id: '$user' } },
     { $project: { _id: 0, user: '$_id' } }
-  ]);
-};
-
-export const getTeamSubmissions = () => {
-  return Submission.aggregate([
-    { $lookup: { from: 'users', localField: 'user', foreignField: '_id', as: 'user' } },
-    { $addFields: { user: { $arrayElemAt: ['$user', 0] } } },
-    {
-      $match: {
-        'user.role': roles.entrant
-      }
-    },
-    {
-      $group: {
-        _id: '$user._id',
-        name: { $first: '$user.name' },
-        submission_count: { $sum: 1 }
-      }
-    },
-    {
-      $project: {
-        _id: 0,
-        name: 1,
-        submission_count: 1
-      }
-    },
-    { $sort: { submission_count: -1 } }
   ]);
 };

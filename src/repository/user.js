@@ -1,8 +1,6 @@
-import { moduleLogger } from '@sliit-foss/module-logger';
+import { dot } from 'dot-object';
 import { User } from '@/models';
 import { roles } from '@/models/user';
-
-const logger = moduleLogger('User-repository');
 
 export const create = async (user) => {
   const newUser = (await new User(user).save()).toObject();
@@ -21,7 +19,7 @@ export const findAll = ({ sort = {}, filter = {}, page, limit = 10 }) => {
 
   if (Object.keys(sort).length > 0) options.sort = sort;
 
-  const pipeline = User.aggregate([
+  const aggregate = User.aggregate([
     {
       $match: {
         is_verified: true,
@@ -53,11 +51,7 @@ export const findAll = ({ sort = {}, filter = {}, page, limit = 10 }) => {
     },
     { $unset: ['password', 'verification_code', 'submissions'] }
   ]);
-
-  return (page ? User.aggregatePaginate(pipeline, options) : pipeline).catch((err) => {
-    logger.error(`An error occurred when retrieving users - err: ${err.message}`);
-    throw err;
-  });
+  return page ? User.aggregatePaginate(aggregate, options) : aggregate;
 };
 
 export const findOne = async (filters, returnPassword = false) => {
@@ -69,7 +63,7 @@ export const findOne = async (filters, returnPassword = false) => {
 };
 
 export const findOneAndUpdate = async (filters, data) => {
-  const user = await User.findOneAndUpdate(filters, data, { new: true }).lean();
+  const user = await User.findOneAndUpdate(filters, dot(data), { new: true }).lean();
   if (!user) return null;
 
   delete user.password;
@@ -88,7 +82,7 @@ export const getAllUserGroups = () => {
     },
     {
       $group: {
-        _id: '$university',
+        _id: '$domain',
         count: { $sum: 1 }
       }
     },
@@ -166,10 +160,8 @@ export const getLeaderboard = () => {
       $project: {
         _id: 0,
         name: 1,
-        email: 1,
-        university: 1,
-        score: 1,
-        eliminated: 1
+        social_links: 1,
+        score: 1
       }
     }
   ]);

@@ -2,6 +2,7 @@ import express from 'express';
 import { tracedAsyncHandler } from '@sliit-foss/functions';
 import { Segments, celebrate } from 'celebrate';
 import {
+  approveUserTicket,
   createEvent,
   deleteEvent,
   getAllEvents,
@@ -10,12 +11,18 @@ import {
   requestEventTicket,
   updateEvent
 } from '@/controllers/event';
-import { adminProtect, protect } from '@/middleware/auth';
-import { addEventSchema, eventIdSchema, requestTicketSchema, updateEventSchema } from '@/validations/event';
+import { adminProtect, identify, protect } from '@/middleware/auth';
+import {
+  addEventSchema,
+  eventIdSchema,
+  eventTicketIdSchema,
+  requestTicketSchema,
+  updateEventSchema
+} from '@/validations/event';
 
 const events = express.Router();
 
-events.get('/', tracedAsyncHandler(getAllEvents));
+events.get('/', identify, tracedAsyncHandler(getAllEvents));
 events.post(
   '/',
   celebrate({ [Segments.BODY]: addEventSchema }),
@@ -23,7 +30,7 @@ events.post(
   adminProtect,
   tracedAsyncHandler(createEvent)
 );
-events.get('/:event_id', celebrate({ [Segments.PARAMS]: eventIdSchema }), tracedAsyncHandler(getEventById));
+events.get('/:event_id', identify, celebrate({ [Segments.PARAMS]: eventIdSchema }), tracedAsyncHandler(getEventById));
 events.patch(
   '/:event_id',
   celebrate({ [Segments.PARAMS]: eventIdSchema, [Segments.BODY]: updateEventSchema }),
@@ -49,6 +56,13 @@ events.get(
   protect,
   celebrate({ [Segments.PARAMS]: eventIdSchema }),
   tracedAsyncHandler(getUserEventTicket)
+);
+events.patch(
+  '/:event_id/tickets/:ticket_id/approve',
+  protect,
+  adminProtect,
+  celebrate({ [Segments.PARAMS]: eventTicketIdSchema }),
+  tracedAsyncHandler(approveUserTicket)
 );
 
 export default events;
