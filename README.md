@@ -2,9 +2,9 @@
 
 <br/>
 
-<!-- <p align="center">
-  <img src="https://github.com/sliit-foss/bashaway-official/assets/73662613/c15f7a94-592b-410f-b581-c98d25a9ca42" width="420" alt="Tech Events Logo"/>
-</p> -->
+<p align="center">
+  <img src="https://github.com/gdgsrilanka/techevents-portal/assets/73662613/aedb59e2-7aab-4ac2-8146-6bf82ac84044" width="420" alt="Techevents Logo"/>
+</p>
 
 <br/>
 
@@ -28,8 +28,8 @@ An all in one platform for tech events within Sri Lanka. This repository contain
 
 ## Deployments
 
-- [Production](https://api.bashaway.sliitfoss.org) (Not always running)
-- [Staging](https://api.staging.bashaway.sliitfoss.org)
+- [Production](https://api.techevents.lk)
+- [Staging](https://api.staging.techevents.lk)
 
 ## Getting started
 
