@@ -13,6 +13,12 @@ export const retrieve = async (event_id, user) => {
   return result;
 };
 
+export const retrieveBySlug = async (slug, user) => {
+  const result = await eventRepository.findBySlug(slug, user);
+  if (!result) throw new createError(404, "Event doesn't exist or you do not have permission to access this event");
+  return result;
+};
+
 export const update = async (event_id, data, user) => {
   const event = await retrieve(event_id, user);
   if (data.name) {

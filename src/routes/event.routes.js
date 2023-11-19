@@ -7,6 +7,7 @@ import {
   deleteEvent,
   getAllEvents,
   getEventById,
+  getEventBySlug,
   getUserEventTicket,
   requestEventTicket,
   updateEvent
@@ -15,6 +16,7 @@ import { adminProtect, identify, protect } from '@/middleware/auth';
 import {
   addEventSchema,
   eventIdSchema,
+  eventSlugSchema,
   eventTicketIdSchema,
   requestTicketSchema,
   updateEventSchema
@@ -44,6 +46,12 @@ events.delete(
   protect,
   adminProtect,
   tracedAsyncHandler(deleteEvent)
+);
+events.get(
+  '/slugs/:slug',
+  identify,
+  celebrate({ [Segments.PARAMS]: eventSlugSchema }),
+  tracedAsyncHandler(getEventBySlug)
 );
 events.post(
   '/:event_id/tickets/request',

@@ -18,7 +18,10 @@ const EventSchema = new mongoose.Schema(
       type: Number,
       required: true
     },
-    slug: String,
+    slug: {
+      type: String,
+      unique: true
+    },
     guidelines: String,
     photo_urls: {
       'default': String,
