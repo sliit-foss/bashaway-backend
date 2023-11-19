@@ -18,6 +18,8 @@ const EventSchema = new mongoose.Schema(
       type: Number,
       required: true
     },
+    slug: String,
+    guidelines: String,
     photo_urls: {
       'default': String,
       'sm': String,

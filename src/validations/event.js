@@ -1,6 +1,7 @@
 import { Joi } from 'celebrate';
 
 const optionals = {
+  slug: Joi.string().optional(),
   photo_urls: Joi.object({
     'default': Joi.string().optional(),
     'sm': Joi.string().optional(),
@@ -10,6 +11,7 @@ const optionals = {
     '2xl': Joi.string().optional()
   }).optional(),
   tags: Joi.array().items(Joi.string()).min(2).max(2),
+  guidelines: Joi.string().optional(),
   faqs: Joi.array()
     .items(
       Joi.object({
