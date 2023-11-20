@@ -91,6 +91,13 @@ export const findById = (id, user, filterFields = true) => {
   return query.exec();
 };
 
+export const findBySlug = (slug, user, filterFields = true) => {
+  const baseFilters = { slug };
+  let query = Event.findOne(eventFilters(user, baseFilters)).lean();
+  if (filterFields) query = query.select('-creator_lock');
+  return query.exec();
+};
+
 export const findOneAndUpdate = (filters, data) => Event.findOneAndUpdate(filters, dot(data), { new: true });
 
 export const updateById = (id, data) => findOneAndUpdate({ _id: id }, data);

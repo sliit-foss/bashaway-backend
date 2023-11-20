@@ -18,6 +18,11 @@ export const getEventById = async (req, res) => {
   return makeResponse({ res, data: result, message: 'Event retrieved successfully' });
 };
 
+export const getEventBySlug = async (req, res) => {
+  const result = await eventService.retrieveBySlug(req.params.slug, req.user);
+  return makeResponse({ res, data: result, message: 'Event retrieved successfully' });
+};
+
 export const updateEvent = async (req, res) => {
   const result = await eventService.update(req.params.event_id, req.body, req.user);
   return makeResponse({ res, data: result, message: 'Event updated successfully' });
