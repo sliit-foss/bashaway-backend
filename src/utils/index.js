@@ -1,5 +1,6 @@
 import context from 'express-http-context';
 
+export * from './crypto';
 export * from './json';
 export * from './jwt';
 export * from './repository';

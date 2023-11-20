@@ -62,6 +62,8 @@ export const findOne = async (filters, returnPassword = false) => {
   return user;
 };
 
+export const findByEmail = (email) => User.findOne({ email }).lean();
+
 export const findOneAndUpdate = async (filters, data) => {
   const user = await User.findOneAndUpdate(filters, dot(data), { new: true }).lean();
   if (!user) return null;

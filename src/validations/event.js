@@ -25,6 +25,7 @@ const optionals = {
   settings: Joi.object({
     enabled: Joi.boolean().optional(),
     automatic_approval: Joi.boolean().optional(),
+    ticket_transfer_enabled: Joi.boolean().optional(),
     registration_start: Joi.date().required(),
     registration_end: Joi.date().required(),
     payments: Joi.object({
@@ -36,6 +37,11 @@ const optionals = {
         enabled: Joi.boolean().optional(),
         deadline: Joi.date().optional(),
         percentage: Joi.number().optional()
+      }).optional(),
+      premium_tickets: Joi.object({
+        enabled: Joi.boolean().optional(),
+        cost: Joi.number().optional(),
+        seats: Joi.number().optional()
       }).optional()
     }).optional(),
     visuals: Joi.object({
@@ -48,7 +54,7 @@ export const addEventSchema = {
   ...optionals,
   name: Joi.string().required(),
   description: Joi.string().required(),
-  capacity: Joi.number().required(),
+  seats: Joi.number().required(),
   event_date: Joi.date().required().greater('now'),
   tags: optionals.tags.required(),
   settings: optionals.settings.required()
@@ -58,7 +64,7 @@ export const updateEventSchema = {
   ...optionals,
   name: Joi.string().optional(),
   description: Joi.string().optional(),
-  capacity: Joi.number().optional(),
+  seats: Joi.number().optional(),
   event_date: Joi.date().optional(),
   settings: optionals.settings
     .concat(
@@ -80,5 +86,15 @@ export const eventTicketIdSchema = {
 };
 
 export const requestTicketSchema = {
-  survey_answers: Joi.array().items(Joi.string()).default([])
+  survey_answers: Joi.array().items(Joi.string()).default([]),
+  premium: Joi.boolean().default(false)
+};
+
+export const initiateTicketPaymentSchema = {
+  coupon_code: Joi.string().optional(),
+  merchandise: Joi.array().items(Joi.string().hex().length(24)).optional().default([])
+};
+
+export const transferTicketSchema = {
+  email: Joi.string().email().required()
 };

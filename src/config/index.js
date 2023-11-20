@@ -25,6 +25,13 @@ export const AZURE = {
   SOLUTION_DOWNLOAD_SAS_TOKEN: process.env.AZURE_SOLUTION_DOWNLOAD_SAS_TOKEN
 };
 
+export const PAYHERE = {
+  BASE_URL: process.env.PAYHERE_BASE_URL,
+  MERCHANT_ID: process.env.PAYHERE_MERCHANT_ID,
+  MERCHANT_SECRET: process.env.PAYHERE_MERCHANT_SECRET,
+  AUTHORIZATION_CODE: process.env.PAYHERE_AUTHORIZATION_CODE
+};
+
 export const PORT = process.env.PORT || 3000;
 
 export const APP_ENV = process.env.APP_ENV;
@@ -44,6 +51,7 @@ export default {
   SCOREKEEPER,
   JWT,
   AZURE,
+  PAYHERE,
   PORT,
   APP_ENV,
   MONGO_URI,

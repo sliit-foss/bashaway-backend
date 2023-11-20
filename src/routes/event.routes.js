@@ -3,20 +3,26 @@ import { tracedAsyncHandler } from '@sliit-foss/functions';
 import { Segments, celebrate } from 'celebrate';
 import {
   approveUserTicket,
+  cancelTicketPayment,
   createEvent,
   deleteEvent,
   getAllEvents,
   getEventById,
   getUserEventTicket,
+  initiateTicketPayment,
   requestEventTicket,
-  updateEvent
+  transferTicket,
+  updateEvent,
+  verifyTicketPayment
 } from '@/controllers/event';
 import { adminProtect, identify, protect } from '@/middleware/auth';
 import {
   addEventSchema,
   eventIdSchema,
   eventTicketIdSchema,
+  initiateTicketPaymentSchema,
   requestTicketSchema,
+  transferTicketSchema,
   updateEventSchema
 } from '@/validations/event';
 
@@ -63,6 +69,30 @@ events.patch(
   adminProtect,
   celebrate({ [Segments.PARAMS]: eventTicketIdSchema }),
   tracedAsyncHandler(approveUserTicket)
+);
+events.post(
+  '/:event_id/tickets/:ticket_id/payment',
+  protect,
+  celebrate({ [Segments.PARAMS]: eventTicketIdSchema, [Segments.BODY]: initiateTicketPaymentSchema }),
+  tracedAsyncHandler(initiateTicketPayment)
+);
+events.get(
+  '/:event_id/tickets/:ticket_id/payment/verify',
+  protect,
+  celebrate({ [Segments.PARAMS]: eventTicketIdSchema }),
+  tracedAsyncHandler(verifyTicketPayment)
+);
+events.patch(
+  '/:event_id/tickets/:ticket_id/payment/cancel',
+  protect,
+  celebrate({ [Segments.PARAMS]: eventTicketIdSchema }),
+  tracedAsyncHandler(cancelTicketPayment)
+);
+events.patch(
+  '/:event_id/tickets/:ticket_id/transfer',
+  protect,
+  celebrate({ [Segments.PARAMS]: eventTicketIdSchema, [Segments.BODY]: transferTicketSchema }),
+  tracedAsyncHandler(transferTicket)
 );
 
 export default events;

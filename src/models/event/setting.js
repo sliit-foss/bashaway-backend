@@ -31,6 +31,20 @@ const PaymentSettingsSchema = new mongoose.Schema({
       type: Number,
       default: 0
     }
+  },
+  premium_tickets: {
+    enabled: {
+      type: Boolean,
+      default: false
+    },
+    cost: {
+      type: Number,
+      default: 0
+    },
+    seats: {
+      type: Number,
+      default: 0
+    }
   }
 });
 
@@ -51,6 +65,10 @@ const SettingSchema = new mongoose.Schema({
   automatic_approval: {
     type: Boolean,
     default: true
+  },
+  ticket_transfer_enabled: {
+    type: Boolean,
+    default: false
   },
   registration_start: {
     type: Date,

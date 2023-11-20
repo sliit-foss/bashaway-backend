@@ -42,7 +42,7 @@ export const registerSchema = Joi.object({
     .required(),
   tshirt_size: Joi.string()
     .valid(...tshirtSizes)
-    .required()
+    .optional()
 });
 
 export const resendVerifyMailSchema = Joi.object({

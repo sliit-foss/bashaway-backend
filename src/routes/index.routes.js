@@ -11,6 +11,7 @@ import speakerRouter from './speaker.routes';
 import storageRouter from './storage.routes';
 import submissionRouter from './submission.routes';
 import userRouter from './user.routes';
+import webhookRouter from './webhook.routes';
 
 const router = express.Router();
 
@@ -25,5 +26,6 @@ router.use('/leaderboard', leaderboardRouter);
 router.use('/settings', protect, settingRouter);
 router.use('/speakers', protect, adminProtect, speakerRouter);
 router.use('/storage', protect, adminProtect, storageRouter);
+router.use('/webhooks', webhookRouter);
 
 export default router;

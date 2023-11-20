@@ -17,6 +17,8 @@ export const findAll = ({ sort = {}, filter = {}, page, limit = 10 }) => {
 
 export const findById = (id) => Speaker.findById(id).lean();
 
+export const findByEmail = (email) => Speaker.findOne({ email }).lean();
+
 export const findOne = (filters, options = {}) => Speaker.findOne(filters, options).lean();
 
 export const findOneAndUpdate = (filters, data) => Speaker.findOneAndUpdate(filters, data, { new: true }).lean();

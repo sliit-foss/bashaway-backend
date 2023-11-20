@@ -1,3 +1,4 @@
+import createError from 'http-errors';
 import { omit } from 'lodash';
 import mongoose from 'mongoose';
 import Ticket, { payments } from '@/models/ticket';
@@ -21,7 +22,12 @@ export const findOne = (filters, filterFields = false) => {
   return query.exec();
 };
 
-export const findById = (id) => Ticket.findById(id).lean();
+export const findById = async (id, throwError = false) => {
+  const ticket = await Ticket.findById(id).lean();
+  if (!ticket && throwError) throw new createError(404, "Ticket doesn't exist");
+};
+
+export const findByReference = (reference) => Ticket.findOne({ reference }).lean();
 
 export const findWithApprovedUser = (id) => Ticket.findById(id).populate('approved_by').lean();
 
@@ -30,6 +36,12 @@ export const findOneAndUpdate = (filters, data) => Ticket.findOneAndUpdate(filte
 export const updateById = (id, data) => findOneAndUpdate({ _id: id }, data);
 
 export const deleteById = (id) => Ticket.deleteOne({ _id: id });
+
+export const getPremiumTicketCount = (eventId) =>
+  Ticket.countDocuments({ event: eventId, premium: true, payment_status: payments.success }).lean();
+
+export const getPaidTicketCount = (eventId) =>
+  Ticket.countDocuments({ event: eventId, payment_status: payments.success }).lean();
 
 export const getTicketStats = async (eventId) => {
   const pipeline = [
@@ -40,6 +52,7 @@ export const getTicketStats = async (eventId) => {
         approved_count: { $sum: { $cond: [{ $eq: ['$approved', true] }, 1, 0] } },
         transferred_count: { $sum: { $cond: [{ $eq: ['$transferred', true] }, 1, 0] } },
         utilized_count: { $sum: { $cond: [{ $eq: ['$utilized', true] }, 1, 0] } },
+        premium_count: { $sum: { $cond: [{ $eq: ['$premium', true] }, 1, 0] } },
         unpaid: {
           $sum: {
             $cond: [{ $and: [{ $eq: ['$approved', true] }, { $eq: ['$payment_status', payments.pending] }] }, 1, 0]

@@ -14,7 +14,7 @@ const EventSchema = new mongoose.Schema(
       type: String,
       required: true
     },
-    capacity: {
+    seats: {
       type: Number,
       required: true
     },

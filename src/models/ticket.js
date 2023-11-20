@@ -76,6 +76,10 @@ const TicketSchema = new mongoose.Schema(
     utilized: {
       type: Boolean,
       default: false
+    },
+    premium: {
+      type: Boolean,
+      default: false
     }
   },
   {
