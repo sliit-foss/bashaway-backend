@@ -13,3 +13,4 @@ yarn-error.log
 **azurite**
 .idea/
 .DS_Store
+.vercel

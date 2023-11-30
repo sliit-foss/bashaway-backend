@@ -15,4 +15,11 @@ const connectDB = () => {
   });
 };
 
+process.on('SIGINT', () => {
+  mongoose.connection.close(() => {
+    console.log('Mongoose disconnected on app termination');
+    process.exit(0);
+  });
+});
+
 export default connectDB;

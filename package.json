@@ -1,18 +1,12 @@
 {
-  "name": "bashaway-backend",
+  "name": "bashaway-serverless-backend",
   "version": "2.1.0",
   "description": "Backend",
-  "main": "dist/app.js",
+  "main": "api/index.js",
   "scripts": {
-    "build": "npm run clean && npm run build-babel && npm run copy",
-    "build-babel": "babel -d ./dist ./src -s",
-    "clean": "rm -rf dist && mkdir dist",
-    "copy": "babel src --out-dir ./dist --copy-files",
-    "dev": "nodemon --exec babel-node src/app.js",
     "format": "prettier --write --cache \"**/*.{js,md,html}\"",
-    "lint": "eslint src --ext js,md --ignore-path .gitignore --fix --cache --report-unused-disable-directives",
+    "lint": "eslint api --ext js,md --ignore-path .gitignore --fix --cache --report-unused-disable-directives",
     "prepare": "lefthook install",
-    "start": "node dist/app.js",
     "test": "echo test"
   },
   "repository": {
@@ -26,6 +20,7 @@
   },
   "homepage": "https://github.com/sliit-foss/bashaway-backend#readme",
   "dependencies": {
+    "@babel/register": "7.22.15",
     "@faker-js/faker": "8.1.0",
     "@sliit-foss/functions": "2.2.4",
     "@sliit-foss/http-logger": "1.1.2",
@@ -33,11 +28,9 @@
     "@sliit-foss/service-connector": "1.2.4",
     "bcryptjs": "2.4.3",
     "celebrate": "15.0.1",
-    "compression": "1.7.4",
-    "cors": "2.8.5",
+    "dotenv": "16.3.1",
     "express": "4.18.1",
     "express-http-context": "1.2.4",
-    "express-rate-limit": "6.5.1",
     "handlebars": "4.7.7",
     "helmet": "5.1.0",
     "http-errors": "2.0.0",
@@ -47,7 +40,8 @@
     "mongoose": "6.4.3",
     "mongoose-aggregate-paginate-v2": "1.0.6",
     "mongoose-paginate-v2": "1.7.0",
-    "nodemailer": "6.7.7"
+    "nodemailer": "6.7.7",
+    "vercel": "32.5.0"
   },
   "devDependencies": {
     "@babel/cli": "7.17.10",
@@ -60,7 +54,6 @@
     "@sliit-foss/eslint-config-internal": "1.1.4",
     "@trivago/prettier-plugin-sort-imports": "4.1.1",
     "babel-plugin-module-resolver": "5.0.0",
-    "dotenv": "16.0.1",
     "eslint": "8.45.0",
     "eslint-plugin-import": "2.27.5",
     "lefthook": "1.4.3",
