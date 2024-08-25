@@ -30,13 +30,15 @@ export const authLogin = async ({ email, password }) => {
 };
 
 export const verifyMailTemplate = async (email, verification_code) => {
+  const year = new Date().getFullYear();
   const replacements = {
     header: 'Welcome To Bashaway!',
     text: `We are excited to have you here. To get started, you need to confirm your account. Just press the
     button below.`,
     action_link: `${process.env.APP_DOMAIN}/api/auth/verify/${verification_code}`,
     action_text: 'Confirm',
-    disclaimer_text: "You've received this email because you have opted to participate in Bashaway 2023."
+    disclaimer_text: `You've received this email because you have opted to participate in Bashaway ${year}.`,
+    year
   };
   const subject = 'Bashaway - Account Verification';
   await sendMail(email, 'call_to_action', replacements, subject);
@@ -68,7 +70,7 @@ export const resetPasswordMailTemplate = async (email, verification_code) => {
       isFromAdmin() ? process.env.ADMIN_FRONTEND_DOMAIN : process.env.FRONTEND_DOMAIN
     }/reset-password/${verification_code}`,
     action_text: 'Reset Password',
-    disclaimer_text: "You've received this email because you have opted to participate in Bashaway 2023."
+    disclaimer_text: `You've received this email because you have opted to participate in Bashaway ${new Date().getFullYear()}.`
   };
   const subject = 'Bashaway - Reset Account Password';
   await sendMail(email, 'call_to_action', replacements, subject);
