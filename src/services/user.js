@@ -51,8 +51,7 @@ export const addNewUser = async (payload) => {
   const newUser = await createUser({
     ...payload,
     password: encryptedPassword,
-    is_verified: true,
-    role: 'ADMIN'
+    is_verified: true
   });
   try {
     await sendAdminPassword(payload.email, generatedPassword);

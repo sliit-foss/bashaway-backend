@@ -3,7 +3,8 @@ import { genders, mealPreferences } from '@/models/user';
 
 export const addUserSchema = {
   name: Joi.string().required(),
-  email: Joi.string().email().required()
+  email: Joi.string().email().required(),
+  role: Joi.string().valid('ADMIN', 'SPECTATOR').required()
 };
 
 export const userIdSchema = {
