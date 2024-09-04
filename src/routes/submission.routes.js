@@ -2,7 +2,7 @@ import express from 'express';
 import { tracedAsyncHandler } from '@sliit-foss/functions';
 import { Segments, celebrate } from 'celebrate';
 import { create, grade, view } from '@/controllers/submission';
-import { adminProtect } from '@/middleware/auth';
+import { roleProtect } from '@/middleware/auth';
 import {
   submissionCreateSchema,
   submissionIdSchema,
@@ -20,7 +20,7 @@ submissions.patch(
     [Segments.PARAMS]: submissionIdSchema,
     [Segments.BODY]: submissionUpdateSchema
   }),
-  adminProtect,
+  roleProtect(['ADMIN']),
   tracedAsyncHandler(grade)
 );
 

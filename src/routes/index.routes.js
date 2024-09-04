@@ -1,5 +1,5 @@
 import express from 'express';
-import { adminProtect, externalPartyProtect, protect } from '@/middleware/auth';
+import { protect, roleProtect } from '@/middleware/auth';
 import authRouter from './auth.routes';
 import dashboardRouter from './dashboard.routes';
 import leaderboardRouter from './leaderboard.routes';
@@ -15,9 +15,9 @@ router.use('/auth', authRouter);
 router.use('/submissions', protect, submissionRouter);
 router.use('/users', protect, userRouter);
 router.use('/questions', protect, questionRouter);
-router.use('/dashboard', protect, externalPartyProtect, adminProtect, dashboardRouter);
+router.use('/dashboard', protect, roleProtect(['ADMIN, SPECTATOR']), dashboardRouter);
 router.use('/leaderboard', leaderboardRouter);
 router.use('/settings', protect, settingRouter);
-router.use('/storage', protect, adminProtect, storageRouter);
+router.use('/storage', protect, roleProtect(['ADMIN']), storageRouter);
 
 export default router;

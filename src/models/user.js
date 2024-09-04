@@ -1,5 +1,6 @@
 import mongoose from 'mongoose';
 import aggregatePaginate from 'mongoose-aggregate-paginate-v2';
+import { ROLE } from '@/const/const';
 
 export const genders = ['M', 'F', 'O', '-'];
 
@@ -45,7 +46,7 @@ const UserSchema = new mongoose.Schema(
     },
     role: {
       type: String,
-      enum: ['ADMIN', 'GROUP', 'SPECTATOR'],
+      enum: Object.values(ROLE),
       default: 'GROUP'
     },
     members: {

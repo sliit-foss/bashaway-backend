@@ -1,10 +1,13 @@
 import { Joi } from 'celebrate';
+import { ROLE } from '@/const/const';
 import { genders, mealPreferences } from '@/models/user';
 
 export const addUserSchema = {
   name: Joi.string().required(),
   email: Joi.string().email().required(),
-  role: Joi.string().valid('ADMIN', 'SPECTATOR').required()
+  role: Joi.string()
+    .valid(...Object.values(ROLE))
+    .required()
 };
 
 export const userIdSchema = {
