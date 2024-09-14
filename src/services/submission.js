@@ -8,8 +8,9 @@ export const createSubmission = async ({ question: questionId, link }, user) => 
   if (!question) throw new createError(422, 'Invalid question ID');
   if (!question.enabled) throw new createError(400, 'You cannot make a submission for a disabled question');
 
-  const chkurl = `${process.env.AZURE_FILE_URL_PATTERN}/${encodeURIComponent(user.name)}`;
-  if(!link.startsWith(chkurl)) throw new createError(422, 'Invalid submission link');
+  const checkUrl = `https://${process.env.AZURE_SOLUTION_UPLOAD_STORAGE_ACCOUNT}.blob.core.windows.net/${process.env.AZURE_STORAGE_CONTAINER}/${encodeURIComponent(user.name)}`;
+  
+  if(!link.startsWith(checkUrl)) throw new createError(422, 'Invalid submission link');
 
   const submission = await insertSubmission(user._id, questionId, link);
   initiateTesting(
