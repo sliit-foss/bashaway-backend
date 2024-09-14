@@ -35,6 +35,7 @@ export const updateUserdetails = async (userId, user, payload) => {
     }
     delete payload.is_active;
     delete payload.eliminated;
+    delete payload.name;
   }
   if (payload.name) {
     const existingUser = await getOneUser({ name: payload.name, _id: { $ne: userId } });
