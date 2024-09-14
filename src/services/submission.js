@@ -2,6 +2,7 @@ import createError from 'http-errors';
 import { findQuestion, getMaxScore } from '@/repository/question';
 import { getSubmissionById, getSubmissions, insertGrade, insertSubmission } from '@/repository/submission';
 import { triggerScorekeeper as initiateTesting } from './github';
+import { isFromAdmin } from '@/utils';
 
 export const createSubmission = async ({ question: questionId, link }, user) => {
   const question = await findQuestion({ _id: questionId });
@@ -25,7 +26,7 @@ export const createSubmission = async ({ question: questionId, link }, user) => 
 };
 
 export const viewSubmissions = (query, user) => {
-  if (user.role != 'ADMIN') {
+  if (user.role != 'ADMIN' || !isFromAdmin()) {
     if (!query.filter) query.filter = {};
     query.filter.user = user._id;
   }
