@@ -40,7 +40,7 @@ const SubmissionSchema = mongoose.Schema(
 
 SubmissionSchema.plugin(mongoosePaginate);
 
-SubmissionSchema.index({ createdAt: 1 });
+SubmissionSchema.index({ created_at: 1 });
 
 const Submission = mongoose.model('Submission', SubmissionSchema);
 

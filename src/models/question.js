@@ -60,7 +60,7 @@ const QuestionSchema = new mongoose.Schema(
 
 QuestionSchema.plugin(mongoosePaginate);
 
-QuestionSchema.index({ createdAt: 1 });
+QuestionSchema.index({ created_at: 1 });
 
 const Question = mongoose.model('Question', QuestionSchema);
 
