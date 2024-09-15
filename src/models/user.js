@@ -43,7 +43,8 @@ const UserSchema = new mongoose.Schema(
     role: {
       type: String,
       enum: Object.values(ROLE),
-      default: ROLE.GROUP
+      default: ROLE.GROUP,
+      index: true
     },
     members: {
       type: [

@@ -1,5 +1,4 @@
 import { moduleLogger } from '@sliit-foss/module-logger';
-import { isUndefined } from 'lodash';
 import { ROLE } from '@/constants';
 import { Submission } from '@/models';
 import { prefixObjectKeys } from '@/utils';
@@ -16,7 +15,7 @@ export const insertSubmission = (userId, question, link) => {
 
 export const getSubmissions = ({ sort = {}, filter = {}, page, limit = 10 }) => {
   const populate = ['user', 'graded_by', 'question'];
-  if (!isUndefined(filter.graded)) {
+  if (filter.graded !== undefined) {
     if (filter.graded) {
       filter.$or = [{ graded_by: { $ne: null } }, { automatically_graded: true }];
     } else {

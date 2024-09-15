@@ -16,7 +16,8 @@ const QuestionSchema = new mongoose.Schema(
     difficulty: {
       type: String,
       enum: Object.values(DIFFICULTY),
-      required: true
+      required: true,
+      index: true
     },
     constraints: [
       {
@@ -29,12 +30,14 @@ const QuestionSchema = new mongoose.Schema(
     },
     enabled: {
       type: Boolean,
-      default: true
+      default: true,
+      index: true
     },
     creator: {
       type: mongoose.Schema.Types.ObjectId,
       ref: 'User',
-      required: true
+      required: true,
+      index: true
     },
     creator_lock: {
       type: Boolean,
