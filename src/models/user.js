@@ -1,9 +1,6 @@
 import mongoose from 'mongoose';
 import aggregatePaginate from 'mongoose-aggregate-paginate-v2';
-
-export const genders = ['M', 'F', 'O', '-'];
-
-export const mealPreferences = ['VEG', 'NON_VEG'];
+import { GENDER, MEAL_PREFERENCE, ROLE } from '@/constants';
 
 const UserSchema = new mongoose.Schema(
   {
@@ -45,8 +42,8 @@ const UserSchema = new mongoose.Schema(
     },
     role: {
       type: String,
-      enum: ['ADMIN', 'GROUP'],
-      default: 'GROUP'
+      enum: Object.values(ROLE),
+      default: ROLE.GROUP
     },
     members: {
       type: [
@@ -75,11 +72,11 @@ const UserSchema = new mongoose.Schema(
           },
           gender: {
             type: String,
-            enum: genders
+            enum: Object.values(GENDER)
           },
           meal_preference: {
             type: String,
-            enum: mealPreferences
+            enum: Object.values(MEAL_PREFERENCE)
           },
           student_id_url: {
             type: String

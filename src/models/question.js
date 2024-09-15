@@ -1,5 +1,6 @@
 import mongoose from 'mongoose';
 import mongoosePaginate from 'mongoose-paginate-v2';
+import { DIFFICULTY } from '@/constants';
 
 const QuestionSchema = new mongoose.Schema(
   {
@@ -14,7 +15,7 @@ const QuestionSchema = new mongoose.Schema(
     },
     difficulty: {
       type: String,
-      enum: ['EASY', 'MEDIUM', 'HARD', 'EXTREME'],
+      enum: Object.values(DIFFICULTY),
       required: true
     },
     constraints: [

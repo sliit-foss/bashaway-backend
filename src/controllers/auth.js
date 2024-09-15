@@ -1,7 +1,7 @@
 import fs from 'fs';
 import handlebars from 'handlebars';
 import { default as createError } from 'http-errors';
-import path from 'path';
+import { default as path } from 'path';
 import { getRegistrationDeadline } from '@/repository/settings';
 import { blacklistToken } from '@/repository/token';
 import { getOneUser } from '@/repository/user';
