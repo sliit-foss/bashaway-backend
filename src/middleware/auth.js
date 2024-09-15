@@ -1,6 +1,5 @@
 import { asyncHandler } from '@sliit-foss/functions';
 import { default as createError } from 'http-errors';
-import { ROLE } from '@/constants';
 import { isBlacklistedToken } from '@/repository/token';
 import { getOneUser } from '@/repository/user';
 import { decodeJwtToken } from '@/utils';
@@ -22,11 +21,6 @@ export const protect = asyncHandler(async (req) => {
     throw new createError(401, 'Your account has been deactivated. Please contact an admin to resolve it');
   req.user_token = token;
   req.user = user;
-});
-
-export const adminProtect = asyncHandler((req) => {
-  if (req.headers['x-api-key'] === process.env.API_ACCESS_KEY) return;
-  if (req.user?.role !== ROLE.ADMIN) throw new createError(403, 'You are not permitted to access this resource');
 });
 
 export const roleProtect = (roles = []) => {
