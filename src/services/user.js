@@ -56,7 +56,7 @@ export const addNewUser = async (payload) => {
     is_verified: true
   });
   try {
-    await sendAdminPassword(payload.email, generatedPassword);
+    await sendUserPassword(payload.email, generatedPassword, payload.role);
     return newUser;
   } catch (e) {
     findOneAndRemoveUser({ email: payload.email }).exec();
@@ -64,11 +64,12 @@ export const addNewUser = async (payload) => {
   }
 };
 
-const sendAdminPassword = (email, password) => {
+const sendUserPassword = (email, password, role) => {
   const replacements = {
     header: 'Welcome To Bashaway!',
-    text: `Congratulations on being added as an admin to the Bashaway admin portal. To login to the system you
-    can use the following password -`,
+    text: `Congratulations on being added as ${
+      role === ROLE.ADMIN ? `an` : `a`
+    } ${role} to the Bashaway admin portal. To login to the system you can use the following password -`,
     highlight_text: password,
     action_link: `${process.env.ADMIN_FRONTEND_DOMAIN || 'https://admin.bashaway.sliitfoss.org'}/login`,
     action_text: 'Login',
