@@ -1,4 +1,5 @@
 import { moduleLogger } from '@sliit-foss/module-logger';
+import { ROLE } from '@/constants';
 import { User } from '@/models';
 
 const logger = moduleLogger('User-repository');
@@ -87,7 +88,7 @@ export const getAllUniverstyUserGroups = (filters = {}) => {
     {
       $match: {
         ...filters,
-        role: 'GROUP',
+        role: ROLE.GROUP,
         is_verified: true
       }
     },
@@ -119,7 +120,7 @@ export const getLeaderboardData = (filters = {}, submissionFilters = {}) => {
     {
       $match: {
         ...filters,
-        role: 'GROUP',
+        role: ROLE.GROUP,
         is_verified: true,
         is_active: true
       }

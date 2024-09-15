@@ -1,4 +1,5 @@
 import mongoose from 'mongoose';
+import { ROLE } from '@/constants';
 import Question from '@/models/question';
 import { prefixObjectKeys } from '@/utils';
 import { questionFilters } from './util';
@@ -42,10 +43,10 @@ export const getQuestionById = (id, user) => {
     _id: { $eq: new ObjectId(id) },
     $or: [{ creator_lock: false }, { creator_lock: true, creator: user._id }]
   };
-  if (user.role !== 'ADMIN') {
+  if (user.role !== ROLE.ADMIN) {
     filters.enabled = true;
   }
-  let query = Question.findOne(filters).lean();
+  const query = Question.findOne(filters).lean();
   return query.exec();
 };
 
@@ -92,7 +93,7 @@ export const getQuestionSubmissions = (user, teamFilters, submissionFilters) => 
           {
             $match: {
               ...prefixObjectKeys(teamFilters, 'user.'),
-              'user.role': 'GROUP'
+              'user.role': ROLE.GROUP
             }
           }
         ]

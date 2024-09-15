@@ -1,5 +1,6 @@
 import mongoose from 'mongoose';
 import mongoosePaginate from 'mongoose-paginate-v2';
+import { DIFFICULTY } from '@/constants';
 
 const QuestionSchema = new mongoose.Schema(
   {
@@ -14,8 +15,9 @@ const QuestionSchema = new mongoose.Schema(
     },
     difficulty: {
       type: String,
-      enum: ['EASY', 'MEDIUM', 'HARD', 'EXTREME'],
-      required: true
+      enum: Object.values(DIFFICULTY),
+      required: true,
+      index: true
     },
     constraints: [
       {
@@ -28,12 +30,14 @@ const QuestionSchema = new mongoose.Schema(
     },
     enabled: {
       type: Boolean,
-      default: true
+      default: true,
+      index: true
     },
     creator: {
       type: mongoose.Schema.Types.ObjectId,
       ref: 'User',
-      required: true
+      required: true,
+      index: true
     },
     creator_lock: {
       type: Boolean,

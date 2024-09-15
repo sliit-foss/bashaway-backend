@@ -1,8 +1,9 @@
 import express from 'express';
 import { tracedAsyncHandler } from '@sliit-foss/functions';
 import { Segments, celebrate } from 'celebrate';
+import { ROLE } from '@/constants';
 import { changePassword, create, eliminateTeams, getAll, getById, update } from '@/controllers/user';
-import { adminProtect } from '@/middleware/auth';
+import { roleProtect } from '@/middleware/auth';
 import {
   addUserSchema,
   changePasswordSchema,
@@ -13,9 +14,14 @@ import {
 
 const users = express.Router();
 
-users.post('/', adminProtect, celebrate({ [Segments.BODY]: addUserSchema }), tracedAsyncHandler(create));
-users.get('/', adminProtect, tracedAsyncHandler(getAll));
-users.get('/:id', celebrate({ [Segments.PARAMS]: userIdSchema }), adminProtect, tracedAsyncHandler(getById));
+users.post('/', roleProtect([ROLE.ADMIN]), celebrate({ [Segments.BODY]: addUserSchema }), tracedAsyncHandler(create));
+users.get('/', roleProtect([ROLE.ADMIN, ROLE.SPECTATOR]), tracedAsyncHandler(getAll));
+users.get(
+  '/:id',
+  celebrate({ [Segments.PARAMS]: userIdSchema }),
+  roleProtect([ROLE.ADMIN, ROLE.SPECTATOR]),
+  tracedAsyncHandler(getById)
+);
 users.patch(
   '/change_password',
   celebrate({ [Segments.BODY]: changePasswordSchema }),
@@ -23,7 +29,7 @@ users.patch(
 );
 users.patch(
   '/eliminate',
-  adminProtect,
+  roleProtect([ROLE.ADMIN]),
   celebrate({ [Segments.QUERY]: eliminateQuerySchema }),
   tracedAsyncHandler(eliminateTeams)
 );

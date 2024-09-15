@@ -1,5 +1,6 @@
 import { compareSync, hashSync } from 'bcryptjs';
 import { default as createError } from 'http-errors';
+import { ROLE } from '@/constants';
 import { getRoundBreakpoint } from '@/repository/settings';
 import {
   createUser,
@@ -29,7 +30,7 @@ export const changePasswordService = async (user, oldPassword, newPassword) => {
 };
 
 export const updateUserdetails = async (userId, user, payload) => {
-  if (user.role !== 'ADMIN') {
+  if (user.role !== ROLE.ADMIN) {
     if (userId !== user._id.toString()) {
       throw new createError(403, 'You are not authorized to update this user');
     }
@@ -52,11 +53,10 @@ export const addNewUser = async (payload) => {
   const newUser = await createUser({
     ...payload,
     password: encryptedPassword,
-    is_verified: true,
-    role: 'ADMIN'
+    is_verified: true
   });
   try {
-    await sendAdminPassword(payload.email, generatedPassword);
+    await sendUserPassword(payload.email, generatedPassword, payload.role);
     return newUser;
   } catch (e) {
     findOneAndRemoveUser({ email: payload.email }).exec();
@@ -64,11 +64,12 @@ export const addNewUser = async (payload) => {
   }
 };
 
-const sendAdminPassword = (email, password) => {
+const sendUserPassword = (email, password, role) => {
   const replacements = {
     header: 'Welcome To Bashaway!',
-    text: `Congratulations on being added as an admin to the Bashaway admin portal. To login to the system you
-    can use the following password -`,
+    text: `Congratulations on being added as ${
+      role === ROLE.ADMIN ? `an` : `a`
+    } ${role} to the Bashaway admin portal. To login to the system you can use the following password -`,
     highlight_text: password,
     action_link: `${process.env.ADMIN_FRONTEND_DOMAIN || 'https://admin.bashaway.sliitfoss.org'}/login`,
     action_text: 'Login',
@@ -83,7 +84,7 @@ export const eliminateTeams = async (vanguard) => {
   const leaderboard = await getLeaderboardData({ created_at: { $lte: roundBreakpoint } });
   const teams = leaderboard.slice(0, vanguard).map((team) => team.email);
   await Promise.all([
-    findAndUpdateUsers({ role: 'GROUP', email: { $in: teams } }, { eliminated: false }),
-    findAndUpdateUsers({ role: 'GROUP', email: { $nin: teams } }, { eliminated: true })
+    findAndUpdateUsers({ role: ROLE.GROUP, email: { $in: teams } }, { eliminated: false }),
+    findAndUpdateUsers({ role: ROLE.GROUP, email: { $nin: teams } }, { eliminated: true })
   ]);
 };

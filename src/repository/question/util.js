@@ -1,16 +1,12 @@
+import { ROLE } from '@/constants';
+
 export const questionFilters = (user, baseFilters = {}) => {
-  let filter;
-  if (user.role === 'ADMIN') {
-    filter = {
-      $or: [{ creator_lock: false }, { creator_lock: true, creator: user._id }],
-      $and: [baseFilters]
-    };
-  } else {
+  if (user.role !== ROLE.ADMIN) {
     baseFilters.enabled = true;
   }
-  filter = {
+  const filter = {
     $or: [{ creator_lock: false }, { creator_lock: true, creator: user._id }],
-    $and: [baseFilters]
+    ...baseFilters
   };
   return filter;
 };

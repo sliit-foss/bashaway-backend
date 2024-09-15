@@ -1,9 +1,12 @@
 import { Joi } from 'celebrate';
-import { genders, mealPreferences } from '@/models/user';
+import { GENDER, MEAL_PREFERENCE, ROLE } from '@/constants';
 
 export const addUserSchema = {
   name: Joi.string().required(),
-  email: Joi.string().email().required()
+  email: Joi.string().email().required(),
+  role: Joi.string()
+    .valid(...Object.values(ROLE))
+    .required()
 };
 
 export const userIdSchema = {
@@ -22,10 +25,10 @@ export const updateSchema = {
         academic_year: Joi.number().required().min(1).max(4),
         nic: Joi.string().optional(),
         gender: Joi.string()
-          .valid(...genders)
+          .valid(...Object.values(GENDER))
           .optional(),
         meal_preference: Joi.string()
-          .valid(...mealPreferences)
+          .valid(...Object.values(MEAL_PREFERENCE))
           .optional(),
         student_id_url: Joi.string().optional()
       })
