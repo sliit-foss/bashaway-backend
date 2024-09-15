@@ -94,7 +94,7 @@ const UserSchema = new mongoose.Schema(
 
 UserSchema.plugin(aggregatePaginate);
 
-UserSchema.index({ createdAt: 1 });
+UserSchema.index({ created_at: 1 });
 
 const User = mongoose.model('User', UserSchema);
 
