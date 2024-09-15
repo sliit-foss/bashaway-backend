@@ -14,7 +14,7 @@ export const findAllQuestions = (user, query = {}) => {
   const filter = questionFilters(user, query.filter);
 
   const options = {
-    select: '-creator -creator_lock',
+    select: '-creator',
     lean: true,
     sort: query.sort
   };
@@ -38,7 +38,7 @@ export const findQuestion = (filters) => {
   return Question.findOne(filters).lean();
 };
 
-export const getQuestionById = (id, user, filterFields = true) => {
+export const getQuestionById = (id, user) => {
   const filters = {
     _id: { $eq: new ObjectId(id) },
     $or: [{ creator_lock: false }, { creator_lock: true, creator: user._id }]
@@ -46,8 +46,7 @@ export const getQuestionById = (id, user, filterFields = true) => {
   if (user.role !== ROLE.ADMIN) {
     filters.enabled = true;
   }
-  let query = Question.findOne(filters).lean();
-  if (filterFields) query = query.select('-creator_lock');
+  const query = Question.findOne(filters).lean();
   return query.exec();
 };
 

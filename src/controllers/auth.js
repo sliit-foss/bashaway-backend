@@ -43,7 +43,8 @@ export const verifyUser = async (req, res) => {
     res.end(
       template({
         login_link: `${process.env.FRONTEND_DOMAIN}/login`,
-        verified: !!user
+        verified: !!user,
+        year: new Date().getFullYear()
       })
     );
   } catch (e) {

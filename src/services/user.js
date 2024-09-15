@@ -36,6 +36,7 @@ export const updateUserdetails = async (userId, user, payload) => {
     }
     delete payload.is_active;
     delete payload.eliminated;
+    delete payload.name;
   }
   if (payload.name) {
     const existingUser = await getOneUser({ name: payload.name, _id: { $ne: userId } });
@@ -71,7 +72,7 @@ const sendAdminPassword = (email, password) => {
     highlight_text: password,
     action_link: `${process.env.ADMIN_FRONTEND_DOMAIN || 'https://admin.bashaway.sliitfoss.org'}/login`,
     action_text: 'Login',
-    disclaimer_text: "You've received this email because you have been chosen as a member of Bashaway 2023."
+    disclaimer_text: `You've received this email because you have been chosen as a member of Bashaway ${new Date().getFullYear()}.`
   };
   const subject = 'Bashaway - Admin Account Password';
   return sendMail(email, 'call_to_action', replacements, subject);
