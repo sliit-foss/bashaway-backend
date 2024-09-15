@@ -3,10 +3,10 @@ import context from 'express-http-context';
 import rateLimit from 'express-rate-limit';
 import httpLogger from '@sliit-foss/http-logger';
 import { moduleLogger } from '@sliit-foss/module-logger';
-import compression from 'compression';
-import cors from 'cors';
-import crypto from 'crypto';
-import helmet from 'helmet';
+import { default as compression } from 'compression';
+import { default as cors } from 'cors';
+import { default as crypto } from 'crypto';
+import { default as helmet } from 'helmet';
 import { omit, pick } from 'lodash';
 import { default as connectDB } from '@/database';
 import { errorHandler, queryMapper, responseInterceptor } from '@/middleware';
@@ -79,8 +79,6 @@ global.__basedir = __dirname;
 
 const port = process.env.PORT || 3000;
 
-app.listen(port, (err) => {
-  if (!err) {
-    logger.info(`Bashaway server successfully started on port ${port}`);
-  }
+app.listen(port, () => {
+  logger.info(`Bashaway server successfully started on port ${port}`);
 });

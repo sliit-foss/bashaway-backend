@@ -1,5 +1,6 @@
 import { compareSync, hashSync } from 'bcryptjs';
 import { default as createError } from 'http-errors';
+import { ROLE } from '@/constants';
 import { getRoundBreakpoint } from '@/repository/settings';
 import {
   createUser,
@@ -29,7 +30,7 @@ export const changePasswordService = async (user, oldPassword, newPassword) => {
 };
 
 export const updateUserdetails = async (userId, user, payload) => {
-  if (user.role !== 'ADMIN') {
+  if (user.role !== ROLE.ADMIN) {
     if (userId !== user._id.toString()) {
       throw new createError(403, 'You are not authorized to update this user');
     }
@@ -81,7 +82,7 @@ export const eliminateTeams = async (vanguard) => {
   const leaderboard = await getLeaderboardData({ created_at: { $lte: roundBreakpoint } });
   const teams = leaderboard.slice(0, vanguard).map((team) => team.email);
   await Promise.all([
-    findAndUpdateUsers({ role: 'GROUP', email: { $in: teams } }, { eliminated: false }),
-    findAndUpdateUsers({ role: 'GROUP', email: { $nin: teams } }, { eliminated: true })
+    findAndUpdateUsers({ role: ROLE.GROUP, email: { $in: teams } }, { eliminated: false }),
+    findAndUpdateUsers({ role: ROLE.GROUP, email: { $nin: teams } }, { eliminated: true })
   ]);
 };

@@ -1,4 +1,5 @@
 import createError from 'http-errors';
+import { ROLE } from '@/constants';
 import { findQuestion, getMaxScore } from '@/repository/question';
 import { getSubmissionById, getSubmissions, insertGrade, insertSubmission } from '@/repository/submission';
 import { triggerScorekeeper as initiateTesting } from './github';
@@ -20,7 +21,7 @@ export const createSubmission = async ({ question: questionId, link }, user) => 
 };
 
 export const viewSubmissions = (query, user) => {
-  if (user.role != 'ADMIN') {
+  if (user.role != ROLE.ADMIN) {
     if (!query.filter) query.filter = {};
     query.filter.user = user._id;
   }

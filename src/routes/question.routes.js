@@ -1,6 +1,7 @@
 import express from 'express';
 import { tracedAsyncHandler } from '@sliit-foss/functions';
 import { Segments, celebrate } from 'celebrate';
+import { ROLE } from '@/constants';
 import {
   createNewQuestion,
   deleteOldQuestion,
@@ -17,20 +18,20 @@ questions.get('/', tracedAsyncHandler(getAllQuestions));
 questions.post(
   '/',
   celebrate({ [Segments.BODY]: addQuestionSchema }),
-  roleProtect(['ADMIN']),
+  roleProtect([ROLE.ADMIN]),
   tracedAsyncHandler(createNewQuestion)
 );
 questions.get('/:question_id', celebrate({ [Segments.PARAMS]: questionIdSchema }), tracedAsyncHandler(getQuestionById));
 questions.patch(
   '/:question_id',
   celebrate({ [Segments.PARAMS]: questionIdSchema, [Segments.BODY]: updateQuestionSchema }),
-  roleProtect(['ADMIN']),
+  roleProtect([ROLE.ADMIN]),
   tracedAsyncHandler(updateQuestion)
 );
 questions.delete(
   '/:question_id',
   celebrate({ [Segments.PARAMS]: questionIdSchema }),
-  roleProtect(['ADMIN']),
+  roleProtect([ROLE.ADMIN]),
   tracedAsyncHandler(deleteOldQuestion)
 );
 

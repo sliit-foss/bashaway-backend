@@ -1,5 +1,6 @@
 import { moduleLogger } from '@sliit-foss/module-logger';
 import { isUndefined } from 'lodash';
+import { ROLE } from '@/constants';
 import { Submission } from '@/models';
 import { prefixObjectKeys } from '@/utils';
 
@@ -72,7 +73,7 @@ export const getTeamSubmissions = (filters = {}, userFilters = {}) => {
     {
       $match: {
         ...prefixObjectKeys(userFilters, 'user.'),
-        'user.role': 'GROUP'
+        'user.role': ROLE.GROUP
       }
     },
     {
