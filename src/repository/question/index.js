@@ -51,7 +51,7 @@ export const getQuestionById = (id, user) => {
 };
 
 export const findAndUpdateQuestion = (filters, data) => {
-  return Question.findOneAndUpdate(filters, data, { new: true });
+  return Question.findOneAndUpdate(filters, data, { new: true }).lean();
 };
 
 export const deleteAQuestion = (filters) => {

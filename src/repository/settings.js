@@ -5,7 +5,7 @@ export const getSettingsDoc = () => {
 };
 
 export const updateSettingsDoc = async (settings) => {
-  await Setting.findOneAndUpdate({}, settings, { new: true, upsert: true });
+  await Setting.findOneAndUpdate({}, settings, { new: true, upsert: true }).lean();
 };
 
 export const getRegistrationDeadline = async () => {
