@@ -1,8 +1,5 @@
-import { moduleLogger } from '@sliit-foss/module-logger';
 import { ROLE } from '@/constants';
 import { User } from '@/models';
-
-const logger = moduleLogger('User-repository');
 
 export const createUser = async (user) => {
   const newUser = (await new User(user).save()).toObject();
@@ -59,10 +56,7 @@ export const getAllUsers = ({ sort = {}, filter = {}, page, limit = 10 }) => {
     { $unset: ['password', 'verification_code', 'submissions'] }
   ]);
 
-  return (page ? User.aggregatePaginate(pipeline, options) : pipeline).catch((err) => {
-    logger.error(`An error occurred when retrieving users - err: ${err.message}`);
-    throw err;
-  });
+  return page ? User.aggregatePaginate(pipeline, options) : pipeline;
 };
 
 export const getOneUser = async (filters, returnPassword = false) => {

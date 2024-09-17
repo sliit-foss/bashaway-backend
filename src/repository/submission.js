@@ -1,9 +1,6 @@
-import { moduleLogger } from '@sliit-foss/module-logger';
 import { ROLE } from '@/constants';
 import { Submission } from '@/models';
 import { prefixObjectKeys } from '@/utils';
-
-const logger = moduleLogger('Submission-repository');
 
 export const insertSubmission = (userId, question, link) => {
   return Submission.create({
@@ -30,14 +27,11 @@ export const getSubmissions = ({ sort = {}, filter = {}, page, limit = 10 }) => 
     collation: {
       locale: 'en'
     },
-    populate
+    populate,
+    lean: true
   };
-  return page
-    ? Submission.paginate(filter, options).catch((err) => {
-        logger.error(`An error occurred when retrieving submissions - err: ${err.message}`);
-        throw err;
-      })
-    : Submission.find(filter).sort(sort).populate(populate).lean();
+
+  return page ? Submission.paginate(filter, options) : Submission.find(filter).sort(sort).populate(populate).lean();
 };
 
 export const getSubmissionById = (id) => {
@@ -53,7 +47,7 @@ export const insertGrade = async (submission, score, automated, userId) => {
     { _id: submission },
     { score, graded_by: userId, automatically_graded: automated },
     { upsert: true }
-  );
+  ).lean();
 };
 
 export const getDistinctSubmissions = (questionId) => {
