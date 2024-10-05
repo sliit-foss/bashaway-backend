@@ -1,13 +1,20 @@
 import { getRoundBreakpoint } from '@/repository/settings';
 
-export const getAnalyticTeamFilters = (round, ghostLegion) => {
+export const getAnalyticTeamFilters = (round, ghostLegion, excludeTeams) => {
+  const excludedTeams = ['Byte Bashers']; // From a sponsoring company
+  const teamFilters = {};
   if (round == 2 && !ghostLegion) {
-    return { eliminated: false };
+    teamFilters.eliminated = false;
   }
-  return {};
+  if (excludeTeams & (excludeTeams.length !== 0)) {
+    teamFilters.name = {
+      $nin: excludedTeams
+    };
+  }
+  return teamFilters;
 };
 
-export const getAnalyticFilters = async (round, ghostLegion, roundBreakpoint) => {
+export const getAnalyticFilters = async (round, ghostLegion, roundBreakpoint, excludeTeams) => {
   const submissionFilters = {};
   roundBreakpoint ??= await getRoundBreakpoint();
   if (roundBreakpoint) {
@@ -17,5 +24,5 @@ export const getAnalyticFilters = async (round, ghostLegion, roundBreakpoint) =>
       submissionFilters.created_at = { $lt: new Date(roundBreakpoint) };
     }
   }
-  return { teamFilters: getAnalyticTeamFilters(round, ghostLegion), submissionFilters };
+  return { teamFilters: getAnalyticTeamFilters(round, ghostLegion, excludeTeams), submissionFilters };
 };
