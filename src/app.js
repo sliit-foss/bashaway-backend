@@ -59,7 +59,7 @@ app.use((req, _res, next) => {
 app.use(
   httpLogger({
     loggable: ({ headers, body: payload }) => ({
-      headers: pick(headers, ['x-user-email', 'user-agent']),
+      headers,
       payload: omit(payload, ['password', 'new_password', 'old_password'])
     })
   })
