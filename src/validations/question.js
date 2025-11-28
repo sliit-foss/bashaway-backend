@@ -32,3 +32,7 @@ export const updateQuestionSchema = {
 export const questionIdSchema = {
   question_id: Joi.string().hex().length(24).required()
 };
+
+export const bulkUpdateStatusSchema = {
+  enabled: Joi.boolean().required()
+};

@@ -1,6 +1,7 @@
 import createError from 'http-errors';
 import { attachSubmissionAttributesToQuestion } from '@/helpers';
 import {
+  bulkUpdateQuestions,
   deleteAQuestion,
   findAllQuestions,
   findAndUpdateQuestion,
@@ -62,4 +63,8 @@ export const deleteQuestion = async (question_id, user) => {
   if (question.creator_lock && question.creator.toString() !== user._id.toString())
     throw new createError(403, 'You are not authorized to delete this question');
   return deleteAQuestion({ _id: question_id });
+};
+
+export const bulkUpdateQuestionStatus = (enabled) => {
+  return bulkUpdateQuestions({}, { enabled });
 };

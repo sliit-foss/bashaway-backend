@@ -12,7 +12,7 @@ settings.get('/', tracedAsyncHandler(getSettings));
 
 settings.patch(
   '/',
-  celebrate({ [Segments.PARAMS]: updateSettingsSchema, [Segments.BODY]: updateSettingsSchema }),
+  celebrate({ [Segments.BODY]: updateSettingsSchema }),
   roleProtect([ROLE.ADMIN]),
   tracedAsyncHandler(updateSettings)
 );

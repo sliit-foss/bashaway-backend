@@ -59,7 +59,7 @@ export const addNewUser = async (payload) => {
     await sendUserPassword(payload.email, generatedPassword, payload.role);
     return newUser;
   } catch (e) {
-    findOneAndRemoveUser({ email: payload.email }).exec();
+    findOneAndRemoveUser({ email: payload.email });
     throw e;
   }
 };

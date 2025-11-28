@@ -1,4 +1,5 @@
 import {
+  bulkUpdateQuestionStatus,
   createQuestion,
   deleteQuestion,
   retrieveAllQuestions,
@@ -30,4 +31,14 @@ export const updateQuestion = async (req, res) => {
 export const deleteOldQuestion = async (req, res) => {
   await deleteQuestion(req.params.question_id, req.user);
   return makeResponse({ res, message: 'Question deleted successfully' });
+};
+
+export const bulkUpdateStatus = async (req, res) => {
+  const { enabled } = req.body;
+  const result = await bulkUpdateQuestionStatus(enabled);
+  return makeResponse({
+    res,
+    data: { modifiedCount: result.modifiedCount },
+    message: `${result.modifiedCount} questions ${enabled ? 'enabled' : 'disabled'} successfully`
+  });
 };

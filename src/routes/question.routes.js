@@ -3,6 +3,7 @@ import { tracedAsyncHandler } from '@sliit-foss/functions';
 import { Segments, celebrate } from 'celebrate';
 import { ROLE } from '@/constants';
 import {
+  bulkUpdateStatus,
   createNewQuestion,
   deleteOldQuestion,
   getAllQuestions,
@@ -10,7 +11,12 @@ import {
   updateQuestion
 } from '@/controllers/question';
 import { roleProtect } from '@/middleware/auth';
-import { addQuestionSchema, questionIdSchema, updateQuestionSchema } from '@/validations/question';
+import {
+  addQuestionSchema,
+  bulkUpdateStatusSchema,
+  questionIdSchema,
+  updateQuestionSchema
+} from '@/validations/question';
 
 const questions = express.Router();
 
@@ -21,6 +27,15 @@ questions.post(
   roleProtect([ROLE.ADMIN]),
   tracedAsyncHandler(createNewQuestion)
 );
+
+// Bulk operations (must be before /:question_id routes)
+questions.patch(
+  '/bulk/status',
+  celebrate({ [Segments.BODY]: bulkUpdateStatusSchema }),
+  roleProtect([ROLE.ADMIN]),
+  tracedAsyncHandler(bulkUpdateStatus)
+);
+
 questions.get('/:question_id', celebrate({ [Segments.PARAMS]: questionIdSchema }), tracedAsyncHandler(getQuestionById));
 questions.patch(
   '/:question_id',
