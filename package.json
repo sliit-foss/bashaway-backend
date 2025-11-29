@@ -30,6 +30,7 @@
     "@sliit-foss/functions": "2.2.4",
     "@sliit-foss/http-logger": "1.1.2",
     "@sliit-foss/module-logger": "1.1.5",
+    "@sliit-foss/mongoose-audit": "1.0.4",
     "@sliit-foss/service-connector": "1.2.4",
     "bcryptjs": "2.4.3",
     "celebrate": "15.0.1",

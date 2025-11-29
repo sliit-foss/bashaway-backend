@@ -3,11 +3,11 @@ import { Submission } from '@/models';
 import { prefixObjectKeys } from '@/utils';
 
 export const insertSubmission = (userId, question, link) => {
-  return Submission.create({
+  return new Submission({
     user: userId,
     question,
     link
-  });
+  }).save();
 };
 
 export const getSubmissions = ({ sort = {}, filter = {}, page, limit = 10 }) => {
