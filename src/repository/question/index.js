@@ -55,7 +55,7 @@ export const findAndUpdateQuestion = (filters, data) => {
 };
 
 export const deleteAQuestion = (filters) => {
-  return Question.findOneAndDelete(filters);
+  return Question.findOneAndDelete(filters).lean();
 };
 
 export const getMaxScore = async (questionId) => {
