@@ -1,18 +1,10 @@
 import createError from 'http-errors';
 import { attachSubmissionAttributesToQuestion } from '@/helpers';
-import {
-  bulkUpdateQuestions,
-  deleteAQuestion,
-  findAllQuestions,
-  findAndUpdateQuestion,
-  findQuestion,
-  getQuestionById,
-  insertQuestion
-} from '@/repository/question';
+import * as repository from '@/repository/question';
 import { getDistinctSubmissions, getOneSubmission } from '@/repository/submission';
 
 export const retrieveAllQuestions = async (user, query) => {
-  const questions = await findAllQuestions(user, query);
+  const questions = await repository.findAllQuestions(user, query);
   await Promise.all(
     (query.page ? questions.docs : questions).map((question) => {
       return attachSubmissionAttributesToQuestion(question, user);
@@ -22,20 +14,20 @@ export const retrieveAllQuestions = async (user, query) => {
 };
 
 export const createQuestion = (data, user) => {
-  return insertQuestion({ ...data, creator: user._id });
+  return repository.insertQuestion({ ...data, creator: user._id });
 };
 
 export const retrieveQuestion = async (question_id, user) => {
-  const result = await getQuestionById(question_id, user);
+  const result = await repository.getQuestionById(question_id, user);
   if (!result) throw new createError(404, "Question doesn't exist or you do not have permission to view this question");
   return attachSubmissionAttributesToQuestion(result, user);
 };
 
 export const updateQuestionById = async (question_id, data, user) => {
-  const question = await findQuestion({ _id: question_id });
+  const question = await repository.findQuestion({ _id: question_id });
   if (!question) throw new createError(400, "Question doesn't exist to update");
   if (data.name) {
-    const check = await findQuestion({ name: data.name });
+    const check = await repository.findQuestion({ name: data.name });
     if (check && check._id?.toString() !== question_id?.toString())
       throw new createError(400, 'Question name already taken');
   }
@@ -45,11 +37,11 @@ export const updateQuestionById = async (question_id, data, user) => {
     const submissionCount = (await getDistinctSubmissions(question_id)).length;
     if (submissionCount > 0) throw new createError(400, 'Cannot update a question with submissions');
   }
-  return findAndUpdateQuestion({ _id: question_id }, data);
+  return repository.findAndUpdateQuestion({ _id: question_id }, data);
 };
 
 export const deleteQuestion = async (question_id, user) => {
-  const question = await findQuestion({ _id: question_id });
+  const question = await repository.findQuestion({ _id: question_id });
   if (!question) throw new createError(400, "Question doesn't exist to remove");
 
   const checkSubmission = await getOneSubmission({ question: question_id });
@@ -62,9 +54,9 @@ export const deleteQuestion = async (question_id, user) => {
   }
   if (question.creator_lock && question.creator.toString() !== user._id.toString())
     throw new createError(403, 'You are not authorized to delete this question');
-  return deleteAQuestion({ _id: question_id });
+  return repository.deleteAQuestion({ _id: question_id });
 };
 
-export const bulkUpdateQuestionStatus = (enabled) => {
-  return bulkUpdateQuestions({}, { enabled });
+export const bulkUpdateQuestions = (data) => {
+  return repository.bulkUpdateQuestions({}, data);
 };
