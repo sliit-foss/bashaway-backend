@@ -7,7 +7,7 @@ import { default as compression } from 'compression';
 import { default as cors } from 'cors';
 import { default as crypto } from 'crypto';
 import { default as helmet } from 'helmet';
-import { omit, pick } from 'lodash';
+import { omit } from 'lodash';
 import { default as connectDB } from '@/database';
 import { errorHandler, queryMapper, responseInterceptor } from '@/middleware';
 import { default as routes } from '@/routes/index.routes';

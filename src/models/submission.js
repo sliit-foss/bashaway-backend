@@ -1,5 +1,6 @@
 import mongoose from 'mongoose';
 import mongoosePaginate from 'mongoose-paginate-v2';
+import audit from '@/helpers/audit';
 
 const SubmissionSchema = new mongoose.Schema(
   {
@@ -37,6 +38,8 @@ const SubmissionSchema = new mongoose.Schema(
     timestamps: { createdAt: 'created_at', updatedAt: 'updated_at' }
   }
 );
+
+SubmissionSchema.plugin(audit);
 
 SubmissionSchema.plugin(mongoosePaginate);
 

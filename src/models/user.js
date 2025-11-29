@@ -1,6 +1,7 @@
 import mongoose from 'mongoose';
 import aggregatePaginate from 'mongoose-aggregate-paginate-v2';
 import { GENDER, MEAL_PREFERENCE, ROLE } from '@/constants';
+import audit from '@/helpers/audit';
 
 const UserSchema = new mongoose.Schema(
   {
@@ -91,6 +92,8 @@ const UserSchema = new mongoose.Schema(
     timestamps: { createdAt: 'created_at', updatedAt: 'updated_at' }
   }
 );
+
+UserSchema.plugin(audit);
 
 UserSchema.plugin(aggregatePaginate);
 

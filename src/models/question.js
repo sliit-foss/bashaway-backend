@@ -1,6 +1,7 @@
 import mongoose from 'mongoose';
 import mongoosePaginate from 'mongoose-paginate-v2';
 import { DIFFICULTY } from '@/constants';
+import audit from '@/helpers/audit';
 
 const QuestionSchema = new mongoose.Schema(
   {
@@ -57,6 +58,8 @@ const QuestionSchema = new mongoose.Schema(
     timestamps: { createdAt: 'created_at', updatedAt: 'updated_at' }
   }
 );
+
+QuestionSchema.plugin(audit);
 
 QuestionSchema.plugin(mongoosePaginate);
 
