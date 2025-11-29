@@ -10,8 +10,8 @@ export const getSettings = async (_, res) => {
   });
 };
 
-export const updateSettings = async (_, res) => {
-  const data = await updateSettingsDoc();
+export const updateSettings = async (req, res) => {
+  const data = await updateSettingsDoc(req.body);
   return makeResponse({
     res,
     data,

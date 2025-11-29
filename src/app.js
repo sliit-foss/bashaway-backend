@@ -7,7 +7,7 @@ import { default as compression } from 'compression';
 import { default as cors } from 'cors';
 import { default as crypto } from 'crypto';
 import { default as helmet } from 'helmet';
-import { omit, pick } from 'lodash';
+import { omit } from 'lodash';
 import { default as connectDB } from '@/database';
 import { errorHandler, queryMapper, responseInterceptor } from '@/middleware';
 import { default as routes } from '@/routes/index.routes';
@@ -20,7 +20,7 @@ const app = express();
 
 const limiter = rateLimit({
   windowMs: 1 * 60 * 1000,
-  max: 100,
+  max: 600,
   standardHeaders: true,
   legacyHeaders: false
 });
@@ -59,7 +59,7 @@ app.use((req, _res, next) => {
 app.use(
   httpLogger({
     loggable: ({ headers, body: payload }) => ({
-      headers: pick(headers, ['x-user-email', 'user-agent']),
+      headers,
       payload: omit(payload, ['password', 'new_password', 'old_password'])
     })
   })

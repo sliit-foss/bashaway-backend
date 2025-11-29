@@ -3,11 +3,11 @@ import { Submission } from '@/models';
 import { prefixObjectKeys } from '@/utils';
 
 export const insertSubmission = (userId, question, link) => {
-  return Submission.create({
+  return new Submission({
     user: userId,
     question,
     link
-  });
+  }).save();
 };
 
 export const getSubmissions = ({ sort = {}, filter = {}, page, limit = 10 }) => {
@@ -45,8 +45,7 @@ export const getOneSubmission = (filters, options = {}) => {
 export const insertGrade = async (submission, score, automated, userId) => {
   await Submission.findOneAndUpdate(
     { _id: submission },
-    { score, graded_by: userId, automatically_graded: automated },
-    { upsert: true }
+    { score, graded_by: userId, automatically_graded: automated }
   ).lean();
 };
 
