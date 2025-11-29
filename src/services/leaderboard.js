@@ -21,8 +21,8 @@ export const getLeaderboardRankings = async (round, ghostLegion) => {
         let element = faker.science.chemicalElement();
         while (names.has(element.name)) {
           element = faker.science.chemicalElement();
-          names.add(element.name);
         }
+        names.add(element.name);
         records[i].score = '????';
         records[i].name = element.name;
         records[i].university = element.symbol.toUpperCase();

@@ -55,6 +55,7 @@ export const verifyUser = async (req, res) => {
 
 export const resendVerification = async (req, res) => {
   const user = await getOneUser({ email: req.body.email });
+  if (!user) throw new createError(404, 'User not found');
   if (user.is_verified) throw new createError(400, 'User already verified');
   await authResendVerification(req.body.email);
   return makeResponse({ res, message: 'Verification email sent successfully' });

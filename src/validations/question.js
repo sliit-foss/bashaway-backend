@@ -32,3 +32,8 @@ export const updateQuestionSchema = {
 export const questionIdSchema = {
   question_id: Joi.string().hex().length(24).required()
 };
+
+export const bulkUpdateQuestionsSchema = {
+  enabled: Joi.boolean().required(),
+  creator_lock: Joi.boolean().optional()
+};
