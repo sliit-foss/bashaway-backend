@@ -31,6 +31,8 @@ Bashaway is a competitive coding event where the participants must automate a gi
 - [Production](https://api.bashaway.sliitfoss.org) (Not always running)
 - [Staging](https://api.staging.bashaway.sliitfoss.org)
 
+**NOTE TO FUTURE DEVELOPERS: Make sure that when deploying to production it is deployed somewhere with adequate logs or configure a logging service. This is a public repository and as such is open to abuse and to counter such abuse, full observability is required without which you would regret later:)**
+
 ## Getting started
 
 - Run `pnpm install` to install all dependencies
