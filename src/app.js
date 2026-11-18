@@ -18,6 +18,9 @@ const logger = moduleLogger('app');
 
 const app = express();
 
+// One proxy (Cloud Run) sits in front, so the rate limit counts each client address separately
+app.set('trust proxy', 1);
+
 const limiter = rateLimit({
   windowMs: 1 * 60 * 1000,
   max: 600,
