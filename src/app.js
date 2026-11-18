@@ -7,10 +7,10 @@ import { default as compression } from 'compression';
 import { default as cors } from 'cors';
 import { default as crypto } from 'crypto';
 import { default as helmet } from 'helmet';
-import { omit } from 'lodash';
 import { default as connectDB } from '@/database';
 import { errorHandler, queryMapper, responseInterceptor } from '@/middleware';
 import { default as routes } from '@/routes/index.routes';
+import { loggable } from '@/utils';
 
 require('dotenv').config();
 
@@ -56,14 +56,7 @@ app.use((req, _res, next) => {
   next();
 });
 
-app.use(
-  httpLogger({
-    loggable: ({ headers, body: payload }) => ({
-      headers,
-      payload: omit(payload, ['password', 'new_password', 'old_password'])
-    })
-  })
-);
+app.use(httpLogger({ loggable }));
 
 app.use(queryMapper);
 

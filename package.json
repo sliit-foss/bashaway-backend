@@ -13,7 +13,7 @@
     "lint": "eslint src --ext js,md --ignore-path .gitignore --fix --cache --report-unused-disable-directives",
     "prepare": "lefthook install",
     "start": "node dist/app.js",
-    "test": "echo test"
+    "test": "babel-node test/index.test.js"
   },
   "repository": {
     "type": "git",

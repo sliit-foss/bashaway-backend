@@ -4,10 +4,10 @@ import { default as createError } from 'http-errors';
 import { ctxUser } from '@/constants';
 import { isBlacklistedToken } from '@/repository/token';
 import { getOneUser } from '@/repository/user';
-import { decodeJwtToken } from '@/utils';
+import { decodeJwtToken, isScorekeeper } from '@/utils';
 
 export const protect = asyncHandler(async (req) => {
-  if (req.headers['x-api-key'] === process.env.API_ACCESS_KEY) return;
+  if (isScorekeeper(req)) return;
   const token = req.headers.authorization
     ? req.headers.authorization.startsWith('Bearer')
       ? req.headers.authorization.split(' ')[1]?.replace('null', '')?.replace('undefined', '')
@@ -28,7 +28,7 @@ export const protect = asyncHandler(async (req) => {
 
 export const roleProtect = (roles = []) => {
   return asyncHandler((req) => {
-    if (req.headers['x-api-key'] === process.env.API_ACCESS_KEY) return;
+    if (isScorekeeper(req)) return;
     if (!roles.includes(req.user?.role)) throw new createError(403, 'You are not permitted to access this resource');
   });
 };

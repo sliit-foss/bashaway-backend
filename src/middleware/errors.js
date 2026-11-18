@@ -1,6 +1,6 @@
 import { moduleLogger } from '@sliit-foss/module-logger';
 import { isCelebrateError } from 'celebrate';
-import { makeResponse } from '@/utils';
+import { loggable, makeResponse } from '@/utils';
 import { responseInterceptor } from './response';
 
 const logger = moduleLogger('Error-handler');
@@ -8,10 +8,7 @@ const logger = moduleLogger('Error-handler');
 // eslint-disable-next-line no-unused-vars
 export const errorHandler = (err, req, res, _) => {
   if (!res.errorLogged) {
-    logger.error(`Error: ${err.message} | Request Path - ${req.path} | Stack: ${err.stack}`, {
-      payload: req.body,
-      headers: req.headers
-    });
+    logger.error(`Error: ${err.message} | Request Path - ${req.path} | Stack: ${err.stack}`, loggable(req));
     res.errorLogged = true;
   }
 
