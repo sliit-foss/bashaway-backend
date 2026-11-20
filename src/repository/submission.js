@@ -1,3 +1,4 @@
+import mongoose from 'mongoose';
 import { ROLE } from '@/constants';
 import { Submission } from '@/models';
 import { prefixObjectKeys } from '@/utils';
@@ -51,7 +52,7 @@ export const insertGrade = async (submission, score, automated, userId) => {
 
 export const getDistinctSubmissions = (questionId) => {
   return Submission.aggregate([
-    { $match: { question: questionId } },
+    { $match: { question: new mongoose.Types.ObjectId(questionId) } },
     { $group: { _id: '$user' } },
     { $project: { _id: 0, user: '$_id' } }
   ]);
