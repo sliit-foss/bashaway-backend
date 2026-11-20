@@ -16,21 +16,19 @@ jobs:
       url: https://api.bashaway.sliitfoss.org
     steps:
       - name: Checkout repository 🛎️
-        uses: actions/checkout@v3
+        uses: actions/checkout@v7
 
       - name: Install pnpm 📦
-        uses: pnpm/action-setup@v2
-        with:
-          version: 8
+        uses: pnpm/action-setup@v6
 
-      - name: Install Node.js 18 and setup dependency caching 📦
-        uses: actions/setup-node@v3
+      - name: Install Node.js 24 and setup dependency caching 📦
+        uses: actions/setup-node@v7
         with:
-          node-version: 18.x
+          node-version: 24.x
           cache: 'pnpm'
 
       - name: Install dependencies 📦  
-        run: pnpm install --ignore-scripts --fix-lockfile
+        run: pnpm install --ignore-scripts --frozen-lockfile
 
       - name: Build changes 🏗️
         run: pnpm build
