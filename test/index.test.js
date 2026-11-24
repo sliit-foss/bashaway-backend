@@ -1,5 +1,5 @@
 import assert from 'assert';
-import { isOwnSubmissionLink, isScorekeeper, loggable, submissionCooldown } from '../src/utils';
+import { isOwnSubmissionLink, isScorekeeper, loggable, submissionCooldown, teamCooldownSeconds } from '../src/utils';
 
 process.env.API_ACCESS_KEY = 'key';
 process.env.AZURE_SOLUTION_UPLOAD_STORAGE_ACCOUNT = 'bashaway';
@@ -51,6 +51,18 @@ assert.strictEqual(submissionCooldown(ago(10), ago(170), now), 20);
 assert.strictEqual(submissionCooldown(ago(200), ago(200), now), 0);
 process.env.QUESTION_COOLDOWN_SECONDS = '0';
 assert.strictEqual(submissionCooldown(ago(100), ago(100), now), 0);
+delete process.env.QUESTION_COOLDOWN_SECONDS;
+for (const value of ['abc', '', ' ', '-5', 'Infinity']) {
+  process.env.SUBMISSION_COOLDOWN_SECONDS = process.env.QUESTION_COOLDOWN_SECONDS = value;
+  assert.strictEqual(submissionCooldown(ago(10), ago(10), now), 170);
+  assert.strictEqual(teamCooldownSeconds(), 30);
+}
+process.env.SUBMISSION_COOLDOWN_SECONDS = '0';
+process.env.QUESTION_COOLDOWN_SECONDS = '60';
+assert.strictEqual(teamCooldownSeconds(), 0);
+assert.strictEqual(submissionCooldown(ago(10), undefined, now), 0);
+assert.strictEqual(submissionCooldown(ago(10), ago(10), now), 50);
+delete process.env.SUBMISSION_COOLDOWN_SECONDS;
 delete process.env.QUESTION_COOLDOWN_SECONDS;
 
 assert.deepStrictEqual(

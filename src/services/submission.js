@@ -22,13 +22,15 @@ export const createSubmission = async ({ question: questionId, link }, user) => 
 
   if (!isOwnSubmissionLink(link, user.name)) throw new createError(422, 'Invalid submission link');
 
-  const wait = submissionCooldown(
-    ...(await Promise.all([
-      getLatestSubmissionTime({ user: user._id }),
-      getLatestSubmissionTime({ user: user._id, question: questionId })
-    ]))
-  );
-  if (wait) throw new createError(429, `Please wait ${wait} seconds before submitting again`);
+  const [lastAny, lastForQuestion] = await Promise.all([
+    getLatestSubmissionTime({ user: user._id }),
+    getLatestSubmissionTime({ user: user._id, question: questionId })
+  ]);
+  const wait = submissionCooldown(lastAny, lastForQuestion);
+  if (wait) {
+    const scope = wait > submissionCooldown(lastAny) ? ' to this question' : '';
+    throw new createError(429, `Please wait ${wait} seconds before submitting${scope} again`);
+  }
 
   // One atomic claim per team, so requests sent at the same instant cannot all pass the check above
   const seconds = teamCooldownSeconds();
