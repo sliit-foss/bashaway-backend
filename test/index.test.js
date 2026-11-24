@@ -33,6 +33,7 @@ assert(!isOwnSubmissionLink(`${base}/Car/..%5CCargo/${stamp}/submission.zip`, 'C
 assert(!isOwnSubmissionLink(`${base}/Car/.%2E%2FCargo/${stamp}/submission.zip`, 'Car'));
 assert(!isOwnSubmissionLink(`${base}/Car/%2E%2E/Cargo/${stamp}/submission.zip`, 'Car'));
 assert(!isOwnSubmissionLink(`${base}/Car/..\\Cargo/${stamp}/submission.zip`, 'Car'));
+assert(!isOwnSubmissionLink(`${base}/Car./${stamp}/a.zip`, 'Car.'));
 assert(!isOwnSubmissionLink(`${base}/Car/${stamp}/a.zip?x=1`, 'Car'));
 assert(!isOwnSubmissionLink(`${base}/Car/${stamp}/a.zip#x`, 'Car'));
 assert(!isOwnSubmissionLink(`${base}/Car/${stamp}/a b.zip`, 'Car'));
