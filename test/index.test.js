@@ -23,6 +23,7 @@ const base = 'https://bashaway.blob.core.windows.net/solutions';
 const stamp = '2026-11-28T04%3A00%3A00.000Z';
 assert(isOwnSubmissionLink(`${base}/Cargo/${stamp}/submission.zip`, 'Cargo'));
 assert(isOwnSubmissionLink(`${base}/Smile%20Labs/${stamp}/question%20(1).zip`, 'Smile Labs'));
+assert(isOwnSubmissionLink(`${base}/O%27Neil/${stamp}/submission.zip`, "O'Neil"));
 assert(!isOwnSubmissionLink(`${base}/Cargo/${stamp}/submission.zip`, 'Car'));
 assert(!isOwnSubmissionLink(`${base}/Car/../Cargo/${stamp}/submission.zip`, 'Car'));
 assert(!isOwnSubmissionLink(`${base}/Car/%2e%2e/Cargo/${stamp}/submission.zip`, 'Car'));
