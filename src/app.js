@@ -7,16 +7,19 @@ import { default as compression } from 'compression';
 import { default as cors } from 'cors';
 import { default as crypto } from 'crypto';
 import { default as helmet } from 'helmet';
-import { omit } from 'lodash';
 import { default as connectDB } from '@/database';
 import { errorHandler, queryMapper, responseInterceptor } from '@/middleware';
 import { default as routes } from '@/routes/index.routes';
+import { loggable } from '@/utils';
 
 require('dotenv').config();
 
 const logger = moduleLogger('app');
 
 const app = express();
+
+// One proxy (Cloud Run) sits in front, so the rate limit counts each client address separately
+app.set('trust proxy', 1);
 
 const limiter = rateLimit({
   windowMs: 1 * 60 * 1000,
@@ -56,14 +59,7 @@ app.use((req, _res, next) => {
   next();
 });
 
-app.use(
-  httpLogger({
-    loggable: ({ headers, body: payload }) => ({
-      headers,
-      payload: omit(payload, ['password', 'new_password', 'old_password'])
-    })
-  })
-);
+app.use(httpLogger({ loggable }));
 
 app.use(queryMapper);
 

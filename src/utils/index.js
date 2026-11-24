@@ -1,4 +1,5 @@
 import context from 'express-http-context';
+import { omit } from 'lodash';
 
 export * from './config';
 export * from './json';
@@ -13,3 +14,23 @@ export const isProduction = process.env.APP_ENV === 'production';
 export const rawRepoUrl = `https://raw.githubusercontent.com/sliit-foss/bashaway-backend/${
   isProduction ? 'main' : 'development'
 }`;
+
+// The scorekeeper key is accepted on the grading route only
+export const isScorekeeper = (req) =>
+  !!process.env.API_ACCESS_KEY &&
+  req.headers['x-api-key'] === process.env.API_ACCESS_KEY &&
+  req.method === 'PATCH' &&
+  /^\/api\/submissions\/[0-9a-f]{24}$/.test(req.originalUrl);
+
+export const isOwnSubmissionLink = (link, teamName) => {
+  const folder = `https://${process.env.AZURE_SOLUTION_UPLOAD_STORAGE_ACCOUNT}.blob.core.windows.net/${
+    process.env.AZURE_STORAGE_CONTAINER
+  }/${encodeURIComponent(teamName)}/`;
+  // Azure decodes %2F and treats \ as /, so either one could climb out of the team folder
+  return link.startsWith(folder) && !/[?#\\]|%2f|%5c/i.test(link) && new URL(link).href === link;
+};
+
+export const loggable = ({ headers, body }) => ({
+  headers: omit(headers, ['authorization', 'x-api-key', 'cookie']),
+  payload: omit(body, ['password', 'new_password', 'old_password', 'refresh_token'])
+});

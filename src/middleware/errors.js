@@ -1,6 +1,6 @@
 import { moduleLogger } from '@sliit-foss/module-logger';
 import { isCelebrateError } from 'celebrate';
-import { makeResponse } from '@/utils';
+import { loggable, makeResponse } from '@/utils';
 import { responseInterceptor } from './response';
 
 const logger = moduleLogger('Error-handler');
@@ -8,10 +8,7 @@ const logger = moduleLogger('Error-handler');
 // eslint-disable-next-line no-unused-vars
 export const errorHandler = (err, req, res, _) => {
   if (!res.errorLogged) {
-    logger.error(`Error: ${err.message} | Request Path - ${req.path} | Stack: ${err.stack}`, {
-      payload: req.body,
-      headers: req.headers
-    });
+    logger.error(`Error: ${err.message} | Request Path - ${req.path} | Stack: ${err.stack}`, loggable(req));
     res.errorLogged = true;
   }
 
@@ -26,7 +23,7 @@ export const errorHandler = (err, req, res, _) => {
     return makeResponse({ res, status: 400, message: `The ${key} ${err.keyValue[key]} is already taken` });
   } else if (err.message === 'jwt expired') {
     return makeResponse({ res, status: 401, message: 'Token expired' });
-  } else if (['invalid token', 'jwt malformed'].includes(err.message)) {
+  } else if (err.name === 'JsonWebTokenError') {
     return makeResponse({ res, status: 401, message: 'Invalid token' });
   }
   return makeResponse({
