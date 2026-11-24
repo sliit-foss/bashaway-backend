@@ -35,6 +35,9 @@ const UserSchema = new mongoose.Schema(
       type: Boolean,
       index: true
     },
+    last_submitted_at: {
+      type: Date
+    },
     photo_url: {
       type: String
     },

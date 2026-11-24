@@ -30,6 +30,18 @@ export const isOwnSubmissionLink = (link, teamName) => {
   return link.startsWith(folder) && !/[?#\\]|%2f|%5c/i.test(link) && new URL(link).href === link;
 };
 
+export const teamCooldownSeconds = () => Number(process.env.SUBMISSION_COOLDOWN_SECONDS ?? 30);
+
+// Seconds a team still has to wait before its next submission; 0 means it can submit now
+export const submissionCooldown = (lastAny, lastForQuestion, now = Date.now()) => {
+  const left = (last, seconds) => (last ? Math.ceil((new Date(last).getTime() - now) / 1000 + Number(seconds)) : 0);
+  return Math.max(
+    0,
+    left(lastAny, teamCooldownSeconds()),
+    left(lastForQuestion, process.env.QUESTION_COOLDOWN_SECONDS ?? 180)
+  );
+};
+
 export const loggable = ({ headers, body }) => ({
   headers: omit(headers, ['authorization', 'x-api-key', 'cookie']),
   payload: omit(body, ['password', 'new_password', 'old_password', 'refresh_token'])
