@@ -2,8 +2,15 @@ import { moduleLogger } from '@sliit-foss/module-logger';
 import createError from 'http-errors';
 import { ROLE } from '@/constants';
 import { findQuestion, getMaxScore } from '@/repository/question';
-import { getSubmissionById, getSubmissions, insertGrade, insertSubmission } from '@/repository/submission';
-import { isFromAdmin, isOwnSubmissionLink } from '@/utils';
+import {
+  getLatestSubmissionTime,
+  getSubmissionById,
+  getSubmissions,
+  insertGrade,
+  insertSubmission
+} from '@/repository/submission';
+import { findOneAndUpdateUser } from '@/repository/user';
+import { isFromAdmin, isOwnSubmissionLink, submissionCooldown, teamCooldownSeconds } from '@/utils';
 import { triggerScorekeeper as initiateTesting } from './github';
 
 const logger = moduleLogger('Submission-service');
@@ -14,6 +21,27 @@ export const createSubmission = async ({ question: questionId, link }, user) => 
   if (!question.enabled) throw new createError(400, 'You cannot make a submission for a disabled question');
 
   if (!isOwnSubmissionLink(link, user.name)) throw new createError(422, 'Invalid submission link');
+
+  const [lastAny, lastForQuestion] = await Promise.all([
+    getLatestSubmissionTime({ user: user._id }),
+    getLatestSubmissionTime({ user: user._id, question: questionId })
+  ]);
+  const wait = submissionCooldown(lastAny, lastForQuestion);
+  if (wait) {
+    const scope = wait > submissionCooldown(lastAny) ? ' to this question' : '';
+    throw new createError(429, `Please wait ${wait} seconds before submitting${scope} again`);
+  }
+
+  // One atomic claim per team, so requests sent at the same instant cannot all pass the check above
+  const seconds = teamCooldownSeconds();
+  const free = { $lte: new Date(Date.now() - seconds * 1000) };
+  const claimed =
+    !seconds ||
+    (await findOneAndUpdateUser(
+      { _id: user._id, $or: [{ last_submitted_at: null }, { last_submitted_at: free }] },
+      { last_submitted_at: new Date() }
+    ));
+  if (!claimed) throw new createError(429, 'Please wait a few seconds before submitting again');
 
   const submission = await insertSubmission(user._id, questionId, link);
   initiateTesting(

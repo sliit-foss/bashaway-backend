@@ -39,6 +39,10 @@ export const getSubmissionById = (id) => {
   return Submission.findById(id).lean();
 };
 
+export const getLatestSubmissionTime = async (filters) => {
+  return (await Submission.findOne(filters, 'created_at').sort({ created_at: -1 }).lean())?.created_at;
+};
+
 export const getOneSubmission = (filters, options = {}) => {
   return Submission.findOne(filters, options).lean();
 };

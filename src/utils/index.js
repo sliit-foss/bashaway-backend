@@ -25,9 +25,27 @@ export const isScorekeeper = (req) =>
 export const isOwnSubmissionLink = (link, teamName) => {
   const folder = `https://${process.env.AZURE_SOLUTION_UPLOAD_STORAGE_ACCOUNT}.blob.core.windows.net/${
     process.env.AZURE_STORAGE_CONTAINER
-  }/${encodeURIComponent(teamName)}/`;
-  // Azure decodes %2F and treats \ as /, so either one could climb out of the team folder
-  return link.startsWith(folder) && !/[?#\\]|%2f|%5c/i.test(link) && new URL(link).href === link;
+  }/${encodeURIComponent(teamName).replace(/'/g, '%27')}/`; // the portal's Azure client writes ' as %27
+  // Azure decodes %2F, treats \ as / and drops a dot at the end of a folder name, so each could reach another team's folder
+  return link.startsWith(folder) && !/[?#\\]|%2f|%5c|\.\//i.test(link) && new URL(link).href === link;
+};
+
+// A missing, blank or malformed setting keeps the default; 0 switches the limit off
+const cooldownSetting = (name, fallback) => {
+  const seconds = Number(process.env[name]?.trim() || NaN);
+  return Number.isFinite(seconds) && seconds >= 0 ? seconds : fallback;
+};
+
+export const teamCooldownSeconds = () => cooldownSetting('SUBMISSION_COOLDOWN_SECONDS', 30);
+
+// Seconds a team still has to wait before its next submission; 0 means it can submit now
+export const submissionCooldown = (lastAny, lastForQuestion, now = Date.now()) => {
+  const left = (last, seconds) => (last ? Math.ceil((new Date(last).getTime() - now) / 1000 + seconds) : 0);
+  return Math.max(
+    0,
+    left(lastAny, teamCooldownSeconds()),
+    left(lastForQuestion, cooldownSetting('QUESTION_COOLDOWN_SECONDS', 180))
+  );
 };
 
 export const loggable = ({ headers, body }) => ({

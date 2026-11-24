@@ -1,5 +1,5 @@
 import assert from 'assert';
-import { isOwnSubmissionLink, isScorekeeper, loggable } from '../src/utils';
+import { isOwnSubmissionLink, isScorekeeper, loggable, submissionCooldown, teamCooldownSeconds } from '../src/utils';
 
 process.env.API_ACCESS_KEY = 'key';
 process.env.AZURE_SOLUTION_UPLOAD_STORAGE_ACCOUNT = 'bashaway';
@@ -23,6 +23,7 @@ const base = 'https://bashaway.blob.core.windows.net/solutions';
 const stamp = '2026-11-28T04%3A00%3A00.000Z';
 assert(isOwnSubmissionLink(`${base}/Cargo/${stamp}/submission.zip`, 'Cargo'));
 assert(isOwnSubmissionLink(`${base}/Smile%20Labs/${stamp}/question%20(1).zip`, 'Smile Labs'));
+assert(isOwnSubmissionLink(`${base}/O%27Neil/${stamp}/submission.zip`, "O'Neil"));
 assert(!isOwnSubmissionLink(`${base}/Cargo/${stamp}/submission.zip`, 'Car'));
 assert(!isOwnSubmissionLink(`${base}/Car/../Cargo/${stamp}/submission.zip`, 'Car'));
 assert(!isOwnSubmissionLink(`${base}/Car/%2e%2e/Cargo/${stamp}/submission.zip`, 'Car'));
@@ -32,12 +33,37 @@ assert(!isOwnSubmissionLink(`${base}/Car/..%5CCargo/${stamp}/submission.zip`, 'C
 assert(!isOwnSubmissionLink(`${base}/Car/.%2E%2FCargo/${stamp}/submission.zip`, 'Car'));
 assert(!isOwnSubmissionLink(`${base}/Car/%2E%2E/Cargo/${stamp}/submission.zip`, 'Car'));
 assert(!isOwnSubmissionLink(`${base}/Car/..\\Cargo/${stamp}/submission.zip`, 'Car'));
+assert(!isOwnSubmissionLink(`${base}/Car./${stamp}/a.zip`, 'Car.'));
 assert(!isOwnSubmissionLink(`${base}/Car/${stamp}/a.zip?x=1`, 'Car'));
 assert(!isOwnSubmissionLink(`${base}/Car/${stamp}/a.zip#x`, 'Car'));
 assert(!isOwnSubmissionLink(`${base}/Car/${stamp}/a b.zip`, 'Car'));
 assert(!isOwnSubmissionLink(`${base}/Car/${stamp}/a.zip\n`, 'Car'));
 assert(!isOwnSubmissionLink(`https://evil.example/solutions/Car/${stamp}/a.zip`, 'Car'));
 assert(!isOwnSubmissionLink('', 'Car'));
+
+const now = Date.parse('2026-11-28T04:00:00.000Z');
+const ago = (seconds) => new Date(now - seconds * 1000);
+assert.strictEqual(submissionCooldown(undefined, undefined, now), 0);
+assert.strictEqual(submissionCooldown(ago(10), undefined, now), 20);
+assert.strictEqual(submissionCooldown(ago(30), undefined, now), 0);
+assert.strictEqual(submissionCooldown(ago(100), ago(100), now), 80);
+assert.strictEqual(submissionCooldown(ago(10), ago(170), now), 20);
+assert.strictEqual(submissionCooldown(ago(200), ago(200), now), 0);
+process.env.QUESTION_COOLDOWN_SECONDS = '0';
+assert.strictEqual(submissionCooldown(ago(100), ago(100), now), 0);
+delete process.env.QUESTION_COOLDOWN_SECONDS;
+for (const value of ['abc', '', ' ', '-5', 'Infinity']) {
+  process.env.SUBMISSION_COOLDOWN_SECONDS = process.env.QUESTION_COOLDOWN_SECONDS = value;
+  assert.strictEqual(submissionCooldown(ago(10), ago(10), now), 170);
+  assert.strictEqual(teamCooldownSeconds(), 30);
+}
+process.env.SUBMISSION_COOLDOWN_SECONDS = '0';
+process.env.QUESTION_COOLDOWN_SECONDS = '60';
+assert.strictEqual(teamCooldownSeconds(), 0);
+assert.strictEqual(submissionCooldown(ago(10), undefined, now), 0);
+assert.strictEqual(submissionCooldown(ago(10), ago(10), now), 50);
+delete process.env.SUBMISSION_COOLDOWN_SECONDS;
+delete process.env.QUESTION_COOLDOWN_SECONDS;
 
 assert.deepStrictEqual(
   loggable({
